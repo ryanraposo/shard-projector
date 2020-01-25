@@ -1,12 +1,20 @@
-# This Python file uses the following encoding: utf-8
+#!/usr/bin/python
+"""
+Control App for Ryan & Nicole's Don't Starve Together dedicated server.
+"""
 import sys
 from itertools import islice
 from subprocess import Popen, PIPE
 from textwrap import dedent
 from threading import Thread
 
-import tkinter as tk 
-from queue import Queue, Empty 
+from tkinter import *
+from queue import Queue, Empty
+
+CWD = "c:\\steamcmd\\steamapps\\common\\Don't Starve Together Dedicated Server\\bin"
+CMD_MASTER_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster RNDSTServer -shard Master"
+CMD_SLAVE_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster RNDSTServer -shard Slave"
+
 
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
@@ -16,12 +24,25 @@ def iter_except(function, exception):
     except exception:
         return
 
-class DisplaySubprocessOutputDemo:
+
+def start_master():
+    """Starts the Master server shard and returns the process"""
+    proc = Popen(CMD_MASTER_START, stdout=PIPE, shell=True, cwd="c:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin")
+    return proc
+
+
+def start_slave():
+    """Starts the Slave server shard and returns the process"""
+    proc = Popen(CMD_SLAVE_START, stdout=PIPE, shell=True, cwd="c:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin")
+    return proc
+
+
+class DisplayServerControl:
     def __init__(self, root):
         self.root = root
 
         # start dummy subprocess to generate some output
-        self.process = Popen("./testProgram.sh", stdout=PIPE)
+        self.p = start_master()
 
         # launch thread to read the subprocess output
         #   (put the subprocess output into the queue in a background thread,
@@ -33,14 +54,14 @@ class DisplaySubprocessOutputDemo:
         t.start()
 
         # show subprocess' stdout in GUI
-        self.label = tk.Label(root, text="  ", font=(None, 200))
+        self.label = Label(root, text="  ", font=(None, 15))
         self.label.pack(ipadx=4, padx=4, ipady=4, pady=4, fill='both')
         self.update(q) # start update loop
 
     def reader_thread(self, q):
         """Read subprocess output and put it into the queue."""
         try:
-            with self.process.stdout as pipe:
+            with self.p.stdout as pipe:
                 for line in iter(pipe.readline, b''):
                     q.put(line)
         finally:
@@ -58,13 +79,11 @@ class DisplaySubprocessOutputDemo:
         self.root.after(40, self.update, q) # schedule next update
 
     def quit(self):
-        self.process.kill() # exit subprocess if GUI is closed (zombie!)
+        self.p.kill() # exit subprocess if GUI is closed (zombie!)
         self.root.destroy()
 
 
-root = tk.Tk()
-app = DisplaySubprocessOutputDemo(root)
-root.protocol("WM_DELETE_WINDOW", app.quit)
-# center windowe
-root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
+root = Tk()
+app = DisplayServerControl(root)
+
 root.mainloop()

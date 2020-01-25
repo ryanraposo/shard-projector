@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/ryan/miniconda3/envs/dstctl/bin/python",
+    "python.pythonPath": "C:\\Users\\ryanr\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
     "python.linting.enabled": true,
     "python.jediEnabled": true
 }
