@@ -53,21 +53,9 @@ class Shard:
         except:
             print(line + ' NOT recieved by ' + self.name)
 
-
-
-"""
-        for line in iter_except(self.q_master_input.get_nowait, Empty): 
-            if line:
-                with self.p_master.stdin as pipe:
-                    pipe.write(line.encode())
-        # If items in read queue, update GUI with them
-        for line in iter_except(q.get_nowait, Empty): # display all content
-            if line is None:
-                # self.quit()
-                return
-            else:
-                self.lstMaster.insert(END, [line])
-                self.lstMaster.see(END)
-                break # display no more than one line per 40 milliseconds
-        self.root.after(40, self.update_master, q) # schedule next update
-"""
+    def status(self):
+        poll = self.process.poll()
+        if poll == None:
+            return "UP"
+        else:
+            return "DOWN"
