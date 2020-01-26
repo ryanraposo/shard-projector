@@ -15,38 +15,46 @@ def iter_except(function, exception):
         return
 
 class Shard:
-    def __init__(self, cmd, cwd):
+    def __init__(self, cmd, cwd, name):
         self.cmd = cmd
         self.cwd = cwd
+        self.name = name
         self.output_queue = Queue(maxsize=1024)  # limit output buffering (may stall subprocess)
-        self.input_queue =  Queue(maxsize=1024)
+        self.input_queue = Queue(maxsize=1024)
 
     def start(self):
         self.process = Popen(self.cmd, stdout=PIPE, stdin=PIPE, shell=True, cwd="c:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin")
-        self.thread_reader = Thread(target=self._reader_thread_fn)
+        self.q = Queue(maxsize=1024)
+        self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
         self.thread_reader.start()
 
-    def shutdown(self):
-        print('Shutdown Initiated')
-        try:
-            self.input_queue.put("c_shutdown()")
-        finally:
-            self.input_queue.put(None)
-
-
-    def _reader_thread_fn(self):
-        """Read process output and put it into the reader queue."""
+    def _update_output(self, q):
         try:
             with self.process.stdout as pipe:
                 for line in iter(pipe.readline, b''):
-                    self.output_queue.put(line)
+                    q.put(line)
         finally:
-            self.output_queue.put(None)
+            q.put(None)
 
-    def get_output_queue(self):
-        return self.output_queue.get_nowait
+    def get_output(self): # Schedule me
+        """Returns output queue of the shard."""
+        for line in iter_except(self.q.get_nowait, Empty): # display all 
+            if line is None:
+                return None
+            else:
+                return line
             
+    def write_input(self, line):
+        try:
+            with self.process.stdin as pipe:
+                pipe.write(line.encode())
+            print(line + ' recieved by ' + self.name)
+        except:
+            print(line + ' NOT recieved by ' + self.name)
+
+
+
 """
         for line in iter_except(self.q_master_input.get_nowait, Empty): 
             if line:
