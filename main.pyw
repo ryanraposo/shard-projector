@@ -51,30 +51,27 @@ class ServerControl:
         self.slave.start()
 
         # Buttons
-        self.btnStartAll = Button(root, command=self.start_all, text="Start All", bg=BG_TERM, fg=FG_ROOT)
+        self.btnStartAll = Button(root, command=self.start_all, text="Start", bg=BG_TERM, fg=FG_ROOT)
         self.btnStartAll.grid(row=1,column=1,pady=2)
 
-        self.btnShutdownAll = Button(root, command=self.shutdown_all, text="Shutdown All", bg=BG_TERM, fg=FG_ROOT)
+        self.btnShutdownAll = Button(root, command=self.shutdown_all, text="Shutdown", bg=BG_TERM, fg=FG_ROOT)
         self.btnShutdownAll.grid(row=2,column=1,pady=2)
 
-        # self.btnUpdateStatus = Button(root, command=self.update_status, text="Check Status", bg=BG_TERM, fg=FG_ROOT)
-        # self.btnUpdateStatus.grid(row=3,column=1)
+        self.btnRegenerateWorld = Button(root, command=self.regenerate_world, text="Regenerate World", bg=BG_TERM, fg=FG_ROOT)
+        self.btnRegenerateWorld.grid(row=3,column=1)
 
         self.separator1 = Label(root,text="", height=2, bg=BG_ROOT)
         self.separator1.grid(row=4,column=1)
 
-        
         self.btnQuit = Button(root, command=self.quit, text="Quit", bg=BG_TERM, fg=FG_ROOT)
         self.btnQuit.grid(row=5,column=1)
-
-
+        
         # Labels
         self.lblMasterStatus = Label(root, text='MASTER status: ', fg=FG_ROOT, bg=BG_ROOT)
         self.lblMasterStatus.grid(row=1,column=0)
 
         self.lblSlaveStatus = Label(root, text='SLAVE status: ', fg=FG_ROOT, bg=BG_ROOT)
         self.lblSlaveStatus.grid(row=2,column=0)
-
 
         self.lstMaster = Listbox(root,
             font=(None, 8),
@@ -124,6 +121,9 @@ class ServerControl:
     def start_all(self):
         self.master.start()
         self.slave.start()
+    
+    def regenerate_world(self):
+        self.master.write_input("c_regenerateworld()")
 
     def update_status(self):
         self.lblMasterStatus.configure(text='MASTER status: ' + self.master.status())
