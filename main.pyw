@@ -7,18 +7,16 @@ from itertools import islice
 from subprocess import Popen, PIPE
 from textwrap import dedent
 from threading import Thread
-from tkinter import *
-
+import tkinter as tk
+from tkinter.dialog import Dialog
 
 from queue import Queue, Empty
 
 from shard import Shard
 
-
-
 CWD = "c:\\steamcmd\\steamapps\\common\\Don't Starve Together Dedicated Server\\bin"
-CMD_MASTER_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster RyansTestServer -shard Master"
-CMD_SLAVE_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster RyansTestServer -shard Slave"
+CMD_MASTER_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster Eden -shard Master"
+CMD_SLAVE_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster Eden -shard Caves"
 
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
@@ -33,7 +31,7 @@ FG_ROOT = '#CCCCCC'
 
 BG_TERM = '#383E4A'
 FG_TERM = '#409E68'
-RELIEF_TERM = GROOVE
+RELIEF_TERM = tk.GROOVE
 
 
 class ServerControl:
@@ -51,29 +49,29 @@ class ServerControl:
         self.slave.start()
 
         # Buttons
-        self.btnStartAll = Button(root, command=self.start_all, text="Start", bg=BG_TERM, fg=FG_ROOT)
+        self.btnStartAll = tk.Button(root, command=self.start_all, text="Start", bg=BG_TERM, fg=FG_ROOT)
         self.btnStartAll.grid(row=1,column=1,pady=2)
 
-        self.btnShutdownAll = Button(root, command=self.shutdown_all, text="Shutdown", bg=BG_TERM, fg=FG_ROOT)
+        self.btnShutdownAll = tk.Button(root, command=self.shutdown_all, text="Shutdown", bg=BG_TERM, fg=FG_ROOT)
         self.btnShutdownAll.grid(row=2,column=1,pady=2)
 
-        self.btnRegenerateWorld = Button(root, command=self.regenerate_world, text="Regenerate World", bg=BG_TERM, fg=FG_ROOT)
+        self.btnRegenerateWorld = tk.Button(root, command=self.regenerate_world, text="Regenerate World", bg=BG_TERM, fg=FG_ROOT)
         self.btnRegenerateWorld.grid(row=3,column=1)
 
-        self.separator1 = Label(root,text="", height=2, bg=BG_ROOT)
+        self.separator1 = tk.Label(root,text="", height=2, bg=BG_ROOT)
         self.separator1.grid(row=4,column=1)
 
-        self.btnQuit = Button(root, command=self.quit, text="Quit", bg=BG_TERM, fg=FG_ROOT)
+        self.btnQuit = tk.Button(root, command=self.quit, text="Quit", bg=BG_TERM, fg=FG_ROOT)
         self.btnQuit.grid(row=5,column=1)
         
         # Labels
-        self.lblMasterStatus = Label(root, text='MASTER status: ', fg=FG_ROOT, bg=BG_ROOT)
+        self.lblMasterStatus = tk.Label(root, text='MASTER status: ', fg=FG_ROOT, bg=BG_ROOT)
         self.lblMasterStatus.grid(row=1,column=0)
 
-        self.lblSlaveStatus = Label(root, text='SLAVE status: ', fg=FG_ROOT, bg=BG_ROOT)
+        self.lblSlaveStatus = tk.Label(root, text='SLAVE status: ', fg=FG_ROOT, bg=BG_ROOT)
         self.lblSlaveStatus.grid(row=2,column=0)
 
-        self.lstMaster = Listbox(root,
+        self.lstMaster = tk.Listbox(root,
             font=(None, 8),
             width="60",
             height="25",
@@ -84,7 +82,7 @@ class ServerControl:
             highlightthickness=0)
         self.lstMaster.grid(row=0,column=0,ipadx=8, padx=11, ipady=8, pady=11)
 
-        self.lstSlave = Listbox(root,
+        self.lstSlave = tk.Listbox(root,
             font=(None, 8),
             width="60",
             height="25",
@@ -103,12 +101,12 @@ class ServerControl:
         try:
             line = self.master.get_output()
             if line:
-                self.lstMaster.insert(END, [line])
-                self.lstMaster.see(END)
+                self.lstMaster.insert(tk.END, [line])
+                self.lstMaster.see(tk.END)
             line = self.slave.get_output()
             if line:
-                self.lstSlave.insert(END, [line])
-                self.lstSlave.see(END)
+                self.lstSlave.insert(tk.END, [line])
+                self.lstSlave.see(tk.END)
         finally:
             self.lblMasterStatus.configure(text='MASTER status: ' + self.master.status())
             self.lblSlaveStatus.configure(text='SLAVE status: ' + self.slave.status())
@@ -134,7 +132,14 @@ class ServerControl:
         self.root.destroy()
 
 
-root = Tk()
+# class ServerControlDialog(tk):
+#     def __init__(self, name):
+#         self.name = name
+        
+        
+root = tk.Tk()
 root.wm_protocol(name='WM_DELETE_WINDOW',func=root.quit)
+
+
 app = ServerControl(root)
 root.mainloop()

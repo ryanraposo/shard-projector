@@ -28,8 +28,18 @@ class Shard:
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
         self.thread_reader.start()
+    
+    def stop(self):
+        """Terminates process associated with shard. Returns Exception on failure."""
+        try:
+            self.process.terminate()
+            self.process = None
+        except:
+            return Exception
+
 
     def _update_output(self, q):
+        """Adds stdout of associated process to shard's output queue."""
         try:
             with self.process.stdout as pipe:
                 for line in iter(pipe.readline, b''):
@@ -46,6 +56,7 @@ class Shard:
                 return line
             
     def write_input(self, line):
+        """Writes the input queue of the shard to the stdin of its associated process."""
         try:
             with self.process.stdin as pipe:
                 pipe.write(line.encode())
@@ -54,6 +65,7 @@ class Shard:
             print(line + ' NOT recieved by ' + self.name)
 
     def status(self):
+        """Returns 'UP' if associated process is found, and 'DOWN' if not.""" 
         poll = self.process.poll()
         if poll == None:
             return "UP"

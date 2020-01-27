@@ -1,0 +1,934 @@
+[00:00:00]: 
+System Memory:
+	Memory Load: 49%
+	Available Physical Memory: 4130m/8117m
+	Available Page File: 4072m/8117m
+	Available Virtual Memory: 3984m/4095m
+	Available Extended Virtual Memory: 0m
+[00:00:00]: 
+Process Memory:
+	Peak Working Set Size: 30m
+	Working Set Size: 29m
+	Quota Peak Page Pool Usage: 218k
+	Quota Page Pool Usage: 215k
+	Quota Peak Non Paged Pool Usage:17k
+	Quota Non Paged Pool Usage: 16k
+	Page File Usage: 5m
+	Peak Page File Usage: 5m
+[00:00:00]: PersistRootStorage is now APP:Klei//DoNotStarveTogether/4709694/Cluster_1/Master/ 
+[00:00:00]: Starting Up
+[00:00:00]: Version: 391555
+[00:00:00]: Current time: Sun Jan 26 18:19:03 2020
+
+[00:00:00]: Don't Starve Together: 391555 WIN32
+[00:00:00]: Build Date: 5028
+[00:00:00]: Mode: 32-bit
+[00:00:00]: Parsing command line
+[00:00:00]: Command Line Arguments: -monitor_parent_process 3364 -persistent_storage_root APP:Klei/ -conf_dir DoNotStarveTogether -cluster Cluster_1 -ownernetid 76561197964975422 -ownerdir 4709694 -backup_log_count 10 -backup_log_period 0 -shard Master -sigprefix DST_Master -region US 
+[00:00:00]: Initializing distribution platform
+[00:00:00]: Initializing Minidump handler
+[00:00:00]: ....Done
+[00:00:00]: ....Done
+[00:00:00]: Fixing DPI
+[00:00:00]: ...Done
+[00:00:00]: THREAD - started 'GAClient' (10380)
+[00:00:00]: Mounting file system databundles/klump.zip successful.
+[00:00:00]: CurlRequestManager::ClientThread::Main()
+[00:00:00]: Mounting file system databundles/shaders.zip successful.
+[00:00:00]: Mounting file system databundles/fonts.zip successful.
+[00:00:00]: Mounting file system databundles/anim_dynamic.zip successful.
+[00:00:00]: Mounting file system databundles/bigportraits.zip successful.
+[00:00:00]: Mounting file system databundles/images.zip successful.
+[00:00:00]: Mounting file system databundles/scripts.zip successful.
+[00:00:00]: ProfileIndex:3.34
+[00:00:00]: [Connect] PendingConnection::Reset(true)
+[00:00:00]: Platform: 1
+[00:00:00]: THREAD - started 'Ping Job Thread' (4432)
+[00:00:00]: Network tick rate: U=15(2), D=0
+[00:00:00]: Network tick rate: U=15(2), D=0
+[00:00:00]: Authorized application C:\Program Files (x86)\Steam\steamapps\common\Don't Starve Together\bin\dontstarve_dedicated_server_nullrenderer.exe is enabled in the firewall.
+[00:00:00]: WindowsFirewall - Application already authorized
+[00:00:00]: Overriding region to US
+[00:00:00]: OnLoadPermissionList: APP:Klei//DoNotStarveTogether/4709694/client_save/blocklist.txt (Failure)
+[00:00:00]: THREAD - started 'StreamInput' (11132)
+[00:00:00]: OnLoadPermissionList: APP:Klei//DoNotStarveTogether/4709694/client_save/adminlist.txt (Failure)
+[00:00:00]: OnLoadUserIdList: APP:Klei//DoNotStarveTogether/4709694/client_save/whitelist.txt (Failure)
+[00:00:00]: Offline user ID: OU_76561197964975422
+[00:00:00]: Token retrieved from: APP:Klei//DoNotStarveTogether/4709694/Cluster_1/cluster_token.txt
+[00:00:00]: Token retrieved from: APP:Klei//DoNotStarveTogether/4709694/Cluster_1/cluster_token.txt
+[00:00:00]: HardwareStats:
+  OS                        
+    name                      Microsoft Windows 10 Pro
+    version                   10.0.18363
+    architecture              64-bit
+    platformSpecific          SP 0.0
+  CPU                       
+    numCores                  2
+    features                  SSE,SSE2,SSE3,SSSE3,SSE41,SSE42,AVX
+    name                      Intel(R) Core(TM) i5-7300U CPU @ 2.60GHz
+    manufacturer              GenuineIntel
+    clockSpeed                2712
+  RAM                       
+    megsOfRam                 8192
+  GPU                       
+    name                      Intel(R) HD Graphics 620
+    driverDate                20181225000000.000000-000
+    megsOfRam                 1024
+    refreshRate               59
+    videoModeDescription      2736 x 1824 x 4294967296 colors
+    driverVersion             25.20.100.6472
+
+[00:00:00]: cGame::InitializeOnMainThread
+[00:00:00]: Renderer initialize: Okay
+[00:00:00]: AnimManager initialize: Okay
+[00:00:00]: Buffers initialize: Okay
+[00:00:00]: cDontStarveGame::DoGameSpecificInitialize()
+[00:00:00]: GameSpecific initialize: Okay
+[00:00:00]: cGame::StartPlaying
+[00:00:00]: LOADING LUA
+[00:00:00]: DoLuaFile scripts/main.lua
+[00:00:00]: DoLuaFile loading buffer scripts/main.lua
+[00:00:00]:   taskgrouplist:	default	Together	
+[00:00:00]:   taskgrouplist:	classic	Classic	
+[00:00:00]:   taskgrouplist:	cave_default	Underground	
+[00:00:00]:   taskgrouplist:	lavaarena_taskset	The Forge	
+[00:00:00]:   taskgrouplist:	quagmire_taskset	The Gorge	
+[00:00:00]: running main.lua
+	
+[00:00:00]: Could not load modindex	
+[00:00:00]: ModIndex: Beginning normal load sequence for dedicated server.
+	
+[00:00:00]: DownloadMods(0)
+[00:00:00]: modoverrides.lua enabling workshop-1207269058	
+[00:00:00]: modoverrides.lua enabling workshop-1953572884	
+[00:00:00]: modoverrides.lua enabling workshop-350811795	
+[00:00:00]: modoverrides.lua enabling workshop-378160973	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1207269058	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1953572884	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-350811795	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-378160973	
+[00:00:00]: Could not load mod_config_data/modconfiguration_workshop-1207269058_CLIENT	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:00]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:00]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:00]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:00]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:00]: Loading mod: workshop-1207269058 ( Simple Health Bar DST) Version:2.09	
+[00:00:00]: Could not load mod_config_data/modconfiguration_workshop-1953572884_CLIENT	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:00]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:00]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:00]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:00]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:00]: Loading mod: workshop-1953572884 (Nicole) Version:0.3	
+[00:00:00]: Could not load mod_config_data/modconfiguration_workshop-350811795_CLIENT	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:00]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:00]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:00]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:00]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:00]: Loading mod: workshop-350811795 (Soulmates) Version:1.6	
+[00:00:00]: Could not load mod_config_data/modconfiguration_workshop-378160973_CLIENT	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:00]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:00]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:00]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:00]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:00]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:00]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:00]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:00]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:00]: Loading mod: workshop-378160973 (Global Positions) Version:1.7.3	
+[00:00:00]: Mod: workshop-1953572884 (Nicole)	Loading modworldgenmain.lua	
+[00:00:00]: Mod: workshop-1953572884 (Nicole)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:00]: Mod: workshop-1953572884 (Nicole)	Loading modmain.lua	
+[00:00:00]: Mod: workshop-350811795 (Soulmates)	Loading modworldgenmain.lua	
+[00:00:00]: Mod: workshop-350811795 (Soulmates)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:00]: Mod: workshop-350811795 (Soulmates)	Loading modmain.lua	
+[00:00:00]: Mod: workshop-378160973 (Global Positions)	Loading modworldgenmain.lua	
+[00:00:00]: Mod: workshop-378160973 (Global Positions)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:00]: Mod: workshop-378160973 (Global Positions)	Loading modmain.lua	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1207269058	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1953572884	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-350811795	
+[00:00:00]: ModIndex:GetModsToLoad inserting moddir, 	workshop-378160973	
+[00:00:01]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Loading modworldgenmain.lua	
+[00:00:01]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:01]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Loading modmain.lua	
+[00:00:01]: Event data unavailable: lavaarena_event_server/lavaarena_achievement_quest_defs
+[00:00:02]: LOADING LUA SUCCESS
+[00:00:02]: Registering mod namespace "workshop-1207269058"
+[00:00:02]: Registering mod namespace "workshop-378160973"
+[00:00:02]: PlayerDeaths could not load morgue	
+[00:00:02]: PlayerHistory could not load player_history	
+[00:00:02]: ServerPreferences could not load server_preferences	
+[00:00:02]: bloom_enabled	false	
+[00:00:02]: Could not load saveindex	
+[00:00:02]: OnFilesLoaded()	
+[00:00:02]: OnUpdatePurchaseStateComplete	
+[00:00:02]: Klump load on boot started.	
+[00:00:02]: Klump files loaded: 	0	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	Registering prefabs	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nicole	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	    nicole	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nicole_none	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	    nicole_none	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nandodog	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	    nandodog	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nandocollar	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	    nandocollar	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nandobones	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	    nandobones	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/dog_reviver	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	    dog_reviver	
+[00:00:04]: Mod: workshop-1953572884 (Nicole)	  Registering default mod prefab	
+[00:00:05]: Mod: workshop-350811795 (Soulmates)	Registering prefabs	
+[00:00:05]: Mod: workshop-350811795 (Soulmates)	  Registering prefab file: prefabs/bindingringprefabdef	
+[00:00:05]: Mod: workshop-350811795 (Soulmates)	    bindingring	
+[00:00:05]: Mod: workshop-350811795 (Soulmates)	  Registering default mod prefab	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	Registering prefabs	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/globalposition_classified	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    globalposition_classified	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/smoketrail	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    smoketrail	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/globalmapicon_noproxy	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    globalmapicon_noproxy	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/worldmapexplorer	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    worldmapexplorer	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/pings	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    ping_generic	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    ping_omw	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    ping_danger	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    ping_explore	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	    ping_gohere	
+[00:00:05]: Mod: workshop-378160973 (Global Positions)	  Registering default mod prefab	
+[00:00:05]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Registering prefabs	
+[00:00:05]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Registering prefab file: prefabs/dychealthbar	
+[00:00:05]: Mod: workshop-1207269058 ( Simple Health Bar DST)	    dyc_damagedisplay	
+[00:00:05]: Mod: workshop-1207269058 ( Simple Health Bar DST)	    dyc_healthbarchild	
+[00:00:05]: Mod: workshop-1207269058 ( Simple Health Bar DST)	    dyc_healthbar	
+[00:00:05]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Registering default mod prefab	
+[00:00:05]: 	Load FE	
+[00:00:06]: 	Load FE: done	
+[00:00:06]: THREAD - started 'FilesExistAsyncThread' (6856)
+[00:00:06]: FilesExistAsyncThread started (14428 files)...
+[00:00:06]: Check for write access: TRUE
+[00:00:06]: Check for read access: TRUE
+[00:00:06]: ModIndex: Load sequence finished successfully.	
+[00:00:06]: Reset() returning
+[00:00:06]: [IPC] Signal 'DST_Master_Kill' opened  #00000530
+[00:00:06]: [IPC] Registering handler for signal #00000530
+[00:00:06]: [IPC] Handle #00000530 added to the Eventhandles
+[00:00:06]: [IPC] Signal 'DST_Master_Starting' opened  #0000050C
+[00:00:06]: [IPC] Sending signal... #0000050C
+[00:00:06]: [200] Account Communication Success (6)
+[00:00:06]: Received (KU_h9noiI7-) from TokenPurpose
+[00:00:06]: Starting Dedicated Server Game	
+[00:00:06]: Network tick rate: U=15(2), D=0
+[00:00:06]: About to start a server with the following settings:
+[00:00:06]:   Dedicated: true
+[00:00:06]:   Online: true
+[00:00:06]:   Passworded: true
+[00:00:06]:   ServerPort: 10999
+[00:00:06]:   SteamAuthPort: 8766
+[00:00:06]:   SteamMasterServerPort: 27016
+[00:00:06]:   ClanID: false
+[00:00:06]:   ClanOnly: false
+[00:00:06]:   ClanAdmin: false
+[00:00:06]:   LanOnly: false
+[00:00:06]:   FriendsOnly: false
+[00:00:06]:   EnableAutosaver: true
+[00:00:06]:   EncodeUserPath: true
+[00:00:06]:   PVP: false
+[00:00:06]:   MaxPlayers: 3
+[00:00:06]:   GameMode: endless
+[00:00:06]:   OverridenDNS: 
+[00:00:06]:   PauseWhenEmpty: true
+[00:00:06]:   IdleTimeout: 1800s
+[00:00:06]:   VoteEnabled: false
+[00:00:06]:   InternetBroadcasting: true
+[00:00:06]:   Intent: cooperative
+[00:00:06]: [Warning] Could not confirm port 10999 is open in the firewall. 
+[00:00:06]: Could not load mod_config_data/modconfiguration_workshop-1953572884	
+[00:00:06]: Could not load mod_config_data/modconfiguration_workshop-1207269058	
+[00:00:06]: Could not load mod_config_data/modconfiguration_workshop-350811795	
+[00:00:06]: Could not load mod_config_data/modconfiguration_workshop-378160973	
+[00:00:06]: Online Server Started on port: 10999
+[00:00:06]: Found a level data override file with these contents:	
+[00:00:06]: 	K: 	desc	 V: 	The standard Don't Starve experience.	
+[00:00:06]: 	K: 	hideminimap	 V: 	false	
+[00:00:06]: 	K: 	id	 V: 	SURVIVAL_TOGETHER	
+[00:00:06]: 	K: 	location	 V: 	forest	
+[00:00:06]: 	K: 	max_playlist_position	 V: 	999	
+[00:00:06]: 	K: 	min_playlist_position	 V: 	0	
+[00:00:06]: 	K: 	name	 V: 	Default	
+[00:00:06]: 	K: 	numrandom_set_pieces	 V: 	4	
+[00:00:06]: 	K: 	override_level_string	 V: 	false	
+[00:00:06]: 	K: 	overrides	 V: 	table: 0CA7E5E8	
+[00:00:06]: 		K: 	alternatehunt	 V: 	default	
+[00:00:06]: 		K: 	angrybees	 V: 	default	
+[00:00:06]: 		K: 	antliontribute	 V: 	default	
+[00:00:06]: 		K: 	autumn	 V: 	longseason	
+[00:00:06]: 		K: 	bearger	 V: 	default	
+[00:00:06]: 		K: 	beefalo	 V: 	default	
+[00:00:06]: 		K: 	beefaloheat	 V: 	default	
+[00:00:06]: 		K: 	bees	 V: 	default	
+[00:00:06]: 		K: 	berrybush	 V: 	default	
+[00:00:06]: 		K: 	birds	 V: 	default	
+[00:00:06]: 		K: 	boons	 V: 	default	
+[00:00:06]: 		K: 	branching	 V: 	default	
+[00:00:06]: 		K: 	butterfly	 V: 	default	
+[00:00:06]: 		K: 	buzzard	 V: 	default	
+[00:00:06]: 		K: 	cactus	 V: 	default	
+[00:00:06]: 		K: 	carrot	 V: 	default	
+[00:00:06]: 		K: 	catcoon	 V: 	default	
+[00:00:06]: 		K: 	chess	 V: 	default	
+[00:00:06]: 		K: 	day	 V: 	default	
+[00:00:06]: 		K: 	deciduousmonster	 V: 	default	
+[00:00:06]: 		K: 	deerclops	 V: 	default	
+[00:00:06]: 		K: 	disease_delay	 V: 	default	
+[00:00:06]: 		K: 	dragonfly	 V: 	default	
+[00:00:06]: 		K: 	flint	 V: 	default	
+[00:00:06]: 		K: 	flowers	 V: 	default	
+[00:00:06]: 		K: 	frograin	 V: 	default	
+[00:00:06]: 		K: 	goosemoose	 V: 	default	
+[00:00:06]: 		K: 	grass	 V: 	default	
+[00:00:06]: 		K: 	has_ocean	 V: 	true	
+[00:00:06]: 		K: 	houndmound	 V: 	default	
+[00:00:06]: 		K: 	hounds	 V: 	default	
+[00:00:06]: 		K: 	hunt	 V: 	default	
+[00:00:06]: 		K: 	keep_disconnected_tiles	 V: 	true	
+[00:00:06]: 		K: 	krampus	 V: 	default	
+[00:00:06]: 		K: 	layout_mode	 V: 	LinkNodesByKeys	
+[00:00:06]: 		K: 	liefs	 V: 	default	
+[00:00:06]: 		K: 	lightning	 V: 	default	
+[00:00:06]: 		K: 	lightninggoat	 V: 	default	
+[00:00:06]: 		K: 	loop	 V: 	default	
+[00:00:06]: 		K: 	lureplants	 V: 	default	
+[00:00:06]: 		K: 	marshbush	 V: 	default	
+[00:00:06]: 		K: 	merm	 V: 	default	
+[00:00:06]: 		K: 	meteorshowers	 V: 	default	
+[00:00:06]: 		K: 	meteorspawner	 V: 	default	
+[00:00:06]: 		K: 	moles	 V: 	default	
+[00:00:06]: 		K: 	mushroom	 V: 	default	
+[00:00:06]: 		K: 	no_joining_islands	 V: 	true	
+[00:00:06]: 		K: 	no_wormholes_to_disconnected_tiles	 V: 	true	
+[00:00:06]: 		K: 	penguins	 V: 	default	
+[00:00:06]: 		K: 	perd	 V: 	default	
+[00:00:06]: 		K: 	petrification	 V: 	default	
+[00:00:06]: 		K: 	pigs	 V: 	default	
+[00:00:06]: 		K: 	ponds	 V: 	default	
+[00:00:06]: 		K: 	prefabswaps_start	 V: 	default	
+[00:00:06]: 		K: 	rabbits	 V: 	default	
+[00:00:06]: 		K: 	reeds	 V: 	default	
+[00:00:06]: 		K: 	regrowth	 V: 	default	
+[00:00:06]: 		K: 	roads	 V: 	default	
+[00:00:06]: 		K: 	rock	 V: 	default	
+[00:00:06]: 		K: 	rock_ice	 V: 	default	
+[00:00:06]: 		K: 	sapling	 V: 	default	
+[00:00:06]: 		K: 	season_start	 V: 	default	
+[00:00:06]: 		K: 	specialevent	 V: 	default	
+[00:00:06]: 		K: 	spiders	 V: 	default	
+[00:00:06]: 		K: 	spring	 V: 	default	
+[00:00:06]: 		K: 	start_location	 V: 	default	
+[00:00:06]: 		K: 	summer	 V: 	default	
+[00:00:06]: 		K: 	tallbirds	 V: 	default	
+[00:00:06]: 		K: 	task_set	 V: 	default	
+[00:00:06]: 		K: 	tentacles	 V: 	default	
+[00:00:06]: 		K: 	touchstone	 V: 	default	
+[00:00:06]: 		K: 	trees	 V: 	default	
+[00:00:06]: 		K: 	tumbleweed	 V: 	default	
+[00:00:06]: 		K: 	walrus	 V: 	default	
+[00:00:06]: 		K: 	weather	 V: 	default	
+[00:00:06]: 		K: 	wildfires	 V: 	default	
+[00:00:06]: 		K: 	winter	 V: 	default	
+[00:00:06]: 		K: 	world_size	 V: 	default	
+[00:00:06]: 		K: 	wormhole_prefab	 V: 	wormhole	
+[00:00:06]: 	K: 	random_set_pieces	 V: 	table: 0CA7E9D0	
+[00:00:06]: 		K: 	1	 V: 	Sculptures_2	
+[00:00:06]: 		K: 	2	 V: 	Sculptures_3	
+[00:00:06]: 		K: 	3	 V: 	Sculptures_4	
+[00:00:06]: 		K: 	4	 V: 	Sculptures_5	
+[00:00:06]: 		K: 	5	 V: 	Chessy_1	
+[00:00:06]: 		K: 	6	 V: 	Chessy_2	
+[00:00:06]: 		K: 	7	 V: 	Chessy_3	
+[00:00:06]: 		K: 	8	 V: 	Chessy_4	
+[00:00:06]: 		K: 	9	 V: 	Chessy_5	
+[00:00:06]: 		K: 	10	 V: 	Chessy_6	
+[00:00:06]: 		K: 	11	 V: 	Maxwell1	
+[00:00:06]: 		K: 	12	 V: 	Maxwell2	
+[00:00:06]: 		K: 	13	 V: 	Maxwell3	
+[00:00:06]: 		K: 	14	 V: 	Maxwell4	
+[00:00:06]: 		K: 	15	 V: 	Maxwell6	
+[00:00:06]: 		K: 	16	 V: 	Maxwell7	
+[00:00:06]: 		K: 	17	 V: 	Warzone_1	
+[00:00:06]: 		K: 	18	 V: 	Warzone_2	
+[00:00:06]: 		K: 	19	 V: 	Warzone_3	
+[00:00:06]: 	K: 	required_prefabs	 V: 	table: 0CA7E868	
+[00:00:06]: 		K: 	1	 V: 	multiplayer_portal	
+[00:00:06]: 	K: 	required_setpieces	 V: 	table: 0CA7EB10	
+[00:00:06]: 		K: 	1	 V: 	Sculptures_1	
+[00:00:06]: 		K: 	2	 V: 	Maxwell5	
+[00:00:06]: 	K: 	substitutes	 V: 	table: 0CA7EA48	
+[00:00:06]: 	K: 	version	 V: 	4	
+[00:00:06]: Loaded and applied level data override from ../leveldataoverride.lua	
+[00:00:06]: Overwriting savedata with level data file.	
+[00:00:06]: Not applying world gen overrides.	
+[00:00:06]: Collecting garbage...
+[00:00:06]: lua_gc took 0.11 seconds
+[00:00:06]: ~ShardLuaProxy()
+[00:00:06]: ~cEventLeaderboardProxy()
+[00:00:06]: ~ItemServerLuaProxy()
+[00:00:06]: ~InventoryLuaProxy()
+[00:00:06]: ~NetworkLuaProxy()
+[00:00:06]: ~SimLuaProxy()
+[00:00:06]: FilesExistAsyncThread aborted.
+[00:00:06]: ... FilesExistAsyncThread complete
+[00:00:07]: lua_close took 0.09 seconds
+[00:00:07]: ReleaseAll
+[00:00:07]: ReleaseAll Finished
+[00:00:07]: cGame::StartPlaying
+[00:00:07]: LOADING LUA
+[00:00:07]: DoLuaFile scripts/main.lua
+[00:00:07]: DoLuaFile loading buffer scripts/main.lua
+[00:00:07]:   taskgrouplist:	default	Together	
+[00:00:07]:   taskgrouplist:	classic	Classic	
+[00:00:07]:   taskgrouplist:	cave_default	Underground	
+[00:00:07]:   taskgrouplist:	lavaarena_taskset	The Forge	
+[00:00:07]:   taskgrouplist:	quagmire_taskset	The Gorge	
+[00:00:07]: running main.lua
+	
+[00:00:07]: unloading prefabs for mod MOD_workshop-1953572884	
+[00:00:07]: unloading prefabs for mod MOD_workshop-350811795	
+[00:00:07]: unloading prefabs for mod MOD_workshop-378160973	
+[00:00:07]: unloading prefabs for mod MOD_workshop-1207269058	
+[00:00:07]: loaded modindex	
+[00:00:07]: ModIndex: Beginning normal load sequence for dedicated server.
+	
+[00:00:07]: modoverrides.lua enabling workshop-1207269058	
+[00:00:07]: modoverrides.lua enabling workshop-1953572884	
+[00:00:07]: modoverrides.lua enabling workshop-350811795	
+[00:00:07]: modoverrides.lua enabling workshop-378160973	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1207269058	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1953572884	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-350811795	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-378160973	
+[00:00:07]: Could not load mod_config_data/modconfiguration_workshop-1207269058	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:07]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:07]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:07]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:07]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:07]: Loading mod: workshop-1207269058 ( Simple Health Bar DST) Version:2.09	
+[00:00:07]: Could not load mod_config_data/modconfiguration_workshop-1953572884	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:07]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:07]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:07]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:07]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:07]: Loading mod: workshop-1953572884 (Nicole) Version:0.3	
+[00:00:07]: Could not load mod_config_data/modconfiguration_workshop-350811795	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:07]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:07]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:07]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:07]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:07]: Loading mod: workshop-350811795 (Soulmates) Version:1.6	
+[00:00:07]: Could not load mod_config_data/modconfiguration_workshop-378160973	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-1953572884	
+[00:00:07]: Overriding mod workshop-1953572884's option commandstayfollow with value 118	
+[00:00:07]: Overriding mod workshop-1953572884's option nandoinstakill with value 0	
+[00:00:07]: Overriding mod workshop-1953572884's option nandodistance with value 2	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-350811795	
+[00:00:07]: applying configuration_options from modoverrides.lua to mod workshop-378160973	
+[00:00:07]: Overriding mod workshop-378160973's option FIREOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWFIREICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHAREMINIMAPPROGRESS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERICONS with value true	
+[00:00:07]: Overriding mod workshop-378160973's option OVERRIDEMODE with value false	
+[00:00:07]: Overriding mod workshop-378160973's option SHOWPLAYERSOPTIONS with value 2	
+[00:00:07]: Overriding mod workshop-378160973's option ENABLEPINGS with value true	
+[00:00:07]: Loading mod: workshop-378160973 (Global Positions) Version:1.7.3	
+[00:00:07]: Mod: workshop-1953572884 (Nicole)	Loading modworldgenmain.lua	
+[00:00:07]: Mod: workshop-1953572884 (Nicole)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:07]: Mod: workshop-1953572884 (Nicole)	Loading modmain.lua	
+[00:00:07]: Mod: workshop-350811795 (Soulmates)	Loading modworldgenmain.lua	
+[00:00:07]: Mod: workshop-350811795 (Soulmates)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:07]: Mod: workshop-350811795 (Soulmates)	Loading modmain.lua	
+[00:00:07]: Mod: workshop-378160973 (Global Positions)	Loading modworldgenmain.lua	
+[00:00:07]: Mod: workshop-378160973 (Global Positions)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:07]: Mod: workshop-378160973 (Global Positions)	Loading modmain.lua	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1207269058	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1953572884	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-350811795	
+[00:00:07]: ModIndex:GetModsToLoad inserting moddir, 	workshop-378160973	
+[00:00:07]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Loading modworldgenmain.lua	
+[00:00:07]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:07]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Loading modmain.lua	
+[00:00:08]: Event data unavailable: lavaarena_event_server/lavaarena_achievement_quest_defs
+[00:00:08]: LOADING LUA SUCCESS
+[00:00:08]: Registering mod namespace "workshop-1207269058"
+[00:00:08]: Registering mod namespace "workshop-378160973"
+[00:00:08]: PlayerDeaths could not load morgue	
+[00:00:08]: PlayerHistory could not load player_history	
+[00:00:08]: ServerPreferences could not load server_preferences	
+[00:00:08]: bloom_enabled	false	
+[00:00:08]: OnLoad slot	2	: World options was nil! Populating with default.	
+[00:00:08]: OnLoad slot	3	: World options was nil! Populating with default.	
+[00:00:08]: OnLoad slot	4	: World options was nil! Populating with default.	
+[00:00:08]: OnLoad slot	5	: World options was nil! Populating with default.	
+[00:00:08]: loaded saveindex	
+[00:00:08]: OnFilesLoaded()	
+[00:00:08]: OnUpdatePurchaseStateComplete	
+[00:00:08]: Load Slot: ... generating new world	
+[00:00:08]: [IPC] Signal 'DST_Master_WorldGen' opened  #00000638
+[00:00:08]: [IPC] Sending signal... #00000638
+[00:00:08]: WorldSim::SimThread::SimThread()
+[00:00:08]: ABOUT TO INSTALL STACKTRACE
+[00:00:08]: DoLuaFile scripts/stacktrace.lua
+[00:00:08]: DoLuaFile loading buffer scripts/stacktrace.lua
+[00:00:08]: INSTALLED STACKTRACE
+[00:00:08]: WorldSim::SimThread::SimThread() complete
+[00:00:08]: Check for write access: TRUE
+[00:00:08]: Check for read access: TRUE
+[00:00:08]: THREAD - started 'WorldSim' (1852)
+[00:00:08]: WorldSim::SimThread::Main()
+[00:00:08]: DoLuaFile scripts/worldgen_main.lua
+[00:00:08]: DoLuaFile loading buffer scripts/worldgen_main.lua
+[00:00:08]: ModIndex: Load sequence finished successfully.	
+[00:00:08]: DLC enabled : 	false	
+[00:00:08]: Reset() returning
+[00:00:08]: AddPortMapping(10999, 10999, 192.168.0.13) failed with code 718 (ConflictInMappingEntry)
+[00:00:09]: AddPortMapping(10999, 10999, 192.168.0.13) failed with code 718 (ConflictInMappingEntry)
+[00:00:09]:   taskgrouplist:	default	Together	
+[00:00:09]:   taskgrouplist:	classic	Classic	
+[00:00:09]:   taskgrouplist:	cave_default	Underground	
+[00:00:09]:   taskgrouplist:	lavaarena_taskset	The Forge	
+[00:00:09]:   taskgrouplist:	quagmire_taskset	The Gorge	
+[00:00:09]: ModIndex:GetModsToLoad inserting modname, 	workshop-1953572884	
+[00:00:09]: ModIndex:GetModsToLoad inserting modname, 	workshop-1207269058	
+[00:00:09]: ModIndex:GetModsToLoad inserting modname, 	workshop-350811795	
+[00:00:09]: ModIndex:GetModsToLoad inserting modname, 	workshop-378160973	
+[00:00:09]: Loading mod: workshop-1953572884 (Nicole) Version:0.3	
+[00:00:09]: Loading mod: workshop-1207269058 ( Simple Health Bar DST) Version:2.09	
+[00:00:09]: Loading mod: workshop-350811795 (Soulmates) Version:1.6	
+[00:00:09]: Loading mod: workshop-378160973 (Global Positions) Version:1.7.3	
+[00:00:09]: Mod: workshop-1953572884 (Nicole)	Loading modworldgenmain.lua	
+[00:00:09]: Mod: workshop-1953572884 (Nicole)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:09]: Mod: workshop-350811795 (Soulmates)	Loading modworldgenmain.lua	
+[00:00:09]: Mod: workshop-350811795 (Soulmates)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:09]: Mod: workshop-378160973 (Global Positions)	Loading modworldgenmain.lua	
+[00:00:09]: Mod: workshop-378160973 (Global Positions)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:09]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Loading modworldgenmain.lua	
+[00:00:09]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:09]: running worldgen_main.lua
+	
+[00:00:09]: SEED = 	1580080751	
+[00:00:09]: Generating world with these parameters:	
+[00:00:09]: level_type	SURVIVAL	
+[00:00:09]: level_data:	
+[00:00:09]: 	K: 	1	 V: 	table: 06870258	
+[00:00:09]: 		K: 	desc	 V: 	The standard Don't Starve experience.	
+[00:00:09]: 		K: 	hideminimap	 V: 	false	
+[00:00:09]: 		K: 	id	 V: 	SURVIVAL_TOGETHER	
+[00:00:09]: 		K: 	location	 V: 	forest	
+[00:00:09]: 		K: 	max_playlist_position	 V: 	999	
+[00:00:09]: 		K: 	min_playlist_position	 V: 	0	
+[00:00:09]: 		K: 	name	 V: 	Default	
+[00:00:09]: 		K: 	numrandom_set_pieces	 V: 	4	
+[00:00:09]: 		K: 	override_level_string	 V: 	false	
+[00:00:09]: 		K: 	overrides	 V: 	table: 083DCD48	
+[00:00:09]: 			K: 	alternatehunt	 V: 	default	
+[00:00:09]: 			K: 	angrybees	 V: 	default	
+[00:00:09]: 			K: 	antliontribute	 V: 	default	
+[00:00:09]: 			K: 	autumn	 V: 	longseason	
+[00:00:09]: 			K: 	bearger	 V: 	default	
+[00:00:09]: 			K: 	beefalo	 V: 	default	
+[00:00:09]: 			K: 	beefaloheat	 V: 	default	
+[00:00:09]: 			K: 	bees	 V: 	default	
+[00:00:09]: 			K: 	berrybush	 V: 	default	
+[00:00:09]: 			K: 	birds	 V: 	default	
+[00:00:09]: 			K: 	boons	 V: 	default	
+[00:00:09]: 			K: 	branching	 V: 	default	
+[00:00:09]: 			K: 	butterfly	 V: 	default	
+[00:00:09]: 			K: 	buzzard	 V: 	default	
+[00:00:09]: 			K: 	cactus	 V: 	default	
+[00:00:09]: 			K: 	carrot	 V: 	default	
+[00:00:09]: 			K: 	catcoon	 V: 	default	
+[00:00:09]: 			K: 	chess	 V: 	default	
+[00:00:09]: 			K: 	day	 V: 	default	
+[00:00:09]: 			K: 	deciduousmonster	 V: 	default	
+[00:00:09]: 			K: 	deerclops	 V: 	default	
+[00:00:09]: 			K: 	disease_delay	 V: 	default	
+[00:00:09]: 			K: 	dragonfly	 V: 	default	
+[00:00:09]: 			K: 	flint	 V: 	default	
+[00:00:09]: 			K: 	flowers	 V: 	default	
+[00:00:09]: 			K: 	frograin	 V: 	default	
+[00:00:09]: 			K: 	goosemoose	 V: 	default	
+[00:00:09]: 			K: 	grass	 V: 	default	
+[00:00:09]: 			K: 	has_ocean	 V: 	true	
+[00:00:09]: 			K: 	houndmound	 V: 	default	
+[00:00:09]: 			K: 	hounds	 V: 	default	
+[00:00:09]: 			K: 	hunt	 V: 	default	
+[00:00:09]: 			K: 	keep_disconnected_tiles	 V: 	true	
+[00:00:09]: 			K: 	krampus	 V: 	default	
+[00:00:09]: 			K: 	layout_mode	 V: 	LinkNodesByKeys	
+[00:00:09]: 			K: 	liefs	 V: 	default	
+[00:00:09]: 			K: 	lightning	 V: 	default	
+[00:00:09]: 			K: 	lightninggoat	 V: 	default	
+[00:00:09]: 			K: 	loop	 V: 	default	
+[00:00:09]: 			K: 	lureplants	 V: 	default	
+[00:00:09]: 			K: 	marshbush	 V: 	default	
+[00:00:09]: 			K: 	merm	 V: 	default	
+[00:00:09]: 			K: 	meteorshowers	 V: 	default	
+[00:00:09]: 			K: 	meteorspawner	 V: 	default	
+[00:00:09]: 			K: 	moles	 V: 	default	
+[00:00:09]: 			K: 	mushroom	 V: 	default	
+[00:00:09]: 			K: 	no_joining_islands	 V: 	true	
+[00:00:09]: 			K: 	no_wormholes_to_disconnected_tiles	 V: 	true	
+[00:00:09]: 			K: 	penguins	 V: 	default	
+[00:00:09]: 			K: 	perd	 V: 	default	
+[00:00:09]: 			K: 	petrification	 V: 	default	
+[00:00:09]: 			K: 	pigs	 V: 	default	
+[00:00:09]: 			K: 	ponds	 V: 	default	
+[00:00:09]: 			K: 	prefabswaps_start	 V: 	default	
+[00:00:09]: 			K: 	rabbits	 V: 	default	
+[00:00:09]: 			K: 	reeds	 V: 	default	
+[00:00:09]: 			K: 	regrowth	 V: 	default	
+[00:00:09]: 			K: 	roads	 V: 	default	
+[00:00:09]: 			K: 	rock	 V: 	default	
+[00:00:09]: 			K: 	rock_ice	 V: 	default	
+[00:00:09]: 			K: 	sapling	 V: 	default	
+[00:00:09]: 			K: 	season_start	 V: 	default	
+[00:00:09]: 			K: 	specialevent	 V: 	default	
+[00:00:09]: 			K: 	spiders	 V: 	default	
+[00:00:09]: 			K: 	spring	 V: 	default	
+[00:00:09]: 			K: 	start_location	 V: 	default	
+[00:00:09]: 			K: 	summer	 V: 	default	
+[00:00:09]: 			K: 	tallbirds	 V: 	default	
+[00:00:09]: 			K: 	task_set	 V: 	default	
+[00:00:09]: 			K: 	tentacles	 V: 	default	
+[00:00:09]: 			K: 	touchstone	 V: 	default	
+[00:00:09]: 			K: 	trees	 V: 	default	
+[00:00:09]: 			K: 	tumbleweed	 V: 	default	
+[00:00:09]: 			K: 	walrus	 V: 	default	
+[00:00:09]: 			K: 	weather	 V: 	default	
+[00:00:09]: 			K: 	wildfires	 V: 	default	
+[00:00:09]: 			K: 	winter	 V: 	default	
+[00:00:09]: 			K: 	world_size	 V: 	default	
+[00:00:09]: 			K: 	wormhole_prefab	 V: 	wormhole	
+[00:00:09]: 		K: 	random_set_pieces	 V: 	table: 083DE4B8	
+[00:00:09]: 			K: 	1	 V: 	Sculptures_2	
+[00:00:09]: 			K: 	2	 V: 	Sculptures_3	
+[00:00:09]: 			K: 	3	 V: 	Sculptures_4	
+[00:00:09]: 			K: 	4	 V: 	Sculptures_5	
+[00:00:09]: 			K: 	5	 V: 	Chessy_1	
+[00:00:09]: 			K: 	6	 V: 	Chessy_2	
+[00:00:09]: 			K: 	7	 V: 	Chessy_3	
+[00:00:09]: 			K: 	8	 V: 	Chessy_4	
+[00:00:09]: 			K: 	9	 V: 	Chessy_5	
+[00:00:09]: 			K: 	10	 V: 	Chessy_6	
+[00:00:09]: 			K: 	11	 V: 	Maxwell1	
+[00:00:09]: 			K: 	12	 V: 	Maxwell2	
+[00:00:09]: 			K: 	13	 V: 	Maxwell3	
+[00:00:09]: 			K: 	14	 V: 	Maxwell4	
+[00:00:09]: 			K: 	15	 V: 	Maxwell6	
+[00:00:09]: 			K: 	16	 V: 	Maxwell7	
+[00:00:09]: 			K: 	17	 V: 	Warzone_1	
+[00:00:09]: 			K: 	18	 V: 	Warzone_2	
+[00:00:09]: 			K: 	19	 V: 	Warzone_3	
+[00:00:09]: 		K: 	required_prefabs	 V: 	table: 083DCE60	
+[00:00:09]: 			K: 	1	 V: 	multiplayer_portal	
+[00:00:09]: 		K: 	required_setpieces	 V: 	table: 083DE440	
+[00:00:09]: 			K: 	1	 V: 	Sculptures_1	
+[00:00:09]: 			K: 	2	 V: 	Maxwell5	
+[00:00:09]: 		K: 	substitutes	 V: 	table: 083DE328	
+[00:00:09]: 		K: 	version	 V: 	4	
+[00:00:09]: 
+#######
+#
+# Generating SURVIVAL Mode Level
+#
+#######
+	
+[00:00:09]: Prefab Swap Selection: grass gekko	
+[00:00:09]: Prefab Swap Selection: regular twigs	
+[00:00:09]: Prefab Swap Selection: juicy berries	
+[00:00:09]: Sculptures_1 added to task Killer bees!	
+[00:00:09]: Maxwell5 added to task Kill the spiders	
+[00:00:09]: Sculptures_2 added to task Forest hunters	
+[00:00:09]: Warzone_3 added to task Squeltch	
+[00:00:09]: Chessy_3 added to task Kill the spiders	
+[00:00:09]: Sculptures_3 added to task Killer bees!	
+[00:00:09]: New size:	425	default	
+[00:00:09]: Creating story...	
+[00:00:09]: [Story Gen] Generate nodes. Starting at: 'Make a pick'	
+[00:00:09]: [Story Gen] LinkNodesByKeys	
+[00:00:09]: Finding valid start task...	
+[00:00:09]:    ...picked 	Make a pick	
+[00:00:09]: Has start node	Clearing	
+[00:00:09]: Adding Background Nodes	
+[00:00:09]: [Story Gen] Adding Cove Nodes	
+[00:00:09]: [Ocean] Processing ocean fake room content.	
+[00:00:09]: [WorldSimActual::WorldGen_InitializeNodePoints]
+[00:00:09]: [WorldSimActual::WorldGen_VoronoiPass]
+[00:00:09]: GenerateVoronoiMap [100]:
+[00:00:11]: ...Done.
+[00:00:11]: [Story Gen] Finding nodes on mainland to connect a region to.	
+[00:00:11]: [Story Gen] Generate nodes. Starting at: 'MoonIsland_IslandShards'	
+[00:00:11]: [Story Gen] RestrictNodesByKey	
+[00:00:11]: [Story Gen] Adding Cove Nodes	
+[00:00:11]: [WorldSimActual::WorldGen_AddNewPositions]
+[00:00:11]: [WorldSimActual::WorldGen_VoronoiPass]
+[00:00:11]: GenerateVoronoiMap [50]:
+[00:00:12]: ...Done.
+[00:00:12]: ... story created	
+[00:00:12]: Baking map...	425	
+[00:00:12]: [WorldSimActual::WorldGen_Commit] worldgen success.
+[00:00:12]: [WorldSimActual::ConvertToTileMap]
+[00:00:12]: [ConvertToTileMap]
+[00:00:12]: [WorldSimActual::ConvertToTileMap] complete
+[00:00:12]: [WorldSimActual::SeparateIslands]
+[00:00:12]: [SeparateIslands]
+[00:00:12]: [WorldSimActual::SeparateIslands] complete
+[00:00:12]: Map Baked!	
+[00:00:12]: [WorldSimActual::ForceConnectivity]
+[00:00:12]: [GenerateLandmasses]
+[00:00:12]: [GenerateLandmasses] islands: 12
+[00:00:12]: [MergeConnectedLandmasses] false
+[00:00:12]: [WorldSimActual::ForceConnectivity] complete
+[00:00:12]: [WorldSimActual::DrawRoads]
+[00:00:12]: [DrawRoads]
+[00:00:12]: [WorldSimActual::DrawRoads] complete
+[00:00:12]: Encoding...	
+[00:00:12]: Encoding... DONE	
+[00:00:12]: Checking Tags	
+[00:00:12]: Populating voronoi...	
+[00:00:12]: Warning! Could not find a spot for CaveEntrance in node Make a pick:3:BarePlain	
+[00:00:12]: [ReplaceSingleNonLandTiles] Validating...
+[00:00:12]: [ReplaceSingleNonLandTiles] Replaced 5 tiles.
+[00:00:12]: Not checking for disconnected tiles.	
+[00:00:13]: [Ocean] Placing ocean set pieces.	
+[00:00:13]: [Ocean] Placed 8 of 8 ocean set pieces.	
+[00:00:13]: [Ocean] Convert impassible to water...	
+[00:00:13]: [Ocean]  Square fill...	
+[00:00:16]: [Ocean]  Ground fill...	
+[00:00:16]: [Ocean]  Noise...	
+[00:00:16]: [Ocean]  Blend...	
+[00:00:17]: [Ocean]  Adding shoreline...	
+[00:00:18]: [Ocean] Void Outline...	
+[00:00:18]: [Ocean] Populating the ocean with lots of fun things to do...	
+[00:00:18]: [Ocean] Placing ocean set pieces.	
+[00:00:18]: [Ocean] Placed 9 of 9 ocean set pieces.	
+[00:00:18]: Checking Required Prefab moon_altar_rock_idol has at least 1 instances (1 found).	
+[00:00:18]: Checking Required Prefab pigking has at least 1 instances (1 found).	
+[00:00:18]: Checking Required Prefab multiplayer_portal has at least 1 instances (1 found).	
+[00:00:18]: Checking Required Prefab moon_altar_rock_seed has at least 1 instances (1 found).	
+[00:00:18]: Checking Required Prefab moon_altar_rock_glass has at least 1 instances (1 found).	
+[00:00:18]: Checking Required Prefab moon_fissure has at least 1 instances (73 found).	
+[00:00:18]: [ReplaceSingleNonLandTiles] Validating...
+[00:00:18]: [ReplaceSingleNonLandTiles] Replaced 0 tiles.
+[00:00:18]: Done forest map gen!	
+[00:00:18]: Checking map...	
+[00:00:18]: Generation complete	
+[00:00:18]: WorldSim::SimThread::Main() complete
+[00:00:18]: Serializing world: session/058448036FFD4692/0000000002
+[00:00:18]: Klump load on boot started.	
+[00:00:18]: Klump files loaded: 	0	
+[00:00:18]: 	Unload FE	
+[00:00:18]: 	Unload FE done	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	Registering prefabs	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nicole	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	    nicole	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nicole_none	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	    nicole_none	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nandodog	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	    nandodog	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nandocollar	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	    nandocollar	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/nandobones	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	    nandobones	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering prefab file: prefabs/dog_reviver	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	    dog_reviver	
+[00:00:22]: Mod: workshop-1953572884 (Nicole)	  Registering default mod prefab	
+[00:00:24]: Mod: workshop-350811795 (Soulmates)	Registering prefabs	
+[00:00:24]: Mod: workshop-350811795 (Soulmates)	  Registering prefab file: prefabs/bindingringprefabdef	
+[00:00:24]: Mod: workshop-350811795 (Soulmates)	    bindingring	
+[00:00:24]: Mod: workshop-350811795 (Soulmates)	  Registering default mod prefab	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	Registering prefabs	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/globalposition_classified	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    globalposition_classified	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/smoketrail	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    smoketrail	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/globalmapicon_noproxy	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    globalmapicon_noproxy	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/worldmapexplorer	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    worldmapexplorer	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	  Registering prefab file: prefabs/pings	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    ping_generic	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    ping_omw	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    ping_danger	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    ping_explore	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	    ping_gohere	
+[00:00:24]: Mod: workshop-378160973 (Global Positions)	  Registering default mod prefab	
+[00:00:24]: Mod: workshop-1207269058 ( Simple Health Bar DST)	Registering prefabs	
+[00:00:24]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Registering prefab file: prefabs/dychealthbar	
+[00:00:24]: Mod: workshop-1207269058 ( Simple Health Bar DST)	    dyc_damagedisplay	
+[00:00:24]: Mod: workshop-1207269058 ( Simple Health Bar DST)	    dyc_healthbarchild	
+[00:00:24]: Mod: workshop-1207269058 ( Simple Health Bar DST)	    dyc_healthbar	
+[00:00:24]: Mod: workshop-1207269058 ( Simple Health Bar DST)	  Registering default mod prefab	
+[00:00:24]: 	LOAD BE	
+[00:00:28]: Could not preload undefined prefab (yotc_shrinecarrat)
+[00:00:29]: 	LOAD BE: done	
+[00:00:29]: Begin Session: 058448036FFD4692
+[00:00:29]: saving to server_temp/server_save	
+[00:00:29]: MiniMapComponent::AddAtlas( minimap/minimap_data.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-1953572884/images/map_icons/nicole.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-378160973/minimap/campfire.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-378160973/minimap/ping_generic.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-378160973/minimap/ping_gohere.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-378160973/minimap/ping_explore.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-378160973/minimap/ping_danger.xml )
+[00:00:29]: MiniMapComponent::AddAtlas( ../mods/workshop-378160973/minimap/ping_omw.xml )
+[00:00:29]: Loading 17 new character(s)	
+[00:00:29]: Total 17 character(s) loaded	
+[00:00:31]: Loading Nav Grid	
+[00:00:31]: World generated on version 391555, using seed: 1580080751	
+[00:00:31]: OVERRIDE: setting	autumn	to	longseason	
+[00:00:31]: removing onetime override	autumn	
+[00:00:39]: Reconstructing topology	
+[00:00:39]: 	...Sorting points	
+[00:00:39]: 	...Sorting edges	
+[00:00:39]: 	...Connecting nodes	
+[00:00:39]: 	...Validating connections	
+[00:00:39]: 	...Housekeeping	
+[00:00:39]: 	...Done!	
+[00:00:39]: 1 uploads added to server. From server_temp
+[00:00:39]: About to start a shard with these settings:
+[00:00:39]:   ShardName: [SHDMASTER]
+[00:00:39]:   ShardID: 1
+[00:00:39]:   ShardRole: MASTER
+[00:00:39]:   MasterHost: (null)
+[00:00:39]:   MasterBind: 127.0.0.1
+[00:00:39]:   MasterPort: 10888
+[00:00:39]: [Shard] Starting master server
+[00:00:39]: [Warning] Could not confirm port 10888 is open in the firewall. 
+[00:00:39]: [Shard] Shard server started on port: 10888
+[00:00:39]: [IPC] Signal 'DST_Master_Ready' opened  #000005E8
+[00:00:39]: [IPC] Sending signal... #000005E8
+[00:00:39]: Telling Client our new session identifier: 058448036FFD4692
+[00:00:40]: [Steam] SteamGameServer_Init(8766, 10999, 27016)
+[00:00:40]: [Steam] SteamGameServer_Init success
+[00:00:41]: Validating portal[1] <-> <nil>[1] (inactive)	
+[00:00:41]: Validating portal[2] <-> <nil>[2] (inactive)	
+[00:00:41]: Validating portal[3] <-> <nil>[3] (inactive)	
+[00:00:42]: Validating portal[4] <-> <nil>[4] (inactive)	
+[00:00:42]: Validating portal[5] <-> <nil>[5] (inactive)	
+[00:00:42]: Validating portal[6] <-> <nil>[6] (inactive)	
+[00:00:42]: Validating portal[7] <-> <nil>[7] (inactive)	
+[00:00:42]: Validating portal[8] <-> <nil>[8] (inactive)	
+[00:00:42]: Validating portal[9] <-> <nil>[9] (inactive)	
+[00:00:42]: Sim paused
+[00:00:42]: Gameserver logged on to Steam, assigned identity steamid:90132220088450053
+[00:00:42]: Registering master server in US lobby
+[00:00:43]: [Shard] Slave Caves(677063027) connected: [LAN] 127.0.0.1
+[00:00:43]: [Shard] Slave Caves(677063027) ready!
+[00:00:43]: World 677063027 is now connected	
+[00:00:43]: Validating portal[1] <-> 677063027[1] (disabled)	
+[00:00:43]: Validating portal[2] <-> 677063027[2] (disabled)	
+[00:00:43]: Validating portal[3] <-> 677063027[3] (disabled)	
+[00:00:43]: Validating portal[4] <-> 677063027[4] (disabled)	
+[00:00:43]: Validating portal[5] <-> 677063027[5] (disabled)	
+[00:00:43]: Validating portal[6] <-> 677063027[6] (disabled)	
+[00:00:43]: Validating portal[7] <-> 677063027[7] (disabled)	
+[00:00:43]: Validating portal[8] <-> 677063027[8] (disabled)	
+[00:00:43]: Validating portal[9] <-> 677063027[9] (disabled)	
+[00:00:45]: New incoming connection 127.0.0.1|53942 <4494675210533555574>
+[00:00:45]: Client connected from [LAN] 127.0.0.1|53942 <4494675210533555574>
+[00:00:45]: ValidateGameSessionToken pgs-usc^KU_h9noiI7-^DontStarveTogether^PRBOQzNKeMMLGE2jCExV8X377nrEcYqsA+WZ+9oRZSY= for <4494675210533555574>
+[00:00:45]: Client authenticated: (KU_h9noiI7-) ry3bread
+[00:00:45]: [Steam] Authenticated host '76561197964975422'
+[00:00:46]: There is no active event to validate against.
+[00:00:46]: [Shard] Read save location file for (KU_h9noiI7-)
+[00:00:52]: Registering master server in US lobby
+[00:00:58]: Resuming user: session/058448036FFD4692/A7LCJHPB28FU
+[00:04:12]: [Steam] SendUserDisconnect for '76561197964975422'
+[00:04:12]: [Shard] (KU_h9noiI7-) disconnected from [SHDMASTER](1)
+[00:04:12]: Registering master server in US lobby
+[00:04:12]: [IPC] Received shutdown signal.
+[00:04:12]: Serializing world: session/058448036FFD4692/0000000003
+[00:04:12]: Removing server from US lobby
+[00:04:12]: [Shard] Stopping shard mode
+[00:04:13]: Collecting garbage...
+[00:04:13]: lua_gc took 0.21 seconds
+[00:04:13]: ~ShardLuaProxy()
+[00:04:13]: ~cEventLeaderboardProxy()
+[00:04:13]: ~ItemServerLuaProxy()
+[00:04:13]: ~InventoryLuaProxy()
+[00:04:13]: ~NetworkLuaProxy()
+[00:04:13]: ~SimLuaProxy()
+[00:04:13]: lua_close took 0.35 seconds
+[00:04:13]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:04:13]: CurlRequestManager::ClientThread::Main() complete
+[00:04:13]: HttpClient2 discarded 0 callbacks.
+[00:04:13]: Shutting down
