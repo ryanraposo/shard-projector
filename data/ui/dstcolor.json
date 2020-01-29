@@ -1,0 +1,20 @@
+{
+    "screen" : {
+        "bg_dark" : "#120D08",
+        "bg_medium" : "#1C150F",
+        "fg" : "#DCD9C6"
+    },
+    "btn" : {
+        "bg_enabled" : "#E8C979",
+        "bg_disabled" : "#5D5D5D",
+        "fg" : "#ffffff",
+        "highlight_enabled" : "#EEDDAB"
+    },
+    "frame" : {
+        "border" : "#74532A",
+        "bg_dark" : "#382B1B",
+        "bg_medium" : "#463726",
+        "bg_light" : "#4C3C2A",
+        "fg" : "#E8C979"
+    }
+}

@@ -1,0 +1,5 @@
+        BG_ROOT = '#21252B'
+        FG_ROOT = '#CCCCCC'
+
+        BG_TERM = '#383E4A'
+        FG_TERM = '#409E68'

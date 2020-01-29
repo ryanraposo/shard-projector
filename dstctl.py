@@ -4,19 +4,19 @@ Control App for Ryan & Nicole's Don't Starve Together dedicated server.
 """
 import sys
 import os
+import json
 from itertools import islice
 from subprocess import Popen, PIPE
 from textwrap import dedent
 from threading import Thread
-import tkinter as tk
+
+from tkinter import *
+from tkinter import ttk
+from ttkthemes import ThemedTk
 
 
 from queue import Queue, Empty
 
-
-CWD = "c:\\steamcmd\\steamapps\\common\\Don't Starve Together Dedicated Server\\bin"
-CMD_MASTER_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster Eden -shard Master"
-CMD_SLAVE_START = "dontstarve_dedicated_server_nullrenderer.exe -console -cluster Eden -shard Caves"
 
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
@@ -26,16 +26,22 @@ def iter_except(function, exception):
     except exception:
         return
 
+def import_dst_colors():
+    dst_colors = {}
+    with open("./data/ui/dstcolor.json", 'r') as file:
+        dst_colors = json.load(file)
+    return dst_colors
+
 class Shard:
-    def __init__(self, cmd, cwd, name):
+    def __init__(self, cmd, name):
         self.cmd = cmd
-        self.cwd = cwd
         self.name = name
         self.output_queue = Queue(maxsize=1024)  # limit output buffering (may stall subprocess)
         self.input_queue = Queue(maxsize=1024)
 
     def start(self):
-        self.process = Popen(self.cmd, stdout=PIPE, stdin=PIPE, shell=True, cwd="c:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin")
+        cwd = os.path.realpath("C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin")
+        self.process = Popen(self.cmd, stdout=PIPE, stdin=PIPE, shell=True, cwd=cwd)
         self.q = Queue(maxsize=1024)
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
@@ -84,77 +90,77 @@ class Shard:
         else:
             return "DOWN"
 
-BG_ROOT = '#21252B'
-FG_ROOT = '#CCCCCC'
-
-BG_TERM = '#383E4A'
-FG_TERM = '#409E68'
-RELIEF_TERM = tk.GROOVE
 
 class ServerControl:
     def __init__(self, root):
         self.root = root
-        self.root.geometry("800x600")
+        self.root.geometry("800x550")
         self.root.resizable(0,0)
-        self.root.configure(bg=BG_ROOT)        
         self.root.protocol("WM_DELETE_WINDOW", self.quit)
         self.root.title("DST Server Control")
         icon_path = os.path.join("./", "dstctl.ico")
         self.root.iconbitmap(icon_path)
+        self.root.configure(bg="#424242")
 
-        self.master = Shard(CMD_MASTER_START, CWD, 'MASTER')
-        self.slave = Shard(CMD_SLAVE_START, CWD, 'SLAVE')
+        nullrenderer = os.path.realpath("C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe")     
+        self.master = Shard([nullrenderer, "-console_enabled", "-cluster", "Eden", "-shard", "Master"],'MASTER')
+        self.slave = Shard([nullrenderer, "-console_enabled", "-cluster", "Eden", "-shard", "Caves"],'SLAVE')
 
         self.master.start()
         self.slave.start()
 
-        # Buttons
-        button_width = 25
+        DST_COLORS = import_dst_colors()
+
+        BG_ROOT = DST_COLORS["screen"]["bg_medium"]
+        FG_ROOT = DST_COLORS["screen"]["fg"]
+
+        BG_TERM = DST_COLORS["frame"]["bg_dark"]
+        FG_TERM = DST_COLORS["frame"]["fg"]
+        RELIEF_TERM = GROOVE
+
+        style = ttk.Style()
         
-        self.btnStartAll = tk.Button(root, command=self.start_all, text="Start", bg=BG_TERM, fg=FG_ROOT, width=button_width)
-        self.btnStartAll.grid(row=1,column=1,pady=2)
+        # Console Displays
+        self.lstMaster = ttk.Treeview(root,padding=[0,0,0,0])
+        self.lstMaster.place(x=21, y=21, height=375, width=372)
+        self.lstMaster.heading("#0",text="Master")
 
-        self.btnShutdownAll = tk.Button(root, command=self.shutdown_all, text="Shutdown", bg=BG_TERM, fg=FG_ROOT, width=button_width)
-        self.btnShutdownAll.grid(row=2,column=1,pady=2)
+        self.lstSlave = ttk.Treeview(root)
+        self.lstSlave.place(x=407, y=21, height=375, width=372)
+        self.lstSlave.heading("#0",text="Caves")
 
-        self.btnRegenerateWorld = tk.Button(root, command=self.regenerate_world, text="Regenerate World", bg=BG_TERM, fg=FG_ROOT, width=button_width)
-        self.btnRegenerateWorld.grid(row=3,column=1)
+        # Status Labels
+        self.lblMasterStatus = ttk.Label(root, text='Status: ')
+        self.lblMasterStatus.place(x=21,y=398)
 
+        self.lblSlaveStatus = ttk.Label(root, text='Status: ')
+        self.lblSlaveStatus.place(x=407,y=398)
 
-        self.separator1 = tk.Label(root,text="", height=2, bg=BG_ROOT, width=button_width)
-        self.separator1.grid(row=4,column=1)
-
-        self.btnQuit = tk.Button(root, command=self.quit, text="Quit", bg=BG_TERM, fg=FG_ROOT, width=button_width)
-        self.btnQuit.grid(row=5,column=1)
+        # Command Buttons
+        self.cvsCommands = ttk.Frame(root)
+        self.cvsCommands.place(x=473,y=429,height=100,width=300)
+        style.configure('TFrame', background="#424242")
         
-        # Labels
-        self.lblMasterStatus = tk.Label(root, text='MASTER status: ', fg=FG_ROOT, bg=BG_ROOT)
-        self.lblMasterStatus.grid(row=1,column=0)
+        self.btnStartAll = ttk.Button(self.cvsCommands, command=self.start_all, text="Start")
+        self.btnStartAll.grid(row=0,column=0)
 
-        self.lblSlaveStatus = tk.Label(root, text='SLAVE status: ', fg=FG_ROOT, bg=BG_ROOT)
-        self.lblSlaveStatus.grid(row=2,column=0)
+        self.btnShutdownAll = ttk.Button(self.cvsCommands, command=self.shutdown_all, text="Shutdown")
+        self.btnShutdownAll.grid(row=1,column=0)
 
-        self.lstMaster = tk.Listbox(root,
-            font=(None, 8),
-            width="60",
-            height="25",
-            bg=BG_TERM,
-            fg=FG_TERM,
-            relief=RELIEF_TERM,
-            highlightcolor=BG_ROOT,
-            highlightthickness=0)
-        self.lstMaster.grid(row=0,column=0,ipadx=8, padx=11, ipady=8, pady=11)
+        self.btnRegenerateWorld = ttk.Button(self.cvsCommands, command=self.regenerate_world, text="Regenerate")
+        self.btnRegenerateWorld.grid(row=0,column=1)
 
-        self.lstSlave = tk.Listbox(root,
-            font=(None, 8),
-            width="60",
-            height="25",
-            bg=BG_TERM,
-            fg=FG_TERM,
-            relief=RELIEF_TERM,
-            highlightcolor=BG_ROOT,
-            highlightthickness=0)
-        self.lstSlave.grid(row=0,column=1,ipadx=8, padx=11, ipady=8, pady=11)
+        self.btnReset = ttk.Button(self.cvsCommands, command=self.reset, text="Reset")
+        self.btnReset.grid(row=1,column=1)
+
+        self.btnSave = ttk.Button(self.cvsCommands, command=self.save, text="Save")
+        self.btnSave.grid(row=0,column=2)
+
+        self.btnUpdate = ttk.Button(self.cvsCommands, command=self.update_steamcmd_dedicated_server, text="Update")
+        self.btnUpdate.grid(row=1,column=2)
+
+        self.btnQuit = ttk.Button(self.cvsCommands, command=self.quit, text="Quit")
+        self.btnQuit.grid(row=3,column=2)
         
         self.update()
 
@@ -164,15 +170,17 @@ class ServerControl:
         try:
             line = self.master.get_output()
             if line:
-                self.lstMaster.insert(tk.END, [line])
-                self.lstMaster.see(tk.END)
+                print(line)
+                item = self.lstMaster.insert("",END,text=line)
+                self.lstMaster.see(item)
             line = self.slave.get_output()
             if line:
-                self.lstSlave.insert(tk.END, [line])
-                self.lstSlave.see(tk.END)
+                item = self.lstSlave.insert("",END,text=line)
+                self.lstSlave.see(item)
         finally:
-            self.lblMasterStatus.configure(text='MASTER status: ' + self.master.status())
-            self.lblSlaveStatus.configure(text='SLAVE status: ' + self.slave.status())
+            # self.lstMaster.configure()
+            self.lblMasterStatus.configure(text='Status: ' + self.master.status())
+            self.lblSlaveStatus.configure(text='Status: ' + self.slave.status())
             self.root.after(40, self.update)
 
     def shutdown_all(self):
@@ -185,10 +193,23 @@ class ServerControl:
     
     def regenerate_world(self):
         self.master.write_input("c_regenerateworld()")
+        self.slave.write_input("c_regenerateworld()")
+    
+    def reset(self):
+        self.master.write_input("c_reset()")
+        self.slave.write_input("c_reset()")
 
+    def save(self):
+        self.master.write_input("c_save()")
+        self.slave.write_input("c_save()")   
+        
     def update_status(self):
         self.lblMasterStatus.configure(text='MASTER status: ' + self.master.status())
         self.lblSlaveStatus.configure(text='SLAVE status: ' + self.slave.status())
+
+    def update_steamcmd_dedicated_server(self):
+        self.shutdown_all()
+        os.system(os.path.realpath("./scripts/updatesteamcmd.bat"))
 
     def quit(self):
         self.shutdown_all()
@@ -204,6 +225,6 @@ def kill_existing_server_procs():
         return None
                 
 kill_existing_server_procs()
-root = tk.Tk()
+root = ThemedTk(theme="equilux")
 app = ServerControl(root)
 root.mainloop()
