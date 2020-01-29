@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['dstctl.py'],
-             pathex=['c:\\Users\\ryanr\\source\\dstctl'],
+             pathex=['C:\\Users\\ryanr\\source\\dstctl'],
              binaries=[],
              datas=[('dstctl.ico', '.')],
              hiddenimports=[],
@@ -26,7 +26,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='dstctl.ico')
+          console=True , icon='dstctl.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

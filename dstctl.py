@@ -26,12 +26,6 @@ def iter_except(function, exception):
     except exception:
         return
 
-def import_dst_colors():
-    dst_colors = {}
-    with open("./data/ui/dstcolor.json", 'r') as file:
-        dst_colors = json.load(file)
-    return dst_colors
-
 class Shard:
     def __init__(self, cmd, name):
         self.cmd = cmd
@@ -109,15 +103,7 @@ class ServerControl:
         self.master.start()
         self.slave.start()
 
-        DST_COLORS = import_dst_colors()
-
-        BG_ROOT = DST_COLORS["screen"]["bg_medium"]
-        FG_ROOT = DST_COLORS["screen"]["fg"]
-
-        BG_TERM = DST_COLORS["frame"]["bg_dark"]
-        FG_TERM = DST_COLORS["frame"]["fg"]
-        RELIEF_TERM = GROOVE
-
+        # TTK
         style = ttk.Style()
         
         # Console Displays
@@ -170,7 +156,6 @@ class ServerControl:
         try:
             line = self.master.get_output()
             if line:
-                print(line)
                 item = self.lstMaster.insert("",END,text=line)
                 self.lstMaster.see(item)
             line = self.slave.get_output()
