@@ -4,8 +4,7 @@ A desktop application for running & managing a dedicated server on a local machi
 
 ### Prerequisites
 
-- SteamCMD
-  - Don't Starve Dedicated Server installed
+- Steam (or SteamCMD) w/ Don't Starve Dedicated Server installed
 
 ```
 Give examples
