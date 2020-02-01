@@ -1,6 +1,7 @@
 {
-    "python.pythonPath": "/home/ryan/miniconda3/bin/python",
+    "python.pythonPath": "C:\\Python37\\python.exe",
     "python.linting.enabled": true,
     "python.jediEnabled": true,
-    "debug.openDebug": "neverOpen"
+    "debug.openDebug": "neverOpen",
+    "python.linting.pylintEnabled": true
 }

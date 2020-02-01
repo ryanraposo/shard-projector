@@ -21,6 +21,19 @@ import configparser
 
 from queue import Queue, Empty
 
+def as_dict(config):
+    """
+    Converts a ConfigParser object into a dictionary.
+
+    The resulting dictionary has sections as keys which point to a dict of the
+    sections options as key => value pairs.
+    """
+    the_dict = {}
+    for section in config.sections():
+        the_dict[section] = {}
+        for key, val in config.items(section):
+            the_dict[section][key] = val
+    return the_dict
 
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
@@ -29,6 +42,19 @@ def iter_except(function, exception):
             yield function()
     except exception:
         return
+
+def kill_existing_server_procs():
+    process = Popen('taskkill /F /IM "dontstarve_dedicated_server_nullrenderer.exe"', stdout=PIPE)
+    stdout = process.communicate()[0]
+    if "SUCCESS" in str(stdout):
+        return "Existing server processes (dontstarve_dedicated_server_nullrenderer.exe) were found and terminated."
+    elif "ERROR" in str(stdout):
+        return None
+
+def get_cluster_config_structure():
+    with open('default_cluster.json') as json_file:
+        cluster_config_structure = dict(json.load(json_file))
+        return cluster_config_structure
 
 class Shard:
     """Represents primarily the subprocess instance for server shards and its in/out pipes."""
@@ -105,12 +131,13 @@ class DedicatedServer:
     class InvalidServerDirectory(Exception): pass
 
 
+
     def __init__(self, directory_path):
         try:
             assert self.is_valid_server_config(directory_path)
             self.root_path = os.path.abspath(directory_path)
-            self.master_config = self._get_shard_config('Master')
             self.cluster_config = self._get_cluster_config()
+            self.master_config = self._get_shard_config('Master')
             try:
                 self.slave_config = self._get_shard_config('Caves')
             except:
@@ -163,8 +190,6 @@ class ServerControl:
         self.master = Shard([nullrenderer, "-console_enabled", "-cluster", "Eden", "-shard", "Master"],'MASTER')
         self.slave = Shard([nullrenderer, "-console_enabled", "-cluster", "Eden", "-shard", "Caves"],'SLAVE')
 
-        # self.settings()
-
         self.update()
 
     def initialize_ui(self):
@@ -200,12 +225,10 @@ class ServerControl:
 
         self.btnSelectServer = ttk.Button(self.frmTopBar, command=self.select_server, text='Browse')
         self.btnSelectServer.grid(row=0, column=1)
-        
-        # self.icon_settings_photo_image = ImageTk.PhotoImage(file="settings.png")
-        # self.btnSettings = ttk.Button(self.frmTopBar, image=self.icon_settings_photo_image, command=self.settings, style='Img.TButton')
-        # self.btnSettings.grid(row=0, column=2)
-        # style.configure("Img.TButton", background="#424242", padding=[0,0,0,0])
 
+        self.btnConfigureServer = ttk.Button(self.frmTopBar, command=self.configure_server, text='Configure')
+        self.btnConfigureServer.grid(row=0, column=2)
+        
         # Console Displays        
         self.lstMaster = ttk.Treeview(root,padding=[0,0,0,0])
         self.lstMaster.place(x=21, y=50, height=375, width=372)
@@ -251,7 +274,7 @@ class ServerControl:
         # Other buttons
         
     def update(self):
-        """Update GUI with information from Shards."""
+        """Update GUI."""
         # If items in read queue, update GUI with them
         try:
             line = self.master.get_output()
@@ -265,7 +288,13 @@ class ServerControl:
             if self.master.is_started():
                 self.lblMasterStatus.configure(text='Status: ' + self.master.status())
             if self.slave.is_started():    
-                self.lblSlaveStatus.configure(text='Status: ' + self.slave.status())
+                self.lblSlaveStatus.configure(text='Status: ' + self.slave.status())        
+
+            if hasattr(self, "server"):
+                self.btnConfigureServer.state(["!disabled"])
+            else:
+                self.btnConfigureServer.state(["disabled"])
+
         finally:
             self.root.after(40, self.update)
     # Server-related methods
@@ -297,16 +326,15 @@ class ServerControl:
         self.shutdown_all()
         os.system(os.path.realpath("./scripts/updatesteamcmd.bat"))
     # Application-related methods
-    def settings(self):
-        settings_dialog = SettingsDialog()
-        settings_dialog.show(self.root)
+    def configure_server(self):
+        server_configuration_dialog = ServerConfigurationDialog(self.root, self.server)
 
     def select_server(self):
         selection = filedialog.askdirectory(initialdir=os.path.realpath("%CURRENTUSER%"),title = "Select a server directory...")
         try:
             self.server = DedicatedServer(selection)
             self.entServer.delete(0, END)
-            self.entServer.insert(0, self.server.directory_path)
+            self.entServer.insert(0, self.server.root_path)
         except:
             messagebox.showwarning(title="DST Server Control", message=selection + " does not appear to be a valid dedicated server directory. Should contain server.ini, clustertoken.txt, at least one folder containing cluster.ini")
 
@@ -315,39 +343,48 @@ class ServerControl:
         self.root.destroy()
 
 
-class SettingsDialog:
-    def show(self, mainwindow):
-        self.window = Toplevel(mainwindow)
-        self.window.geometry("400x300")
-        self.window.resizable(0,0)
-        self.window.title("Settings")
-        self.window.configure(bg="#424242")
+class ServerConfigurationDialog:
+    def __init__(self, parent, server):
+        self.server = server
+        window = self.window = Toplevel(parent)
+        window.geometry("400x800")
+        window.title("Settings")
+        window.configure(bg="#424242")
+
+        self.nbkConfigPanes = ttk.Notebook(window, width=400, height=700)
+        self.nbkConfigPanes.place(x=0,y=0)
+        self.nbkConfigPanes.add(self.cluster_config_pane(), text="Cluster")
+    
+    def cluster_config_pane(self):
+        cluster_config_pane = ttk.Frame(self.nbkConfigPanes, width = 400, height = 700)
+
+        cluster_config_structure = get_cluster_config_structure()
+        x = 0
+        for section in cluster_config_structure.keys():
+            frmSection = ttk.Labelframe(cluster_config_pane, text=section)
+            frmSection.grid(row=x, column=0)
+            y = 0
+            for key, value in cluster_config_structure[section].items():
+                try:
+                    current = self.server.cluster_config[section][key]
+
+                except:
+                    current = ""
+                lblConfigKey = ttk.Label(frmSection, text=key, width=20)
+                lblConfigKey.grid(row=y,column=0,sticky='nsw')
+                entConfigKey = ttk.Entry(frmSection)
+                entConfigKey.insert(0, current)
+                entConfigKey.grid(row=y, column=1,sticky='nse')
+                y += 1
+            x += 1
+        
+        return cluster_config_pane
+    
     
     def close(self):
         self.window.destroy()
        
-def as_dict(config):
-    """
-    Converts a ConfigParser object into a dictionary.
-
-    The resulting dictionary has sections as keys which point to a dict of the
-    sections options as key => value pairs.
-    """
-    the_dict = {}
-    for section in config.sections():
-        the_dict[section] = {}
-        for key, val in config.items(section):
-            the_dict[section][key] = val
-    return the_dict
-
-def kill_existing_server_procs():
-    process = Popen('taskkill /F /IM "dontstarve_dedicated_server_nullrenderer.exe"', stdout=PIPE)
-    stdout = process.communicate()[0]
-    if "SUCCESS" in str(stdout):
-        return "Existing server processes (dontstarve_dedicated_server_nullrenderer.exe) were found and terminated."
-    elif "ERROR" in str(stdout):
-        return None
-                
+        
 kill_existing_server_procs()
 root = ThemedTk(theme="equilux")
 app = ServerControl(root)
