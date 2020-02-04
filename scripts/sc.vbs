@@ -10,7 +10,7 @@ oLink.TargetPath = str_dist + "dstctl.exe"
 '  oLink.Arguments = ""
 '  oLink.Description = "MyProgram"   
 '  oLink.HotKey = "ALT+CTRL+F"
-oLink.IconLocation = str_dist + "dstctl.ico"
+oLink.IconLocation = str_dist + "./img/dstctl.ico"
 '  oLink.WindowStyle = "1"   
 oLink.WorkingDirectory = str_dist
 oLink.Save

@@ -1,1 +1,1 @@
-pyinstaller --windowed --add-data="dstctl.ico;." --icon dstctl.ico dstctl.py
+pyinstaller --windowed --add-data="./img/dstctl.ico;." --icon ./img/dstctl.ico dstctl.py
