@@ -1,6 +1,10 @@
 {
-    "python.pythonPath": "C:\\Users\\ryanr\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.pythonPath": "C:\\Python37\\python.exe",
     "python.linting.enabled": true,
     "python.jediEnabled": true,
-    "debug.openDebug": "neverOpen"
+    "debug.openDebug": "neverOpen",
+    "python.linting.pylintEnabled": true,
+    // "python.linting.flake8Enabled": true
+    "python.formatting.provider": "black",
+
 }

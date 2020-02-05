@@ -6,7 +6,7 @@ block_cipher = None
 a = Analysis(['dstctl.py'],
              pathex=['C:\\Users\\ryanr\\source\\dstctl'],
              binaries=[],
-             datas=[('dstctl.ico', '.')],
+             datas=[('./img/dstctl.ico', './img'), ('./data/ini/cluster_configuration.json', './data/ini'), ('./data/ini/shard_configuration.json', './data/ini')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -26,7 +26,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='dstctl.ico')
+          console=False , icon='img\\dstctl.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
