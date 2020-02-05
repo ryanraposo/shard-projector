@@ -15,7 +15,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog, messagebox
 from ttkthemes import ThemedTk
-from PIL import Image, ImageTk
 
 import configparser
 
@@ -157,7 +156,7 @@ class Shard:
             self.name,
         ]        
         return command
-        
+
     def _update_output(self, q):
         """Adds stdout of associated process to shard's output queue."""
         if self.is_started():
@@ -278,11 +277,11 @@ class ServerControl:
     def initialize_ui(self):
         """Setup widgets and styling of main window."""
 
-        self.root.geometry("800x600")
+        self.root.geometry("800x550")
         self.root.resizable(0, 0)
         self.root.protocol("WM_DELETE_WINDOW", self.quit)
         self.root.title("DST Server Control")
-        icon_path = os.path.join("./", "./img/dstctl.ico")
+        icon_path = os.path.join("./img/dstctl.ico")
         self.root.iconbitmap(icon_path)
         self.root.configure(bg="#424242")
 
@@ -457,9 +456,9 @@ class ServerControl:
         self.shutdown_all()
         self.root.destroy()
 
-
 if __name__ == "__main__":
-    # kill_existing_server_procs()
     root = ThemedTk(theme="equilux")
     app = ServerControl(root)
     root.mainloop()
+    
+

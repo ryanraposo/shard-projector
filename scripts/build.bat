@@ -1,1 +1,1 @@
-pyinstaller --windowed --add-data="./img/dstctl.ico;." --icon ./img/dstctl.ico dstctl.py
+pyinstaller -w --add-data="./img/dstctl.ico;./img" --icon="./img/dstctl.ico" --add-data="./data/ini/cluster_configuration.json;./data/ini" --add-data="./data/ini/shard_configuration.json;./data/ini" dstctl.py
