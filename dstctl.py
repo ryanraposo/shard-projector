@@ -27,26 +27,6 @@ TEMP_CONST_STEAMCMD_DST_BIN_PATH = "C:/steamcmd/steamapps/common/Don't Starve To
 TEMP_CONST_NULLRENDERER_PATH = "C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe"
 
 
-def as_dict(config):
-    """
-    Converts a ConfigParser object into a dictionary.
-
-    The resulting dictionary has sections as keys which point to a dict of the
-    sections options as key => value pairs.
-    """
-    the_dict = {}
-    for section in config.sections():
-        the_dict[section] = {}
-        for key, val in config.items(section):
-            the_dict[section][key] = val
-    return the_dict
-
-
-def get_configuration(ini_path):
-    config = configparser.ConfigParser()
-    config.read(ini_path)
-
-
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
     try:
@@ -57,14 +37,14 @@ def iter_except(function, exception):
 
 
 def kill_existing_server_procs():
+    """Executes a Windows native 'taskkill' command targeting any dedicated server nullrenderer
+    instances. Returns a string containing the commands encoded stdout."""
+
     process = Popen(
         'taskkill /F /IM "dontstarve_dedicated_server_nullrenderer.exe"', stdout=PIPE
     )
     stdout = process.communicate()[0]
-    if "SUCCESS" in str(stdout):
-        return "Existing server processes (dontstarve_dedicated_server_nullrenderer.exe) were found and terminated."
-    elif "ERROR" in str(stdout):
-        return None
+    return str(stdout)
 
 
 class Configuration:
@@ -100,9 +80,9 @@ class Configuration:
         self._read()
         return self.config.sections()
 
-    # def set(self, ):
-    #     assert self._is_valid()
-
+    def set_value(self, section, option, value):
+        self.config.set(section,option,value)
+        
 
 class Shard:
     """Represents a server shard instance, has has methods and properties related to its folder on disk, 
@@ -110,12 +90,19 @@ class Shard:
 
     Attributes:
         path (str): An absolute-path to the shard's directory
+
         configuration (obj): A read/writeable interface with a server.ini file
+        
         cluster_name (str): The name of the shards parent server-cluster
+        
         command (str): The command executed when starting the coressponding subprocess
+        
         process (subprocess): The subprocess associated with the shard
+        
         thread_reader (Thread): The thread started to house the subprocess and run it successfully in parallel with the GUI loop.
+        
         queue_input (Queue): A queue used for writing to the shard's process stdin, processed at constant intervals
+        
         queue_output (Queue): A queue used for reading the shard's process stdout, written to at constant intervals
     """
 
@@ -131,17 +118,9 @@ class Shard:
         self.input_queue = Queue(
             maxsize=1024
             )
-
-    def _get_command(self):
-        command = [
-            TEMP_CONST_NULLRENDERER_PATH,
-            "-console_enabled",
-            "-cluster",
-            self.cluster_name,
-            "-shard",
-            self.name,
-        ]
-        return command
+    
+    def __repr__(self):
+        return self.name
     
     def start(self):
         cwd = os.path.realpath(
@@ -167,7 +146,18 @@ class Shard:
             raise Exception(
                 "Could not terminate process for Shard with name: %s" % (self.name)
             )
-
+                
+    def _get_command(self):
+        command = [
+            TEMP_CONST_NULLRENDERER_PATH,
+            "-console_enabled",
+            "-cluster",
+            self.cluster_name,
+            "-shard",
+            self.name,
+        ]        
+        return command
+        
     def _update_output(self, q):
         """Adds stdout of associated process to shard's output queue."""
         if self.is_started():
@@ -216,8 +206,8 @@ class Shard:
 
 class DedicatedServer:
     """Represents a server cluster instance. Has methods and properties related to its folder on disk,
-    its configuration (cluster.ini), and is parent to one or multiple Shards. Is the high-level object 
-    controlled by the ServerControl class."""
+    its configuration (cluster.ini), and is parent to one or multiple Shards. Is the high-level container
+    object controlled by the ServerControl class."""
 
     class NonexistentDirectory(Exception):
         pass
@@ -229,7 +219,7 @@ class DedicatedServer:
         self.server_control_window = server_control_window
         self.path = os.path.abspath(path)
         self.name = os.path.basename(self.path)
-        self.cluster_config = Configuration(os.path.join(self.path, "cluster.ini"))
+        self.config = Configuration(os.path.join(self.path, "cluster.ini"))
 
         self._get_shards()
 
@@ -274,16 +264,6 @@ class DedicatedServer:
         return False
     # def add_shard(self, path):
 
-    def _get_cluster_config(self):
-        try:
-            config = configparser.ConfigParser()
-            config.read(os.path.join(self.path, "cluster.ini"))
-            cluster_config = as_dict(config)
-        except:
-            raise ValueError
-        else:
-            return cluster_config
-
 
 class ServerControl:
     """Main window of the application. Displays output from shards and is host to various server controls."""
@@ -317,7 +297,7 @@ class ServerControl:
         self.frmTopBar = ttk.Frame(root, height=20, width=761)
         self.frmTopBar.place(x=21, y=10)
         # Server
-        self.entServer = ttk.Entry(self.frmTopBar, width=25)
+        self.entServer = ttk.Entry(self.frmTopBar, width=50)
         self.entServer.grid(row=0, column=0)
 
         self.btnSelectServer = ttk.Button(
@@ -333,11 +313,9 @@ class ServerControl:
         # Console Displays
         self.lstMaster = ttk.Treeview(root, padding=[0, 0, 0, 0])
         self.lstMaster.place(x=21, y=50, height=375, width=372)
-        self.lstMaster.heading("#0", text="Master")
 
         self.lstSlave = ttk.Treeview(root)
         self.lstSlave.place(x=407, y=50, height=375, width=372)
-        self.lstSlave.heading("#0", text="Caves")
 
         # Status Labels
         self.lblMasterStatus = ttk.Label(root, text="Status: ")
@@ -381,35 +359,27 @@ class ServerControl:
 
         self.btnQuit = ttk.Button(self.cvsCommands, command=self.quit, text="Quit")
         self.btnQuit.grid(row=3, column=2)
-
-        # Other buttons
-
-    def update(self):
-        """Updates GUI."""
-
         
-
-        # try:
-        #     line = self.master.get_output()
-        #     if line:
-        #         item = self.lstMaster.insert("", tk.END, text=line)
-        #         self.lstMaster.see(item)
-        #     line = self.slave.get_output()
-        #     if line:
-        #         item = self.lstSlave.insert("", tk.END, text=line)
-        #         self.lstSlave.see(item)
-        #     if self.master.is_started():
-        #         self.lblMasterStatus.configure(text="Status: " + self.master.status())
-        #     if self.slave.is_started():
-        #         self.lblSlaveStatus.configure(text="Status: " + self.slave.status())
-
-        #     if hasattr(self, "server"):
-        #         self.btnConfigureServer.state(["!disabled"])
-        #     else:
-        #         self.btnConfigureServer.state(["disabled"])
-
-        # finally:
-        self.root.after(40, self.update)
+    def update(self):
+        """Updates GUI, including widgets displaying info from/about the selected server's shards."""
+        try:
+            if self.server is not None:
+                # Update Master status label & console output listbox
+                if self.master.is_started():
+                    self.lblMasterStatus.configure(text="Status: " + self.master.status())
+                line = self.master.get_output()
+                if line:
+                    item = self.lstMaster.insert("", tk.END, text=line)
+                    self.lstMaster.see(item)
+                # Update Slave status label & console output listbox
+                if self.slave.is_started():
+                    self.lblSlaveStatus.configure(text="Status: " + self.slave.status())
+                line = self.slave.get_output()
+                if line:
+                    item = self.lstSlave.insert("", tk.END, text=line)
+                    self.lstSlave.see(item)
+        finally:
+            self.root.after(40, self.update)
 
     # Server-related methods
     def start_shards(self):
@@ -454,23 +424,30 @@ class ServerControl:
         widgets.DialogConfigureServer(self.root, self.server)
 
     def select_server(self):
+        # Prompt user for directory...
         selection = filedialog.askdirectory(
             initialdir=os.path.realpath("%CURRENTUSER%"),
             title="Select a server directory...",
         )
-        try:
+        try: # use selection
             self.server = DedicatedServer(selection, self.root)
             self.entServer.delete(0, tk.END)
             self.entServer.insert(0, self.server.path)
-        except:
+        except: # show warning that directory is unsuitable
             messagebox.showwarning(
                 title="DST Server Control",
                 message=selection + " does not appear to be a valid dedicated server directory.",
             )
-        else:
-            print('> ' + self.server.name + ' selected' )
+        else: # shorthand master shard with self.master, slave shard with self.slave, update respective console window headings
             for shard in self.server.shards:
-                print('>    Shard: ' + shard.name)
+                if shard.get_config_value("SHARD", 'is_master') == 'true':
+                    self.master = shard
+                    self.lstMaster.heading("#0", text=shard.name)
+                else:
+                    self.slave = shard
+                    self.lstSlave.heading("#0", text=shard.name)
+                    
+
 
 
     def _server_selected(self):
@@ -482,7 +459,7 @@ class ServerControl:
 
 
 if __name__ == "__main__":
-    kill_existing_server_procs()
+    # kill_existing_server_procs()
     root = ThemedTk(theme="equilux")
     app = ServerControl(root)
     root.mainloop()

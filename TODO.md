@@ -1,11 +1,4 @@
-# Shard (class)
 
-    - conceptualize the object
-    - add cmd building method
-    - __init__ exception handling, send args 
-        -> DedicatedServer 'try' initialize shard call, send args
-            -> ServerControl.select_server 'try' initialize DedicatedServer call, send args
-                -> ServerControl.error_dialog, spawns dialog indicating issue from arg chain
 
 # Configuration (class and subclasses)
 
