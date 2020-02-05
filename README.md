@@ -2,10 +2,11 @@
 
 A desktop application for running & managing a dedicated server on a local machine running Windows.
 
+![Window](https://github.com/ryanraposo/dstctl/blob/master/img/ss_window.png)
+
 ### Prerequisites
 
-- SteamCMD
-  - Don't Starve Dedicated Server installed
+- Steam (or SteamCMD) w/ Don't Starve Dedicated Server installed
 
 ```
 Give examples
