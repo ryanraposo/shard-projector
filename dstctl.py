@@ -1,30 +1,23 @@
-#!/usr/bin/python
 """
 Desktop control application for Don't Starve Together dedicated servers for Windows.
 """
-import sys
-import os
-import json
-import shutil
+import sys, os, json, shutil, configparser
+
 from itertools import islice
 from subprocess import Popen, PIPE
 from textwrap import dedent
 from threading import Thread
+from queue import Queue, Empty
 
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog, messagebox
 from ttkthemes import ThemedTk
 
-import configparser
-
-from queue import Queue, Empty
-
 import widgets
 
 TEMP_CONST_STEAMCMD_DST_BIN_PATH = "C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin"
 TEMP_CONST_NULLRENDERER_PATH = "C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe"
-
 
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
@@ -379,7 +372,6 @@ class ServerControl:
                     self.lstSlave.see(item)
         finally:
             self.root.after(40, self.update)
-
     # Server-related methods
     def start_shards(self):
         if self._server_selected():
@@ -393,7 +385,7 @@ class ServerControl:
         self.send_command("c_shutdown()")
 
     def regenerate_world(self):
-        self.send_command("c_regenerate_world()")
+        self.send_command("c_regenerateworld()")
 
     def reset(self):
         self.send_command("c_reset()")
@@ -410,14 +402,9 @@ class ServerControl:
             except:
                 print(command + ' not delivered')
 
-    # def update_status(self):
-    #     self.lblMasterStatus.configure(text="MASTER status: " + self.master.status())
-    #     self.lblSlaveStatus.configure(text="SLAVE status: " + self.slave.status())
-
     def update_steamcmd_dedicated_server(self):
         self.shutdown_all()
         os.system(os.path.realpath("./scripts/updatesteamcmd.bat"))
-
     # Application-related methods
     def configure_server(self):
         widgets.DialogConfigureServer(self.root, self.server)
@@ -445,16 +432,14 @@ class ServerControl:
                 else:
                     self.slave = shard
                     self.lstSlave.heading("#0", text=shard.name)
-                    
-
-
-
+           
     def _server_selected(self):
         return self.server is not None
 
     def quit(self):
         self.shutdown_all()
         self.root.destroy()
+
 
 if __name__ == "__main__":
     root = ThemedTk(theme="equilux")

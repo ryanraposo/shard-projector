@@ -1,15 +1,60 @@
 import tkinter as tk
+from tkinter import filedialog
 from tkinter import ttk
 from ttkthemes import ThemedTk
 import os, json, configparser
 
 import dstctl
 
+class WidgetDirectorySelect(ttk.Frame):
+    """A ttk-styled Entry and Browse button for selecting a directory path. Use attribute var to access value."""
 
-class LabelInput(ttk.Frame):
-    """A widget containing a label and input together. Accepts various ttk input widgets. Creates a paired ttk.Label to the left of
-    those which lack a suitable label of their own. Ensures columns span entire widget contained. Optional toggle for enabling/disabling
-    field."""
+    def __init__(self, parent):
+        super().__init__(parent)
+        
+        self.var = tk.StringVar()
+
+        self.entry = ttk.Entry(self, textvariable=self.var, width=35)
+        self.entry.grid(row=0, column=0)
+        
+        self.browse = ttk.Button(self, command=self.on_browse, text="Browse")
+        self.browse.grid(row=0, column=1)
+
+    def on_browse(self):
+        path = filedialog.askdirectory(master=self)
+        self.var = path
+
+        shortened_path = self.shortify(path)
+
+        self.entry.delete(0, tk.END)
+        self.entry.insert(0, shortened_path)
+
+    def shortify(self, path):
+        path_split = str(path).split('/')
+
+        path_start = path_split[0] + "/..."
+        path_end = ''
+
+        space_left = self.entry['width'] - len(path_start)
+
+        path_end_split = path_split[1:]
+        path_end_split.reverse()
+        for segment in path_end_split:
+            proposed_concatenation = "/" + segment + path_end
+            if len(proposed_concatenation) < space_left:
+                path_end = proposed_concatenation
+            else:
+                break
+
+        shortened_path = path_start + path_end
+
+        return shortened_path
+
+
+class WidgetLabelInput(ttk.Frame):
+    """A widget containing a label and input together. Accepts various ttk input widgets as input_class. Creates a paired ttk.Label to the left of
+    those which lack a suitable label of their own. Ensures columns span entire widget contained. Optional end-user toggle for enabling/disabling
+    the field."""
 
     def __init__(
         self,
@@ -45,7 +90,6 @@ class LabelInput(ttk.Frame):
             self.toggle_enable_checkbutton.grid(row=0, column=0)
 
         self.columnconfigure(1, minsize=115)
-
 
     def grid(self, sticky=(tk.W + tk.E), **kwargs):
         """Override of geometry manager's grid method, supplies sticky=(tk.E +
@@ -93,52 +137,6 @@ class LabelInput(ttk.Frame):
             self.input.insert(0, value)  # insert value at row 1 char 0
 
 
-class DialogConfirmShardDirectories(tk.Toplevel):
-    def __init__(self, parent, detected_shard_directories):
-        super().__init__(parent)
-        # Root
-        self.wm_iconify()
-        self.title("Confirm shard directories...")
-
-        dialog_frame = ttk.Frame(self)
-        dialog_frame.grid(row=0, column=0)
-
-        self.vars = []
-
-        self.inputs = {}
-        row_count = 0
-        for path in detected_shard_directories:
-            var = tk.StringVar()
-            self.vars.append(var)
-            frame_shard = ttk.Frame(dialog_frame)
-            self.inputs[row_count] = LabelInput(
-                parent=frame_shard,
-                toggle_enable=True,
-                label=os.path.basename(path),
-                input_var=var,
-                input_args={"width":50}
-            )
-            var.set(path)
-            self.inputs[row_count].grid(row=row_count, column=0)
-            ttk.Button(frame_shard, text="Browse").grid(row=row_count, column=1)
-            frame_shard.grid(row=row_count, column=0)
-            row_count += 1
-
-        self.button_confirm = ttk.Button(dialog_frame, text="Confirm", command=self.on_confirm)
-        self.button_confirm.grid(row=row_count, column=0, sticky=tk.E, padx=8, pady=8)
-
-    def on_confirm(self, event=None):
-        self.destroy()
-
-    def show(self):
-        self.wm_deiconify()
-        self.wait_window()
-        submitted_directories = []
-        for each in self.vars:
-            submitted_directories.append(each.get())
-        return submitted_directories
-
-
 class FrameConfigure(ttk.Frame):
     """Accepts a dictionary representing an .ini file and frame containing LabelInputs for
     viewing and configuring the values. Use get to retrieve its values in a similarly structured dictionary."""
@@ -174,7 +172,7 @@ class FrameConfigure(ttk.Frame):
             frmSection = ttk.Labelframe(self, text=section)
             frmSection.grid(row=x, column=0)
             for option in configuration_json[section].keys():
-                self.inputs[option] = LabelInput(
+                self.inputs[option] = WidgetLabelInput(
                     parent=frmSection,
                     toggle_enable=False,
                     label=option,
@@ -202,6 +200,52 @@ class FrameConfigure(ttk.Frame):
         for key, widget in self.inputs.items():
             data[key] = widget.get()
         return data
+
+
+class DialogConfirmShardDirectories(tk.Toplevel):
+    def __init__(self, parent, detected_shard_directories):
+        super().__init__(parent)
+        # Root
+        self.wm_iconify()
+        self.title("Confirm shard directories...")
+
+        dialog_frame = ttk.Frame(self)
+        dialog_frame.grid(row=0, column=0)
+
+        self.vars = []
+
+        self.inputs = {}
+        row_count = 0
+        for path in detected_shard_directories:
+            var = tk.StringVar()
+            self.vars.append(var)
+            frame_shard = ttk.Frame(dialog_frame)
+            self.inputs[row_count] = WidgetLabelInput(
+                parent=frame_shard,
+                toggle_enable=True,
+                label=os.path.basename(path),
+                input_var=var,
+                input_args={"width":50}
+            )
+            var.set(path)
+            self.inputs[row_count].grid(row=row_count, column=0)
+            ttk.Button(frame_shard, text="Browse").grid(row=row_count, column=1)
+            frame_shard.grid(row=row_count, column=0)
+            row_count += 1
+
+        self.button_confirm = ttk.Button(dialog_frame, text="Confirm", command=self.on_confirm)
+        self.button_confirm.grid(row=row_count, column=0, sticky=tk.E, padx=8, pady=8)
+
+    def on_confirm(self, event=None):
+        self.destroy()
+
+    def show(self):
+        self.wm_deiconify()
+        self.wait_window()
+        submitted_directories = []
+        for each in self.vars:
+            submitted_directories.append(each.get())
+        return submitted_directories
 
 
 class DialogConfigureServer(tk.Toplevel):
