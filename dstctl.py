@@ -270,7 +270,7 @@ class ServerControl:
     def initialize_ui(self):
         """Setup widgets and styling of main window."""
 
-        self.root.geometry("800x550")
+        self.root.geometry("800x600")
         self.root.resizable(0, 0)
         self.root.protocol("WM_DELETE_WINDOW", self.quit)
         self.root.title("DST Server Control")
@@ -318,7 +318,7 @@ class ServerControl:
 
         # Command Buttons
         self.cvsCommands = ttk.Frame(root)
-        self.cvsCommands.place(x=473, y=440, height=100, width=300)
+        self.cvsCommands.place(x=473, y=440, height=150, width=300)
         style.configure("TFrame", background="#424242")
 
         self.btnStartAll = ttk.Button(
@@ -330,6 +330,11 @@ class ServerControl:
             self.cvsCommands, command=self.shutdown_all, text="Shutdown"
         )
         self.btnShutdownAll.grid(row=1, column=0)
+
+        self.btnCustomCommand = ttk.Button(
+            self.cvsCommands, command=self.custom_command, text="Custom..."
+        )
+        self.btnCustomCommand.grid(row=2, column=2)
 
         self.btnRegenerateWorld = ttk.Button(
             self.cvsCommands, command=self.regenerate_world, text="Regenerate"
@@ -349,8 +354,14 @@ class ServerControl:
         )
         self.btnUpdate.grid(row=1, column=2)
 
+        self.sepFrame = ttk.Frame(self.cvsCommands, height=20, width=0)
+        self.sepFrame.grid(row=3, column=2)
+
+        # self.cvsCommands.grid_rowconfigure(3, weight=1)
+
         self.btnQuit = ttk.Button(self.cvsCommands, command=self.quit, text="Quit")
-        self.btnQuit.grid(row=3, column=2)
+        self.btnQuit.grid(row=4, column=2)
+
         
     def update(self):
         """Updates GUI, including widgets displaying info from/about the selected server's shards."""
@@ -383,6 +394,49 @@ class ServerControl:
 
     def shutdown_all(self):
         self.send_command("c_shutdown()")
+
+    def custom_command(self):
+        self.dialog_custom_command = ThemedTk(theme='equilux')
+        self.dialog_custom_command.configure(bg="#424242")
+        self.dialog_custom_command.lift()
+        self.dialog_custom_command.focus_force()
+        self.dialog_custom_command.grab_set()
+        self.dialog_custom_command.grab_release()
+
+        self.dialog_custom_command.resizable(0, 0)
+        self.dialog_custom_command.protocol("WM_DELETE_WINDOW", self._close_dialog_custom_command)
+        self.dialog_custom_command.title("Enter a custom command...")
+
+        self.entry_custom_command = ttk.Entry(
+            master=self.dialog_custom_command,
+            textvariable=tk.StringVar(),
+            width=30
+            )
+        self.entry_custom_command.grid(row=0,column=0)
+        
+        self.button_submit_command = ttk.Button(
+            master=self.dialog_custom_command,
+            text="Submit",
+            command=self._submit_dialog_custom_command,
+            width=20
+        )
+        self.button_submit_command.grid(row=0,column=1)
+
+    def _submit_dialog_custom_command(self):
+        try:
+            user_entered_command = str(self.entry_custom_command.get())
+            if len(user_entered_command) > 0:
+                self.send_command(user_entered_command) 
+        except:
+            tk.messagebox.showwarning(
+                title="Custom Command",
+                message="Failed to issue command to server"
+                )
+        finally:
+            self._close_dialog_custom_command()
+
+    def _close_dialog_custom_command(self):
+        self.dialog_custom_command.destroy()
 
     def regenerate_world(self):
         self.send_command("c_regenerateworld()")
