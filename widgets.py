@@ -253,6 +253,10 @@ class DialogConfigureServer(tk.Toplevel):
         super().__init__(parent)
         self.title("Settings")
         self.configure(bg="#424242")
+        self.lift()
+        self.focus_force()
+        self.grab_set()
+        self.grab_release()
 
         self.server = server        
 
@@ -288,6 +292,58 @@ class DialogConfigureServer(tk.Toplevel):
         
     def close(self):
         self.destroy()
+
+
+class DialogCustomCommand(tk.Toplevel):
+    """Dialog window for entering a custom command to be issued to all shards belonging to the current server."""
+    def __init__(self, parent, callback_fn):
+        super().__init__(parent)
+        self.callback_fn = callback_fn
+        self.configure(bg="#424242") #TODO: May not be necessary, but appears white when testing with simple instantiation at the bottom of this module. Widgets seem to inherit styling, though 
+        self.lift()
+        self.focus_force()
+        self.grab_set()
+        self.grab_release()
+        self.wm_iconify()
+        self.title("Enter a custom command...")
+
+        dialog_frame = ttk.Frame(self)
+        dialog_frame.grid(row=0, column=0)
+
+        self.entry_custom_command = ttk.Entry(
+            master=self,
+            textvariable=tk.StringVar(),
+            width=30
+        )
+        self.entry_custom_command.grid(row=0,column=0)
+        
+        self.button_submit_command = ttk.Button(
+            master=self,
+            text="Submit",
+            command=self._on_confirm,
+            width=20
+        )
+        self.button_submit_command.grid(row=0,column=1)
+
+    def _on_confirm(self, event=None):
+        try:
+            user_entered_command = str(self.entry_custom_command.get())
+            if len(user_entered_command) > 0:
+                self.callback_fn(user_entered_command) 
+        except:
+            tk.messagebox.showwarning(
+                title="Custom Command",
+                message="Failed to issue command to server"
+                )
+        finally:
+            self.destroy()
+
+    def _on_cancel(self, event=None):
+        self.destroy()
+
+    def show(self):
+        self.wm_deiconify()
+        self.wait_window()
 
 
 def test_dialog_configure_server():

@@ -1,5 +1,5 @@
 """
-Desktop control application for Don't Starve Together dedicated servers for Windows.
+Desktop application for running & managing Don't Starve Together Dedicated Servers on local machines running Windows
 """
 import sys, os, json, shutil, configparser
 
@@ -128,16 +128,6 @@ class Shard:
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
         self.thread_reader.start()
-
-    def stop(self):
-        """Terminates process associated with shard. Exception on failure."""
-        try:
-            self.process.terminate()
-            self.process = None
-        except:
-            raise Exception(
-                "Could not terminate process for Shard with name: %s" % (self.name)
-            )
                 
     def _get_command(self):
         command = [
@@ -191,6 +181,23 @@ class Shard:
     def is_started(self):
         return hasattr(self, "process")
 
+    def get_pid(self):
+        if self.is_started():
+            try:
+                return self.process.pid
+            except:
+                print('Could not retrieve pid for shard ' + self.name)
+        else:
+            print('Shard ' + self.name + ' is not started. A pid could not be retrieved.')
+
+    def kill(self):
+        try:
+            pid = self.get_pid()
+            self.process.kill()
+        except:
+            print('Could not kill process associated with shard: ' + self.name + '. (pid: ' + str(pid) + ")")
+        else:
+            print('Successfully killed process associated with shard: ' + self.name + '. (pid: ' + str(pid) + ")")
 
     def get_config_value(self, section, option):
         return self.configuration.get(section, option)
@@ -265,7 +272,7 @@ class ServerControl:
         self.initialize_ui()
         self.server = server
 
-        self.update()
+        self.update_ui()
 
     def initialize_ui(self):
         """Setup widgets and styling of main window."""
@@ -281,6 +288,8 @@ class ServerControl:
         # Style
         style = ttk.Style()
         text_font = ("TkDefaultFont", "14")
+        console_font = ("TkDefaultFont", "8")
+        style.configure("console.Treeview", highlightthickness=0, bd=0, font=console_font)
         # Style: Combobox
         self.root.option_add("*TButton*Label.font", text_font)
         self.root.option_add("*TCombobox*Listbox.background", "#424242")
@@ -302,14 +311,46 @@ class ServerControl:
         )
         self.btnConfigureServer.grid(row=0, column=2)
 
-        # Console Displays
-        self.lstMaster = ttk.Treeview(root, padding=[0, 0, 0, 0])
-        self.lstMaster.place(x=21, y=50, height=375, width=372)
+        # Console Display (Master)
+            # Frame
+        self.frame_master_console = ttk.Frame(root, padding=(3,3,12,12))
+        self.tree_master = ttk.Treeview(self.frame_master_console, style='console.Treeview') # Tree
+            # Columns
+        self.tree_master.column('#0', width=500, stretch=False)
 
-        self.lstSlave = ttk.Treeview(root)
+            # Scrollbar (horizontal)
+        self.x_scroll_master = ttk.Scrollbar(self.frame_master_console, orient=tk.HORIZONTAL)
+        self.x_scroll_master.configure(command=self.tree_master.xview)
+        self.tree_master.configure(xscrollcommand=self.x_scroll_master.set)
+            # Placement / Geometry
+        self.frame_master_console.place(x=21,
+            y=50,
+            height=375,
+            width=372)
+        self.tree_master.grid(
+            column=0,
+            row=0,
+            columnspan=3,
+            rowspan=2,
+            sticky=('nsew'))
+        self.x_scroll_master.grid(
+            column=0, 
+            row=3, 
+            columnspan=3, 
+            sticky=('we'))
+        self.frame_master_console.columnconfigure(0, weight=3)
+        self.frame_master_console.columnconfigure(1, weight=3)
+        self.frame_master_console.columnconfigure(2, weight=3)
+        self.frame_master_console.columnconfigure(3, weight=1)
+        self.frame_master_console.columnconfigure(4, weight=1)
+        self.frame_master_console.rowconfigure(1, weight=1)
+        
+        # Console Display (Master)
+        self.lstSlave = ttk.Treeview(root, style='console.Treeview')
         self.lstSlave.place(x=407, y=50, height=375, width=372)
 
-        # Status Labels
+
+        #Status Labels
         self.lblMasterStatus = ttk.Label(root, text="Status: ")
         self.lblMasterStatus.place(x=21, y=425)
 
@@ -362,8 +403,7 @@ class ServerControl:
         self.btnQuit = ttk.Button(self.cvsCommands, command=self.quit, text="Quit")
         self.btnQuit.grid(row=4, column=2)
 
-        
-    def update(self):
+    def update_ui(self):
         """Updates GUI, including widgets displaying info from/about the selected server's shards."""
         try:
             if self.server is not None:
@@ -372,18 +412,19 @@ class ServerControl:
                     self.lblMasterStatus.configure(text="Status: " + self.master.status())
                 line = self.master.get_output()
                 if line:
-                    item = self.lstMaster.insert("", tk.END, text=line)
-                    self.lstMaster.see(item)
-                # Update Slave status label & console output listbox
-                if self.slave.is_started():
+                    line = "> " + str(line[12:])
+                    item = self.tree_master.insert("", tk.END, text=line)
+                    self.tree_master.see(item)
+                # Update Slave status label & console output listbox (if slave server exists)
+                if hasattr(self, "slave") and self.slave.is_started():
                     self.lblSlaveStatus.configure(text="Status: " + self.slave.status())
-                line = self.slave.get_output()
-                if line:
-                    item = self.lstSlave.insert("", tk.END, text=line)
-                    self.lstSlave.see(item)
+                    line = self.slave.get_output()
+                    if line:
+                        item = self.lstSlave.insert("", tk.END, text=line)
+                        self.lstSlave.see(item)
         finally:
-            self.root.after(40, self.update)
-    # Server-related methods
+            self.root.after(40, self.update_ui)
+
     def start_shards(self):
         if self._server_selected():
             try:
@@ -394,49 +435,7 @@ class ServerControl:
 
     def shutdown_all(self):
         self.send_command("c_shutdown()")
-
-    def custom_command(self):
-        self.dialog_custom_command = ThemedTk(theme='equilux')
-        self.dialog_custom_command.configure(bg="#424242")
-        self.dialog_custom_command.lift()
-        self.dialog_custom_command.focus_force()
-        self.dialog_custom_command.grab_set()
-        self.dialog_custom_command.grab_release()
-
-        self.dialog_custom_command.resizable(0, 0)
-        self.dialog_custom_command.protocol("WM_DELETE_WINDOW", self._close_dialog_custom_command)
-        self.dialog_custom_command.title("Enter a custom command...")
-
-        self.entry_custom_command = ttk.Entry(
-            master=self.dialog_custom_command,
-            textvariable=tk.StringVar(),
-            width=30
-            )
-        self.entry_custom_command.grid(row=0,column=0)
-        
-        self.button_submit_command = ttk.Button(
-            master=self.dialog_custom_command,
-            text="Submit",
-            command=self._submit_dialog_custom_command,
-            width=20
-        )
-        self.button_submit_command.grid(row=0,column=1)
-
-    def _submit_dialog_custom_command(self):
-        try:
-            user_entered_command = str(self.entry_custom_command.get())
-            if len(user_entered_command) > 0:
-                self.send_command(user_entered_command) 
-        except:
-            tk.messagebox.showwarning(
-                title="Custom Command",
-                message="Failed to issue command to server"
-                )
-        finally:
-            self._close_dialog_custom_command()
-
-    def _close_dialog_custom_command(self):
-        self.dialog_custom_command.destroy()
+        self.root.after(5000, self.kill_all_shards)
 
     def regenerate_world(self):
         self.send_command("c_regenerateworld()")
@@ -446,6 +445,10 @@ class ServerControl:
 
     def save(self):
         self.send_command("c_save()")
+
+    def custom_command(self): 
+        dialog = widgets.DialogCustomCommand(parent=self.root, callback_fn=self.send_command)
+        dialog.show()
 
     def send_command(self, command):
         if self._server_selected():
@@ -459,7 +462,7 @@ class ServerControl:
     def update_steamcmd_dedicated_server(self):
         self.shutdown_all()
         os.system(os.path.realpath("./scripts/updatesteamcmd.bat"))
-    # Application-related methods
+
     def configure_server(self):
         widgets.DialogConfigureServer(self.root, self.server)
 
@@ -482,16 +485,29 @@ class ServerControl:
             for shard in self.server.shards:
                 if shard.get_config_value("SHARD", 'is_master') == 'true':
                     self.master = shard
-                    self.lstMaster.heading("#0", text=shard.name)
+                    self.tree_master.heading("#0", text=shard.name)
                 else:
                     self.slave = shard
                     self.lstSlave.heading("#0", text=shard.name)
-           
+    
+    def kill_all_shards(self):
+        if self._has_master():
+            self.master.kill()
+        if self._has_slave():
+            self.slave.kill()
+
     def _server_selected(self):
         return self.server is not None
 
+    def _has_master(self) -> bool:
+        return hasattr(self, 'master')
+
+    def _has_slave(self) -> bool:
+        return hasattr(self, 'slave')
+        
     def quit(self):
         self.shutdown_all()
+        self.root.after
         self.root.destroy()
 
 
