@@ -296,7 +296,7 @@ class ServerControl:
         self.root.option_add("*TCombobox*Listbox.selectBackground", "#525252")
         # Top Bar
         self.frmTopBar = ttk.Frame(root, height=20, width=761)
-        self.frmTopBar.place(x=21, y=10)
+        self.frmTopBar.place(x=20, y=10)
         # Server
         self.entServer = ttk.Entry(self.frmTopBar, width=50)
         self.entServer.grid(row=0, column=0)
@@ -311,23 +311,31 @@ class ServerControl:
         )
         self.btnConfigureServer.grid(row=0, column=2)
 
-        # Console Displays
-        self.console_view_master = widgets.WidgetConsoleView(self.root, 420)
-        self.console_view_master.place(x=15, y=60)
+        # Console Views
+        self.console_view_master = widgets.WidgetConsoleView(self.root, width=450)
+        self.console_view_master.place(
+            x=20,
+            y=50,
+            height=450
+        )
 
-        self.console_view_slave = widgets.WidgetConsoleView(self.root, 420)
-        self.console_view_slave.place(x=495, y=60)
+        self.console_view_slave = widgets.WidgetConsoleView(self.root)
+        self.console_view_slave.place(
+            x=490,
+            y=50,
+            height=450
+        )
 
-        #Status Labels
+        # Status Labels
         self.lblMasterStatus = ttk.Label(root, text="Status: ")
-        self.lblMasterStatus.place(x=21, y=425)
+        self.lblMasterStatus.place(x=20, y=500)
 
         self.lblSlaveStatus = ttk.Label(root, text="Status: ")
-        self.lblSlaveStatus.place(x=407, y=425)
+        self.lblSlaveStatus.place(x=490, y=500)
 
         # Command Buttons
         self.cvsCommands = ttk.Frame(root)
-        self.cvsCommands.place(x=473, y=440, height=150, width=300)
+        self.cvsCommands.place(x=500, y=520, height=150, width=300)
         style.configure("TFrame", background="#424242")
 
         self.btnStartAll = ttk.Button(

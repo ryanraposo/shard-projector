@@ -12,25 +12,21 @@ class WidgetConsoleView(ttk.Frame):
     def __init__(
         self,
         parent=None,
-        view_width=420,
+        width=450,
         **kwargs
     ):
-        super().__init__(parent)
-        
+        super().__init__(parent)   
+        # Frame     
+        self.configure(width=width)
         # Style
         self.style = ttk.Style()
-        self.style.configure('WidgetConsoleView.Treeview', foreground='#3eb489', background='#353535', font='TkDefault, 7')
-
-        # Frameq
-        self.configure(width=view_width)
-        
+        self.style.configure('WidgetConsoleView.Treeview', foreground='#3eb489', background='#353535', font='TkDefault, 7')  
         # Tree
         self.tree = ttk.Treeview(self, style='WidgetConsoleView.Treeview') # Tree
-        self.tree.column("#0", stretch=False, width=view_width+20)
-
+        self.tree.column("#0", width=width, stretch=False)
         # Placement
-        self.grid(column=0, row=0, sticky=('nswe'))
-        self.tree.grid(column=0, row=0, columnspan=3, rowspan=2, sticky=('nswe'))
+        self.rowconfigure(0, weight=1)
+        self.tree.grid(column=0, row=0, sticky=('nswe'))
 
 
     def write_line(self, line, scroll_matching=True):
@@ -43,6 +39,9 @@ class WidgetConsoleView(ttk.Frame):
 
     def place(self, **kwargs):
         super().place(**kwargs)
+        self.tree.grid(column=0, row=0, sticky=('nswe'))
+        print(self['height'])
+
 
 def test_widget_console_view(test_window_geometry='960x720'):
     parent = ThemedTk(theme='equilux') 
