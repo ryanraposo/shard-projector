@@ -312,71 +312,71 @@ class ServerControl:
         self.btnConfigureServer.grid(row=0, column=2)
 
         # Console Views
-        self.console_view_master = widgets.WidgetConsoleView(self.root, width=450)
+        self.console_view_master = widgets.WidgetConsoleView(self.root, width=450, height_in_rows=21)
         self.console_view_master.place(
             x=20,
-            y=50,
-            height=450
+            y=50
         )
 
-        self.console_view_slave = widgets.WidgetConsoleView(self.root)
+        self.console_view_slave = widgets.WidgetConsoleView(self.root, width=450, height_in_rows=21)
         self.console_view_slave.place(
             x=490,
-            y=50,
-            height=450
+            y=50
         )
 
         # Status Labels
-        self.lblMasterStatus = ttk.Label(root, text="Status: ")
-        self.lblMasterStatus.place(x=20, y=500)
+        self.lblMasterStatus = ttk.Label(root, text="STATUS: ")
+        self.lblMasterStatus.update()
+        self.lblMasterStatus.place(x=20, y=(self.console_view_master.winfo_y() + self.console_view_master.height_in_pixels))
 
-        self.lblSlaveStatus = ttk.Label(root, text="Status: ")
-        self.lblSlaveStatus.place(x=490, y=500)
+        self.lblSlaveStatus = ttk.Label(root, text="STATUS: ")
+        self.lblSlaveStatus.update()
+        self.lblSlaveStatus.place(x=490, y=(self.console_view_master.winfo_y() + self.console_view_master.height_in_pixels))
 
         # Command Buttons
-        self.cvsCommands = ttk.Frame(root)
-        self.cvsCommands.place(x=500, y=520, height=150, width=300)
+        self.frame_commands = ttk.Frame(root)
+        self.frame_commands.place(x=560, y=540, height=150, width=300)
         style.configure("TFrame", background="#424242")
 
         self.btnStartAll = ttk.Button(
-            self.cvsCommands, command=self.start_shards, text="Start"
+            self.frame_commands, command=self.start_shards, text="Start"
         )
         self.btnStartAll.grid(row=0, column=0)
 
         self.btnShutdownAll = ttk.Button(
-            self.cvsCommands, command=self.shutdown_all, text="Shutdown"
+            self.frame_commands, command=self.shutdown_all, text="Shutdown"
         )
         self.btnShutdownAll.grid(row=1, column=0)
 
         self.btnCustomCommand = ttk.Button(
-            self.cvsCommands, command=self.custom_command, text="Custom..."
+            self.frame_commands, command=self.custom_command, text="Custom..."
         )
-        self.btnCustomCommand.grid(row=2, column=2)
+        self.btnCustomCommand.grid(row=0, column=3)
 
         self.btnRegenerateWorld = ttk.Button(
-            self.cvsCommands, command=self.regenerate_world, text="Regenerate"
+            self.frame_commands, command=self.regenerate_world, text="Regenerate"
         )
         self.btnRegenerateWorld.grid(row=0, column=1)
 
-        self.btnReset = ttk.Button(self.cvsCommands, command=self.reset, text="Reset")
+        self.btnReset = ttk.Button(self.frame_commands, command=self.reset, text="Reset")
         self.btnReset.grid(row=1, column=1)
 
-        self.btnSave = ttk.Button(self.cvsCommands, command=self.save, text="Save")
+        self.btnSave = ttk.Button(self.frame_commands, command=self.save, text="Save")
         self.btnSave.grid(row=0, column=2)
 
         self.btnUpdate = ttk.Button(
-            self.cvsCommands,
+            self.frame_commands,
             command=self.update_steamcmd_dedicated_server,
             text="Update",
         )
         self.btnUpdate.grid(row=1, column=2)
 
-        self.sepFrame = ttk.Frame(self.cvsCommands, height=20, width=0)
+        self.sepFrame = ttk.Frame(self.frame_commands, height=20, width=0)
         self.sepFrame.grid(row=3, column=2)
 
         # self.cvsCommands.grid_rowconfigure(3, weight=1)
 
-        self.btnQuit = ttk.Button(self.cvsCommands, command=self.quit, text="Quit")
+        self.btnQuit = ttk.Button(self.frame_commands, command=self.quit, text="Quit")
         self.btnQuit.grid(row=4, column=2)
 
     def update_ui(self):
@@ -388,14 +388,12 @@ class ServerControl:
                     self.lblMasterStatus.configure(text="Status: " + self.master.status())
                 line = self.master.get_output()
                 if line:
-                    line = str(line[12:])
                     self.console_view_master.write_line(line)
                 # Update Slave status label & console output listbox (if slave server exists)
                 if hasattr(self, "slave") and self.slave.is_started():
                     self.lblSlaveStatus.configure(text="Status: " + self.slave.status())
                     line = self.slave.get_output()
                     if line:
-                        line = str(line[12:])
                         self.console_view_slave.write_line(line)
         finally:
             self.root.after(40, self.update_ui)

@@ -13,6 +13,7 @@ class WidgetConsoleView(ttk.Frame):
         self,
         parent=None,
         width=450,
+        height_in_rows=10,
         **kwargs
     ):
         super().__init__(parent)   
@@ -20,14 +21,20 @@ class WidgetConsoleView(ttk.Frame):
         self.configure(width=width)
         # Style
         self.style = ttk.Style()
-        self.style.configure('WidgetConsoleView.Treeview', foreground='#3eb489', background='#353535', font='TkDefault, 7')  
+        self.style.configure('WidgetConsoleView.Treeview', foreground='#3eb489', background='#353535', font='TkDefault, 8')  
         # Tree
-        self.tree = ttk.Treeview(self, style='WidgetConsoleView.Treeview') # Tree
+        self.tree = ttk.Treeview(self, style='WidgetConsoleView.Treeview', height=height_in_rows) # Tree
+
         self.tree.column("#0", width=width, stretch=False)
-        # Placement
         self.rowconfigure(0, weight=1)
         self.tree.grid(column=0, row=0, sticky=('nswe'))
 
+        self.update()
+
+    @property
+    def height_in_pixels(self):
+        self.update()
+        return self.winfo_height()
 
     def write_line(self, line, scroll_matching=True):
         item = self.tree.insert("", tk.END, text=line)
@@ -35,12 +42,10 @@ class WidgetConsoleView(ttk.Frame):
             self.tree.see(item)
 
     def set_heading(self, text):
-        self.tree.heading('#0', text=text)
+        self.tree.heading('#0', text=str(text))
 
     def place(self, **kwargs):
         super().place(**kwargs)
-        self.tree.grid(column=0, row=0, sticky=('nswe'))
-        print(self['height'])
 
 
 def test_widget_console_view(test_window_geometry='960x720'):
