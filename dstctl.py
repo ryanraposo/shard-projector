@@ -277,7 +277,7 @@ class ServerControl:
     def initialize_ui(self):
         """Setup widgets and styling of main window."""
 
-        self.root.geometry("800x600")
+        self.root.geometry("960x720")
         self.root.resizable(0, 0)
         self.root.protocol("WM_DELETE_WINDOW", self.quit)
         self.root.title("DST Server Control")
@@ -311,44 +311,12 @@ class ServerControl:
         )
         self.btnConfigureServer.grid(row=0, column=2)
 
-        # Console Display (Master)
-            # Frame
-        self.frame_master_console = ttk.Frame(root, padding=(3,3,12,12))
-        self.tree_master = ttk.Treeview(self.frame_master_console, style='console.Treeview') # Tree
-            # Columns
-        self.tree_master.column('#0', width=500, stretch=False)
+        # Console Displays
+        self.console_view_master = widgets.WidgetConsoleView(self.root, 420)
+        self.console_view_master.place(x=15, y=60)
 
-            # Scrollbar (horizontal)
-        self.x_scroll_master = ttk.Scrollbar(self.frame_master_console, orient=tk.HORIZONTAL)
-        self.x_scroll_master.configure(command=self.tree_master.xview)
-        self.tree_master.configure(xscrollcommand=self.x_scroll_master.set)
-            # Placement / Geometry
-        self.frame_master_console.place(x=21,
-            y=50,
-            height=375,
-            width=372)
-        self.tree_master.grid(
-            column=0,
-            row=0,
-            columnspan=3,
-            rowspan=2,
-            sticky=('nsew'))
-        self.x_scroll_master.grid(
-            column=0, 
-            row=3, 
-            columnspan=3, 
-            sticky=('we'))
-        self.frame_master_console.columnconfigure(0, weight=3)
-        self.frame_master_console.columnconfigure(1, weight=3)
-        self.frame_master_console.columnconfigure(2, weight=3)
-        self.frame_master_console.columnconfigure(3, weight=1)
-        self.frame_master_console.columnconfigure(4, weight=1)
-        self.frame_master_console.rowconfigure(1, weight=1)
-        
-        # Console Display (Master)
-        self.lstSlave = ttk.Treeview(root, style='console.Treeview')
-        self.lstSlave.place(x=407, y=50, height=375, width=372)
-
+        self.console_view_slave = widgets.WidgetConsoleView(self.root, 420)
+        self.console_view_slave.place(x=495, y=60)
 
         #Status Labels
         self.lblMasterStatus = ttk.Label(root, text="Status: ")
@@ -412,16 +380,15 @@ class ServerControl:
                     self.lblMasterStatus.configure(text="Status: " + self.master.status())
                 line = self.master.get_output()
                 if line:
-                    line = "> " + str(line[12:])
-                    item = self.tree_master.insert("", tk.END, text=line)
-                    self.tree_master.see(item)
+                    line = str(line[12:])
+                    self.console_view_master.write_line(line)
                 # Update Slave status label & console output listbox (if slave server exists)
                 if hasattr(self, "slave") and self.slave.is_started():
                     self.lblSlaveStatus.configure(text="Status: " + self.slave.status())
                     line = self.slave.get_output()
                     if line:
-                        item = self.lstSlave.insert("", tk.END, text=line)
-                        self.lstSlave.see(item)
+                        line = str(line[12:])
+                        self.console_view_slave.write_line(line)
         finally:
             self.root.after(40, self.update_ui)
 
@@ -485,11 +452,11 @@ class ServerControl:
             for shard in self.server.shards:
                 if shard.get_config_value("SHARD", 'is_master') == 'true':
                     self.master = shard
-                    self.tree_master.heading("#0", text=shard.name)
+                    self.console_view_master.set_heading(shard.name)
                 else:
                     self.slave = shard
-                    self.lstSlave.heading("#0", text=shard.name)
-    
+                    self.console_view_slave.set_heading(shard.name)
+
     def kill_all_shards(self):
         if self._has_master():
             self.master.kill()

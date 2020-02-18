@@ -6,119 +6,56 @@ import os, json, configparser
 
 import dstctl
 
-class WidgetConsoleView:
+class WidgetConsoleView(ttk.Frame):
     """
     """
     def __init__(
         self,
-        parent,
-        width,
-        height
+        parent=None,
+        view_width=420,
+        **kwargs
     ):
-        self.frame = ttk.Frame(parent)
-        self.tree = ttk.Treeview(self.frame, style='console.Treeview') # Tree
-            # Columns
-        self.tree.column('#0', width=int(1.5*(width)), stretch=False) # Column (sole) must be wider than the widget itself to prompt appearance of scrollbar & allow overflow
-            # Scrollbar (horizontal)
-        self.x_scroll = ttk.Scrollbar(self.frame, orient=tk.HORIZONTAL)
-        self.x_scroll.configure(command=self.tree.xview)
-        self.tree.configure(xscrollcommand=self.x_scroll.set)
-            # Placement / Geometry
-        self.frame.place(x=0,
-            y=0,
-            height=height,
-            width=width)
-        self.tree.grid(
-            column=0,
-            row=0,
-            columnspan=3,
-            rowspan=2,
-            sticky=('nsew'))
-        self.x_scroll.grid(
-            column=0, 
-            row=3, 
-            columnspan=3, 
-            sticky=('we'))
-
-        self.frame.columnconfigure(0, weight=3)
-        self.frame.columnconfigure(1, weight=3)
-        self.frame.columnconfigure(2, weight=3)
-        self.frame.columnconfigure(3, weight=1)
-        self.frame.columnconfigure(4, weight=1)
-        self.frame.rowconfigure(1, weight=1)
-
-        # self.style = ttk.Style()
-        # self.style.configure("console.Treeview", highlightthickness=0, bd=0, font='TkDefaultFont')
-
-        # self.frame = ttk.Frame(parent)
-        # self.frame.grid(column=0, row=0,sticky=('nswe'))
+        super().__init__(parent)
         
-        # self.treeview = ttk.Treeview(master=self, style='console.Treeview')
-        # self.treeview.column('#0', width=300,stretch=False)
-        # self.x_scroll = ttk.Scrollbar(master=self, orient=tk.HORIZONTAL)
-        # self.x_scroll.configure(command=self.treeview.xview)
-        # self.treeview.place(x=0,y=0,width=400)
+        # Style
+        self.style = ttk.Style()
+        self.style.configure('WidgetConsoleView.Treeview', foreground='#3eb489', background='#353535', font='TkDefault, 7')
 
-        # self.x_scroll.grid(column=0, row=3, columnspan=3, sticky=('we'))
-        # self.treeview.configure(xscrollcommand=self.x_scroll.set)
-
-        # self.columnconfigure(0, weight=3)
+        # Frameq
+        self.configure(width=view_width)
         
+        # Tree
+        self.tree = ttk.Treeview(self, style='WidgetConsoleView.Treeview') # Tree
+        self.tree.column("#0", stretch=False, width=view_width+20)
 
-    def write_line(self, line:str, scroll_matching=True):
+        # Placement
+        self.grid(column=0, row=0, sticky=('nswe'))
+        self.tree.grid(column=0, row=0, columnspan=3, rowspan=2, sticky=('nswe'))
+
+
+    def write_line(self, line, scroll_matching=True):
         item = self.tree.insert("", tk.END, text=line)
         if scroll_matching:
             self.tree.see(item)
 
-def test_widget_console_view(test_window_geometry='800x600'):
+    def set_heading(self, text):
+        self.tree.heading('#0', text=text)
 
+    def place(self, **kwargs):
+        super().place(**kwargs)
+
+def test_widget_console_view(test_window_geometry='960x720'):
     parent = ThemedTk(theme='equilux') 
     parent.geometry(test_window_geometry)
+    parent.configure(bg="#424242")
     parent.wm_deiconify()
 
-    widget = WidgetConsoleView(parent=parent,width=500)
-
-    x=0
-    while x<500:
-        widget.write_line(str(x) + 'fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck')
-        x+=1
-
-    parent.mainloop()
-        
-        # # Console Display (Master)
-        #     # Frame
-        # self.frame_master_console = ttk.Frame(root, padding=(3,3,12,12))
-        # self.tree_master = ttk.Treeview(self.frame_master_console, style='console.Treeview') # Tree
-        #     # Columns
-        # self.tree_master.column('#0', width=500, stretch=False)
-
-        #     # Scrollbar (horizontal)
-        # self.x_scroll_master = ttk.Scrollbar(self.frame_master_console, orient=tk.HORIZONTAL)
-        # self.x_scroll_master.configure(command=self.tree_master.xview)
-        # self.tree_master.configure(xscrollcommand=self.x_scroll_master.set)
-        #     # Placement / Geometry
-        # self.frame_master_console.place(x=21,
-        #     y=50,
-        #     height=375,
-        #     width=372)
-        # self.tree_master.grid(
-        #     column=0,
-        #     row=0,
-        #     columnspan=3,
-        #     rowspan=2,
-        #     sticky=('nsew'))
-        # self.x_scroll_master.grid(
-        #     column=0, 
-        #     row=3, 
-        #     columnspan=3, 
-        #     sticky=('we'))
-        # self.frame_master_console.columnconfigure(0, weight=3)
-        # self.frame_master_console.columnconfigure(1, weight=3)
-        # self.frame_master_console.columnconfigure(2, weight=3)
-        # self.frame_master_console.columnconfigure(3, weight=1)
-        # self.frame_master_console.columnconfigure(4, weight=1)
-        # self.frame_master_console.rowconfigure(1, weight=1)
+    widget = WidgetConsoleView(parent=parent, view_width=460)
+    widget.place(x=0,y=0)
+    for i in range(100):
+        widget.write_line('[000.' + str(i) + ']: ' + 'WOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCHWOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCHWOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCH')
     
+    parent.mainloop()
 
 
 class WidgetDirectorySelect(ttk.Frame):
@@ -459,7 +396,6 @@ class DialogCustomCommand(tk.Toplevel):
     def show(self):
         self.wm_deiconify()
         self.wait_window()
-
 
 
 def test_dialog(cls_dialog, **kwargs):
