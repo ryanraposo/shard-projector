@@ -6,6 +6,67 @@ import os, json, configparser
 
 import dstctl
 
+class WidgetCommandPanel(ttk.Frame):
+    def __init__(
+        self,
+        parent=None,
+        buttons = [], # list of tuples ex. ("label_text", fn_callback)
+        max_columns = -1
+    ):
+        super().__init__(parent) 
+        if max_columns == 0 or max_columns < -1:
+            raise Exception("WidgetCommandPanel Initialization Error: max_columns must be -1 for disabled, or an integer above zero.") 
+        else:
+            index_maximum_columns = max_columns - 1
+
+        self.parent = parent
+        self.buttons = []
+
+        # Button Initialization
+        for each in buttons:
+            button = ttk.Button(self, text=each[0], command=each[1])
+            self.buttons.append(button)
+
+        # Placement
+        current_column = 0
+        current_row = 0
+
+        
+        for button in self.buttons:
+            button.grid(row=current_row, column=current_column) 
+            if (max_columns == -1) or (current_column < index_maximum_columns) : # If still below max_columns, or it is disabled...
+                current_column += 1 # Move to next column
+            else:
+                current_column = 0 # Move back to column zero
+                current_row += 1 # Move to new row
+
+
+def fake_callback():
+    print('I wish i was button with a real callback...')
+
+
+def test_widget_command_panel():
+    root = ThemedTk(theme='equilux')
+
+    command_panel = WidgetCommandPanel(
+        parent=root,
+        buttons=[
+            ("Fake Button1", fake_callback),
+            ("Fake Button2", fake_callback),
+            ("Fake Button3", fake_callback),
+            ("Fake Button4", fake_callback),
+            ("Fake Button5", fake_callback),
+            ("Fake Button6", fake_callback),
+            ("Fake Button7", fake_callback),
+            ("Fake Button8", fake_callback)
+        ],
+        max_columns=2
+    )
+    command_panel.grid(column=0, row=0)
+
+    root.mainloop()
+
+
 class WidgetConsoleView(ttk.Frame):
     """
     """
@@ -416,5 +477,5 @@ def test_dialog(cls_dialog, **kwargs):
 
 
 if __name__ == "__main__":
-    test_widget_console_view()
+    test_widget_command_panel()
 
