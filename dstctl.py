@@ -39,7 +39,7 @@ def kill_existing_server_procs():
     return str(stdout)
 
 
-class Configuration:
+class ConfigurationIO:
     """A reader/writer for a specific configuration file. Accepts a file path (*.ini) that does not need to be accesible at instantiation.
     Throws an exception if read/write methods call fail."""
 
@@ -65,10 +65,22 @@ class Configuration:
         return the_dict
 
     def get(self, section, option):
+        """Gets value text as it appears in the configuration file. ex 'true' will return string 'true'."""
         self._read()
         return self.config.get(section, option)
 
-    def get_sections(self):
+    def get_typed(self, section, option):
+        """Gets value from configuration file as expected type. ex 'true' will return boolean True, '2' will return int 2."""
+        self._read()
+        value = self.config.get(section, option)
+        if value.lower() == 'true':
+            return True
+        elif value.lower() == 'false':
+            return False
+        if value.isnumeric():
+            return int(value)
+
+    def _get_sections(self):
         self._read()
         return self.config.sections()
 
@@ -100,7 +112,8 @@ class Shard:
 
     def __init__(self, path, cluster_name):
         self.path = os.path.realpath(path)
-        self.configuration = Configuration(os.path.join(self.path, "server.ini"))
+        self.configuration = ConfigurationIO(os.path.join(self.path, "server.ini"))
+        self.is_master = self.configuration.get_typed('SHARD', 'is_master')
         self.cluster_name = cluster_name
         self.name = os.path.basename(path)
         self.command = self._get_command()
@@ -112,7 +125,9 @@ class Shard:
             )
     
     def __repr__(self):
-        return self.name
+        if self.is_master:
+            return 'master'
+        return 'slave'
     
     def start(self):
         cwd = os.path.realpath(
@@ -128,7 +143,7 @@ class Shard:
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
         self.thread_reader.start()
-                
+           
     def _get_command(self):
         command = [
             TEMP_CONST_NULLRENDERER_PATH,
@@ -190,7 +205,7 @@ class Shard:
         else:
             print('Shard ' + self.name + ' is not started. A pid could not be retrieved.')
 
-    def kill(self):
+    def kill_process(self):
         try:
             pid = self.get_pid()
             self.process.kill()
@@ -198,9 +213,6 @@ class Shard:
             print('Could not kill process associated with shard: ' + self.name + '. (pid: ' + str(pid) + ")")
         else:
             print('Successfully killed process associated with shard: ' + self.name + '. (pid: ' + str(pid) + ")")
-
-    def get_config_value(self, section, option):
-        return self.configuration.get(section, option)
 
 
 class DedicatedServer:
@@ -218,12 +230,11 @@ class DedicatedServer:
         self.server_control_window = server_control_window
         self.path = os.path.abspath(path)
         self.name = os.path.basename(self.path)
-        self.config = Configuration(os.path.join(self.path, "cluster.ini"))
-
-        self._get_shards()
+        self.config = ConfigurationIO(os.path.join(self.path, "cluster.ini"))
+        self.shards = self._get_shards()
 
     def _get_shards(self):
-        self.shards = []
+        shards = []
         detected_shard_directories = self._detect_shard_directories()
         user_confirmed_shard_directories = widgets.DialogConfirmShardDirectories(
             parent=self.server_control_window,
@@ -231,9 +242,22 @@ class DedicatedServer:
         ).show()
         for each in user_confirmed_shard_directories:
             shard = Shard(each, self.name)
-            self.shards.append(shard)
+            shards.append(shard)
+        return shards
 
-    def _detect_shard_directories(self):
+    @property
+    def master(self):
+        for shard in self.shards:
+            if shard.is_master:
+                return shard
+    
+    @property
+    def slave(self):
+        for shard in self.shards:
+            if not shard.is_master:
+                return shard
+        
+    def _detect_shard_directories(self): #TODO: maybe move
         shard_directories = []
         for directory in os.listdir((self.path)):
             path = os.path.join(self.path, directory)
@@ -263,27 +287,44 @@ class DedicatedServer:
         return False
     # def add_shard(self, path):
 
+    def start(self):
+        for shard in self.shards:
+            shard.start()
+
+    def shutdown(self):
+        for shard in self.shards:
+            shard.write_input('c_shutdown()')
+
+    def kill_processes(self):
+        for shard in self.shards:
+            shard.kill_process()
+            print('SHARD ' + shard.name + ' KILLED')
+
+    def run_command(self, command):
+        for shard in self.shards:
+            shard.write_input(command)
+
 
 class ServerControl:
-    """Main window of the application. Displays output from shards and is host to various server controls."""
+    """Main application. Includes the window and its components. Displays output from shards and is host to various server controls. Parent to a DedicatedServer object."""
 
     def __init__(self, root, server=None):
-        self.root = root
+        self.window = root
         self.initialize_ui()
-        self.server = server
+        self.active_server = server
 
         self.update_ui()
 
     def initialize_ui(self):
         """Setup widgets and styling of main window."""
 
-        self.root.geometry("960x620")
-        self.root.resizable(0, 0)
-        self.root.protocol("WM_DELETE_WINDOW", self.quit)
-        self.root.title("DST Server Control")
+        self.window.geometry("960x650")
+        self.window.resizable(0, 0)
+        self.window.protocol("WM_DELETE_WINDOW", self.quit)
+        self.window.title("DST Server Control")
         icon_path = os.path.join("./img/dstctl.ico")
-        self.root.iconbitmap(icon_path)
-        self.root.configure(bg="#424242")
+        self.window.iconbitmap(icon_path)
+        self.window.configure(bg="#424242")
 
         # Style
         style = ttk.Style()
@@ -291,9 +332,9 @@ class ServerControl:
         # console_font = ("TkDefaultFont", "8")
         # style.configure("console.Treeview", highlightthickness=0, bd=0, font=console_font)
         # Style: Combobox
-        self.root.option_add("*TButton*Label.font", text_font)
-        self.root.option_add("*TCombobox*Listbox.background", "#424242")
-        self.root.option_add("*TCombobox*Listbox.selectBackground", "#525252")
+        self.window.option_add("*TButton*Label.font", text_font)
+        self.window.option_add("*TCombobox*Listbox.background", "#424242")
+        self.window.option_add("*TCombobox*Listbox.selectBackground", "#525252")
         # Top Bar
         self.frmTopBar = ttk.Frame(root, height=20, width=761)
         self.frmTopBar.place(x=20, y=10)
@@ -301,16 +342,16 @@ class ServerControl:
         self.entServer = ttk.Entry(self.frmTopBar, width=50)
         self.entServer.grid(row=0, column=0)
         
-        self.btnSelectServer = ttk.Button(master=self.frmTopBar, command=self.select_server, text="Browse")
+        self.btnSelectServer = ttk.Button(master=self.frmTopBar, command=self.on_browse, text="Browse")
         self.btnSelectServer.grid(row=0, column=1)
         
-        self.btnConfigureServer = ttk.Button(master=self.frmTopBar, command=self.configure_server, text="Configure")
+        self.btnConfigureServer = ttk.Button(master=self.frmTopBar, command=self.on_configure, text="Configure")
         self.btnConfigureServer.grid(row=0, column=2)
         # Console Views
-        self.console_view_master = widgets.WidgetConsoleView(self.root, width=450, height_in_rows=21)
+        self.console_view_master = widgets.WidgetConsoleView(self.window, width=450, height_in_rows=21)
         self.console_view_master.place(x=20,y=50)
 
-        self.console_view_slave = widgets.WidgetConsoleView(self.root, width=450, height_in_rows=21)
+        self.console_view_slave = widgets.WidgetConsoleView(self.window, width=450, height_in_rows=21)
         self.console_view_slave.place(x=490,y=50)
         # Status Labels
         style.configure('status.Label', background="#353535")
@@ -324,126 +365,141 @@ class ServerControl:
 
         # Quick Commands
         self.command_panel = widgets.WidgetCommandPanel(
-            parent=self.root,
+            parent=self.window,
             buttons=[
-                ("Start", self.start_shards),
-                ("Shutdown", self.shutdown_all),
-                ("Regenerate", self.regenerate_world),
-                ("Reset", self.reset),
-                ("Save", self.save),
-                ("Update", self.update_steamcmd_dedicated_server),
-                ("Custom...", self.custom_command),
+                ("Start", self.on_start),
+                ("Shutdown", self.on_shutdown),
+                ("Regenerate", self.on_regenerate),
+                ("Reset", self.on_reset),
+                ("Save", self.on_save),
+                ("Update", self.on_update),
+                ("Custom...", self.on_custom),
                 ("Quit", self.quit)
             ],
             max_columns=4,
             panel_text="Commands"        
         )
         self.command_panel.place(x=550,y=520)
-
+        
+        # Info Panel (Server)
+        self.info_panel_server = widgets.WidgetInfoPanel(
+            parent=self.window,
+            info_items=[
+                ("Server:", self.get_server_info, ['NETWORK', 'cluster_name']),
+                ("Description:", self.get_server_info, ['NETWORK', 'cluster_description']),
+                ("PVP Enabled:", self.get_server_info, ['GAMEPLAY', 'pvp']),
+                ("Gamemode:", self.get_server_info, ['GAMEPLAY', 'game_mode'])
+            ],
+            header='Info'
+        )
+        self.info_panel_server.place(x=85,y=520)
 
     def update_ui(self):
-        """Updates GUI, including widgets displaying info from/about the selected server's shards."""
+        """Retrieves info from the active server and its shards for display in the UI.
+        Includes: Shard (nullrenderer) output into ConsoleViews.
+        Self-reschedules for 40ms effective intervals """
         try:
-            if self.server is not None:
-                # Update Master status label & console output listbox
-                if self.master.is_started():
-                    self.lblMasterStatus.configure(text="Status: " + self.master.status())
-                line = self.master.get_output()
-                if line:
-                    self.console_view_master.write_line(line)
-                # Update Slave status label & console output listbox (if slave server exists)
-                if hasattr(self, "slave") and self.slave.is_started():
-                    self.lblSlaveStatus.configure(text="Status: " + self.slave.status())
-                    line = self.slave.get_output()
-                    if line:
-                        self.console_view_slave.write_line(line)
+            if self.active_server: # Update ConsoleViews & status labels
+                self.update_console_view(self.console_view_master, self.active_server.master)
+                self.lblMasterStatus.configure(text="Status: " + str(self.active_server.master.status()))
+                self.update_console_view(self.console_view_slave, self.active_server.slave)
+                self.lblSlaveStatus.configure(text="Status: " + str(self.active_server.slave.status()))
         finally:
-            self.root.after(40, self.update_ui)
+            self.window.after(40, self.update_ui)
 
-    def start_shards(self):
-        if self._server_selected():
-            try:
-                for shard in self.server.shards:
-                    shard.start()
-            except:
-                print('Start error')
+    def update_console_view(self, view, shard):
+        if hasattr(self, 'active_server'):
+            if shard.is_started():
+                line = shard.get_output()
+                if line:
+                    view.write_line(line)
+    
+    def on_start(self):
+        for shard in self.active_server.shards:
+            shard.start()
 
-    def shutdown_all(self):
-        self.send_command("c_shutdown()")
-        self.root.after(5000, self.kill_all_shards)
+    def on_shutdown(self):
+        self._send_command('c_shutdown()')
 
-    def regenerate_world(self):
-        self.send_command("c_regenerateworld()")
+    def on_regenerate(self):
+        self._send_command("c_regenerateworld()")
 
-    def reset(self):
-        self.send_command("c_reset()")
+    def on_reset(self):
+        self._send_command("c_reset()")
 
-    def save(self):
-        self.send_command("c_save()")
+    def on_save(self):
+        self._send_command("c_save()")
 
-    def custom_command(self): 
-        dialog = widgets.DialogCustomCommand(parent=self.root, callback_fn=self.send_command)
-        dialog.show()
+    def on_custom(self): 
+        custom_command = widgets.DialogCustomCommand(parent=self.window).show()
+        self._send_command(custom_command)
 
-    def send_command(self, command):
-        if self._server_selected():
-            try:
-                for shard in self.server.shards:
-                    shard.write_input(command)
-                print(command + ' delivered')
-            except:
-                print(command + ' not delivered')
-
-    def update_steamcmd_dedicated_server(self):
-        self.shutdown_all()
+    def on_update(self):
+        if self.active_server:
+            self.active_server.kill_processes
+        self.window.after(5000)
         os.system(os.path.realpath("./scripts/updatesteamcmd.bat"))
 
-    def configure_server(self):
-        widgets.DialogConfigureServer(self.root, self.server)
+    def on_configure(self):
+        widgets.DialogConfigureServer(self.window, self.active_server)
 
-    def select_server(self):
+    def on_browse(self):
         # Prompt user for directory...
         selection = filedialog.askdirectory(
             initialdir=os.path.realpath("%CURRENTUSER%"),
             title="Select a server directory...",
         )
-        try: # use selection
-            self.server = DedicatedServer(selection, self.root)
-            self.entServer.delete(0, tk.END)
-            self.entServer.insert(0, self.server.path)
-        except: # show warning that directory is unsuitable
+        try: # Try to create a DedicatedServer instance with user selected path
+            server = DedicatedServer(selection, self.window)
+        except: # If unable, show warning that directory is unsuitable
             messagebox.showwarning(
                 title="DST Server Control",
-                message=selection + " does not appear to be a valid dedicated server directory.",
+                message="Failed to set active server from selection.",
             )
-        else: # shorthand master shard with self.master, slave shard with self.slave, update respective console window headings
-            for shard in self.server.shards:
-                if shard.get_config_value("SHARD", 'is_master') == 'true':
-                    self.master = shard
-                    self.console_view_master.set_heading(shard.name)
-                else:
-                    self.slave = shard
-                    self.console_view_slave.set_heading(shard.name)
+        else: # If successful, unload any current server and set new 
+            self.unload_server()
+            self.set_active_server(server)
 
-    def kill_all_shards(self):
-        if self._has_master():
-            self.master.kill()
-        if self._has_slave():
-            self.slave.kill()
+    def unload_server(self):
+        if hasattr(self, 'active_server'):
+            if self.active_server is not None:
+                # Kill procs
+                self.active_server.kill_processes()
+                # Clear console views
+                self.console_view_master.clear()
+                self.console_view_slave.clear()
 
-    def _server_selected(self):
-        return self.server is not None
-
-    def _has_master(self) -> bool:
-        return hasattr(self, 'master')
-
-    def _has_slave(self) -> bool:
-        return hasattr(self, 'slave')
+    def set_active_server(self, server): 
+        """Updates active_server attribute from server and updates various UI elements accordingly."""
+        self.active_server = server
+        self.entServer.delete(0, tk.END)
+        self.entServer.insert(0, self.active_server.path)
+        self.info_panel_server.update_values()
+        # self.info_panel_server.configure(info_items=[
+        #     ("Server:", self.active_server.config.get('NETWORK', 'cluster_name')),
+        #     ("Description:", self.active_server.config.get('NETWORK', 'cluster_description')),
+        #     ("Gamemode:", self.active_server.config.get('GAMEPLAY', 'game_mode')),
+        #     ("Players:", self.active_server.config.get('GAMEPLAY', 'max_players'))
+        # ])
+        return server
         
+    def _send_command(self, command):
+        if hasattr(self, 'active_server'):
+            self.active_server.run_command(command)
+
+    def get_server_info(self, section, option):
+        if hasattr(self, 'active_server'):
+            return self.active_server.config.get(section, option)
+
     def quit(self):
-        self.shutdown_all()
-        self.root.after
-        self.root.destroy()
+        self.on_shutdown()
+        self.window.after(3000)
+        try:
+            self.active_server.kill_processes()
+        except:
+            pass
+        finally:
+            self.window.destroy()
 
 
 if __name__ == "__main__":

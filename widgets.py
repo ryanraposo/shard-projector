@@ -6,6 +6,111 @@ import os, json, configparser
 
 import dstctl
 
+
+class WidgetInfoPanel(ttk.Labelframe):
+    """Panel with labeled readonly fields for display information about something. Takes a dict of with labels as keys, and the functions
+    to retrieve the corresponding data as values."""
+
+    def __init__(
+        self,
+        parent=None,
+        info_items=[], # tuple (str_label, fn_get_data, args_fn_get_data)
+        header=""
+        ):
+        super().__init__(parent)
+
+        style=ttk.Style()
+        font_value = ('Consolas, 9')
+        style.configure(style='green.TLabel', foreground='#29d398', font=font_value)
+        style.configure(style='red.TLabel', foreground='#e95678', font=font_value)
+        style.configure(style='white.TLabel', foreground='#e5e5e5', font=font_value)
+        style.configure(style='darkgray.TFrame', background="#3d3d3d")
+
+        self.info_items = info_items
+        self.header = header
+        self.fields = {}
+        self._initialize_components()
+        self._grid_components()
+
+
+    def _initialize_components(self):
+        # self.configure(style='darkgray.TFrame')
+        self.configure(text=self.header)
+
+        for item in self.info_items:
+            item_name = item[0]
+            field_label = ttk.Label(
+                master=self,
+                text=item_name,
+                style='field.TLabel',
+                anchor=tk.CENTER
+            )
+            value_label = ttk.Label(
+                master=self,
+                text=""
+            )
+            self.fields[item_name] = (field_label, value_label)
+
+
+    def update_values(self):
+        for item in self.info_items:
+            item_callback_result = item[1](*item[2])
+            value_style = self._get_style(item_callback_result)
+            value_formatted_text = self._get_formatted_text(item_callback_result)
+
+            field = self.fields[item[0]] # the tuple
+            label = field[1]
+            label.configure(style=value_style, text=value_formatted_text)
+
+
+            
+    def _grid_components(self):         
+        index_row = 0
+        for field in self.fields.values():
+            field[0].grid(row=index_row, column=0, sticky='we', ipadx=4)
+            field[1].grid(row=index_row, column=1, sticky='we')
+            index_row+=1
+        self.configure(padding=[4,4,4,4])     
+        self.columnconfigure(1, minsize=60)
+
+    
+    def _get_formatted_text(self, value):
+        if value == 'true':
+            return '✓'
+        elif value == 'false':
+            return '✗'
+        else:
+            return str(value)
+
+    def _get_style(self, value):
+        if value == 'true':
+            return 'green.TLabel'
+        elif value == 'false':
+            return 'red.TLabel'
+        else:
+            return 'white.TLabel'
+    
+def test_widget_info_panel():
+    def get_data_string():
+        return "Cool Server"
+    def get_data_bool_true():
+        return True
+    def get_data_bool_false():
+        return False
+    
+    root = ThemedTk(theme='equilux')
+    info_panel = WidgetInfoPanel(
+        parent=root,
+        info_items=[
+            ("Description:", get_data_string),
+            ("PVP:", get_data_bool_true),
+            ("Autosave:", get_data_bool_false)
+        ],
+        header="Frontbutt Beach"
+    )
+    info_panel.grid(column=0,row=0)
+    root.mainloop()
+
 class WidgetCommandPanel(ttk.Labelframe):
     def __init__(
         self,
@@ -38,8 +143,6 @@ class WidgetCommandPanel(ttk.Labelframe):
             else:
                 current_column = 0 # Move back to column zero
                 current_row += 1 # Move to new row
-
-
 def test_widget_command_panel():
 
     def fake_callback():
@@ -65,7 +168,6 @@ def test_widget_command_panel():
     command_panel.grid(column=0, row=0)
 
     root.mainloop()
-
 
 class WidgetConsoleView(ttk.Frame):
     """
@@ -105,10 +207,12 @@ class WidgetConsoleView(ttk.Frame):
     def set_heading(self, text):
         self.tree.heading('#0', text=str(text))
 
+    def clear(self):
+        self.tree.delete(*self.tree.get_children())
+        self.set_heading("")
+    
     def place(self, **kwargs):
         super().place(**kwargs)
-
-
 def test_widget_console_view(test_window_geometry='960x720'):
     parent = ThemedTk(theme='equilux') 
     parent.geometry(test_window_geometry)
@@ -121,7 +225,6 @@ def test_widget_console_view(test_window_geometry='960x720'):
         widget.write_line('[000.' + str(i) + ']: ' + 'WOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCHWOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCHWOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCH')
     
     parent.mainloop()
-
 
 class WidgetDirectorySelect(ttk.Frame):
     """A ttk-styled Entry and Browse button for selecting a directory path. Use attribute var to access value."""
@@ -170,7 +273,6 @@ class WidgetDirectorySelect(ttk.Frame):
     @property
     def path(self):
         return self.var
-
 def test_widget_directory_select():
     root = ThemedTk(theme='equilux')
     directory_select = WidgetDirectorySelect(root)
@@ -199,13 +301,12 @@ class WidgetLabelInput(ttk.Frame):
         self.variable = input_var
 
         if input_class in (ttk.Checkbutton, ttk.Radiobutton, ttk.Button):
-            input_args["text"] = label
-            input_args["variable"] = input_var
-        else:
-        # Label
-            self.label = ttk.Label(self, text=label, **label_args)
-            self.label.grid(row=0, column=1) # sticky=(tk.W))
+            input_args["variable"] = tk.BooleanVar(value=input_var)
+        else: # ttk.Entry
             input_args["textvariable"] = input_var
+
+        self.label = ttk.Label(self, text=label, **label_args)
+        self.label.grid(row=0, column=1) # sticky=(tk.W))
 
         self.input = input_class(self, **input_args)
         self.input.grid(row=0, column=2) #, sticky=(tk.E))
@@ -217,7 +318,7 @@ class WidgetLabelInput(ttk.Frame):
 
         self.columnconfigure(1, minsize=115)
 
-    def grid(self, sticky=(tk.W + tk.E), **kwargs):
+    def grid(self, sticky=('we'), **kwargs):
         """Override of geometry manager's grid method, supplies sticky=(tk.E +
          tk.W)"""
 
@@ -252,9 +353,11 @@ class WidgetLabelInput(ttk.Frame):
         # if Checkbutton or Radiobutton, for value=True tick button, for False untick
         elif type(self.input) in (ttk.Checkbutton, ttk.Radiobutton):
             if value:
-                self.input.select()
+                self.input.configure(variable=tk.BooleanVar(value=True))
             else:
-                self.input.deselect()
+                self.input.configure(variable=tk.BooleanVar(value=False))
+
+
         elif type(self.input) == tk.Text:  # if ttk.Text...
             self.input.delete("1.0", tk.END)  # delete row 1 char 0 to the end
             self.input.insert("1.0", value)  # insert value at row 1 char 0
@@ -422,9 +525,8 @@ class DialogConfigureServer(tk.Toplevel):
 
 class DialogCustomCommand(tk.Toplevel):
     """Dialog window for entering a custom command to be issued to all shards belonging to the current server."""
-    def __init__(self, parent, callback_fn):
+    def __init__(self, parent):
         super().__init__(parent)
-        self.callback_fn = callback_fn
         self.configure(bg="#424242") #TODO: May not be necessary, but appears white when testing with simple instantiation at the bottom of this module. Widgets seem to inherit styling, though 
         self.lift()
         self.focus_force()
@@ -432,6 +534,7 @@ class DialogCustomCommand(tk.Toplevel):
         self.grab_release()
         self.wm_iconify()
         self.title("Enter a custom command...")
+        self.var = ""
 
         dialog_frame = ttk.Frame(self)
         dialog_frame.grid(row=0, column=0)
@@ -455,7 +558,7 @@ class DialogCustomCommand(tk.Toplevel):
         try:
             user_entered_command = str(self.entry_custom_command.get())
             if len(user_entered_command) > 0:
-                self.callback_fn(user_entered_command) 
+                self.var = user_entered_command 
         except:
             tk.messagebox.showwarning(
                 title="Custom Command",
@@ -468,8 +571,12 @@ class DialogCustomCommand(tk.Toplevel):
         self.destroy()
 
     def show(self):
+        """
+        Displays the dialog. Returns inputted string.
+        """
         self.wm_deiconify()
         self.wait_window()
+        return self.var
 
 
 def test_dialog(cls_dialog, **kwargs):
@@ -486,5 +593,5 @@ def test_dialog(cls_dialog, **kwargs):
 
 
 if __name__ == "__main__":
-    test_widget_directory_select()
+    test_widget_info_panel()
 
