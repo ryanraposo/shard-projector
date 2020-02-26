@@ -6,6 +6,93 @@ import os, json, configparser
 
 import dstctl
 
+class WidgetMenuBar2(ttk.Frame):
+    def __init__(self,
+        master=None,
+        structure=None,
+        bg="#5c5c5c",
+        **kwargs
+        ):
+        super().__init__(master=master, **kwargs)
+        self.master = master
+        self.structure = structure or {}
+        self.bg = bg
+        self.initialize_components()
+
+    def initialize_components(self):
+        self.master.update()
+        width_master = self.master.winfo_width()
+
+        style = ttk.Style()
+        style.configure("menubar.TFrame", bg=self.bg)
+        
+        self.configure(style="menubar.TFrame", width=width_master, height=20)
+        
+        self.initialize_dropdowns()
+        # for key in self.structure:
+        #     var = tk.StringVar()
+        #     cascade_menu = ttk.OptionMenu(self, var, key)
+        #     cascade_menu.grid(row=0,column=0)
+            # cascade_label = key # File
+            # for k, v in self.structure[cascade_label].items():
+            #     cascade_menu.add_command(label=k, command=v) # Open
+            # self.add_cascade(label=cascade_label, menu=cascade_menu)
+
+    def initialize_dropdowns(self):
+        c = 0
+        for key in self.structure:
+            var = tk.StringVar()
+            cascade_menu = ttk.OptionMenu(self, var, key)
+            cascade_menu.grid(row=0, column=c)
+            c+=1
+
+def test_widget_menu_bar():
+    def test_print():
+        print('Command issued.')
+
+    root = tk.Tk()
+
+    menu_bar = WidgetMenuBar(
+        master=root,
+        structure={
+            "File" : {
+                "Open" : test_print,
+                "Exit" : test_print
+            },
+            "Edit" : {
+                "Copy" : test_print,
+                "Paste" : test_print
+            }
+        }
+    )
+    root.config(bg="#5c5c5c",menu=menu_bar)
+    root.mainloop()
+
+class WidgetMenuBar(tk.Menu):
+    def __init__(self,
+        master=None,
+        structure=None,
+        bg="#5c5c5c",
+        **kwargs
+        ):
+        super().__init__(master=master, background=bg, activebackground=bg, **kwargs)
+        self.bg = bg
+        self.master = master
+        self.structure = structure or {}
+
+        self.initialize_components()
+
+    def initialize_components(self):
+        for key in self.structure:
+            cascade_menu = tk.Menu(self, tearoff=0, background=self.bg, activebackground=self.bg)
+            cascade_label = key # File
+            for k, v in self.structure[cascade_label].items():
+                cascade_menu.add_command(label=k, command=v) # Open
+            self.add_cascade(label=cascade_label, menu=cascade_menu)
+
+            
+
+
 
 class WidgetInfoPanel(ttk.Labelframe):
     """Panel with labeled readonly fields for display information about something. Takes a dict of with labels as keys, and the functions
@@ -89,7 +176,6 @@ class WidgetInfoPanel(ttk.Labelframe):
             return 'red.TLabel'
         else:
             return 'white.TLabel'
-    
 def test_widget_info_panel():
     def get_data_string():
         return "Cool Server"
@@ -591,7 +677,10 @@ def test_dialog(cls_dialog, **kwargs):
 
     parent.mainloop()
 
+def run_test():
+    print('Running test...')
+    test_widget_menu_bar()
 
 if __name__ == "__main__":
-    test_widget_info_panel()
+    run_test()
 

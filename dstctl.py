@@ -329,12 +329,21 @@ class ServerControl:
         # Style
         style = ttk.Style()
         text_font = ("TkDefaultFont", "14")
-        # console_font = ("TkDefaultFont", "8")
-        # style.configure("console.Treeview", highlightthickness=0, bd=0, font=console_font)
-        # Style: Combobox
         self.window.option_add("*TButton*Label.font", text_font)
         self.window.option_add("*TCombobox*Listbox.background", "#424242")
         self.window.option_add("*TCombobox*Listbox.selectBackground", "#525252")
+        
+        # Menubar
+        menu_bar = widgets.WidgetMenuBar(
+            master=self.window,
+            structure={
+                "File" : {
+                    "Browse" : self.on_browse
+                }
+            }
+        )
+        self.window.config(menu=menu_bar)
+        
         # Top Bar
         self.frmTopBar = ttk.Frame(root, height=20, width=761)
         self.frmTopBar.place(x=20, y=10)
@@ -449,20 +458,25 @@ class ServerControl:
             initialdir=os.path.realpath("%CURRENTUSER%"),
             title="Select a server directory...",
         )
-        try: # Try to create a DedicatedServer instance with user selected path
-            server = DedicatedServer(selection, self.window)
-        except: # If unable, show warning that directory is unsuitable
-            messagebox.showwarning(
-                title="DST Server Control",
-                message="Failed to set active server from selection.",
-            )
-        else: # If successful, unload any current server and set new 
-            self.unload_server()
-            self.set_active_server(server)
+        if len(selection) > 0:
+            try: # Try to create a DedicatedServer instance with user selected path
+                server = DedicatedServer(selection, self.window)
+            except: # If unable, show warning that directory is unsuitable
+                messagebox.showwarning(
+                    title="DST Server Control",
+                    message="Failed to set active server from selection.",
+                )
+            else: # If successful, unload any current server and set new 
+                self.unload_server()
+                self.set_active_server(server)
 
     def unload_server(self):
         if hasattr(self, 'active_server'):
             if self.active_server is not None:
+                # Shutdown server
+                self.active_server.shutdown()
+                # Wait 2 seconds
+                self.window.after(2000)
                 # Kill procs
                 self.active_server.kill_processes()
                 # Clear console views
@@ -492,14 +506,8 @@ class ServerControl:
             return self.active_server.config.get(section, option)
 
     def quit(self):
-        self.on_shutdown()
-        self.window.after(3000)
-        try:
-            self.active_server.kill_processes()
-        except:
-            pass
-        finally:
-            self.window.destroy()
+        self.unload_server()
+        self.window.destroy()
 
 
 if __name__ == "__main__":
