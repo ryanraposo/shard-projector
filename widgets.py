@@ -4,94 +4,9 @@ from tkinter import ttk
 from ttkthemes import ThemedTk
 import os, json, configparser
 
+import PIL
+
 import dstctl
-
-class WidgetMenuBar2(ttk.Frame):
-    def __init__(self,
-        master=None,
-        structure=None,
-        bg="#5c5c5c",
-        **kwargs
-        ):
-        super().__init__(master=master, **kwargs)
-        self.master = master
-        self.structure = structure or {}
-        self.bg = bg
-        self.initialize_components()
-
-    def initialize_components(self):
-        self.master.update()
-        width_master = self.master.winfo_width()
-
-        style = ttk.Style()
-        style.configure("menubar.TFrame", bg=self.bg)
-        
-        self.configure(style="menubar.TFrame", width=width_master, height=20)
-        
-        self.initialize_dropdowns()
-        # for key in self.structure:
-        #     var = tk.StringVar()
-        #     cascade_menu = ttk.OptionMenu(self, var, key)
-        #     cascade_menu.grid(row=0,column=0)
-            # cascade_label = key # File
-            # for k, v in self.structure[cascade_label].items():
-            #     cascade_menu.add_command(label=k, command=v) # Open
-            # self.add_cascade(label=cascade_label, menu=cascade_menu)
-
-    def initialize_dropdowns(self):
-        c = 0
-        for key in self.structure:
-            var = tk.StringVar()
-            cascade_menu = ttk.OptionMenu(self, var, key)
-            cascade_menu.grid(row=0, column=c)
-            c+=1
-
-def test_widget_menu_bar():
-    def test_print():
-        print('Command issued.')
-
-    root = tk.Tk()
-
-    menu_bar = WidgetMenuBar(
-        master=root,
-        structure={
-            "File" : {
-                "Open" : test_print,
-                "Exit" : test_print
-            },
-            "Edit" : {
-                "Copy" : test_print,
-                "Paste" : test_print
-            }
-        }
-    )
-    root.config(bg="#5c5c5c",menu=menu_bar)
-    root.mainloop()
-
-class WidgetMenuBar(tk.Menu):
-    def __init__(self,
-        master=None,
-        structure=None,
-        bg="#5c5c5c",
-        **kwargs
-        ):
-        super().__init__(master=master, background=bg, activebackground=bg, **kwargs)
-        self.bg = bg
-        self.master = master
-        self.structure = structure or {}
-
-        self.initialize_components()
-
-    def initialize_components(self):
-        for key in self.structure:
-            cascade_menu = tk.Menu(self, tearoff=0, background=self.bg, activebackground=self.bg)
-            cascade_label = key # File
-            for k, v in self.structure[cascade_label].items():
-                cascade_menu.add_command(label=k, command=v) # Open
-            self.add_cascade(label=cascade_label, menu=cascade_menu)
-
-            
-
 
 
 class WidgetInfoPanel(ttk.Labelframe):
@@ -105,13 +20,13 @@ class WidgetInfoPanel(ttk.Labelframe):
         header=""
         ):
         super().__init__(parent)
-
+        # self.configure(background='#424242')
         style=ttk.Style()
         font_value = ('Consolas, 9')
         style.configure(style='green.TLabel', foreground='#29d398', font=font_value)
         style.configure(style='red.TLabel', foreground='#e95678', font=font_value)
         style.configure(style='white.TLabel', foreground='#e5e5e5', font=font_value)
-        style.configure(style='darkgray.TFrame', background="#3d3d3d")
+        style.configure(style='darkgray.TFrame', background='#424242') # background="#3d3d3d")
 
         self.info_items = info_items
         self.header = header
@@ -270,16 +185,19 @@ class WidgetConsoleView(ttk.Frame):
         self.configure(width=width)
         # Style
         self.style = ttk.Style()
+        self.style.configure('status.Label', background="#353535")
         self.style.configure('WidgetConsoleView.Treeview', foreground='#3eb489', background='#353535', font='TkDefault, 8')  
         # Tree
         self.tree = ttk.Treeview(self, style='WidgetConsoleView.Treeview', height=height_in_rows) # Tree
-
         self.tree.column("#0", width=width, stretch=False)
         self.rowconfigure(0, weight=1)
         self.tree.grid(column=0, row=0, sticky=('nswe'))
 
+        self.tree.update()
         self.update()
 
+        self.status_label = ttk.Label(self, text="Status: ", style='status.Label')
+        self.status_label.place(x=20, y=(self.tree.winfo_y() + self.height_in_pixels - 15))
     @property
     def height_in_pixels(self):
         self.update()
@@ -293,6 +211,9 @@ class WidgetConsoleView(ttk.Frame):
     def set_heading(self, text):
         self.tree.heading('#0', text=str(text))
 
+    def set_status(self, text):
+        self.status_label.configure(text="Status: " + text)
+        
     def clear(self):
         self.tree.delete(*self.tree.get_children())
         self.set_heading("")
@@ -665,22 +586,48 @@ class DialogCustomCommand(tk.Toplevel):
         return self.var
 
 
-def test_dialog(cls_dialog, **kwargs):
+class WidgetPowerButton(ttk.Frame):
+    def __init__(self,
+        parent,
+        command
+        ):
+        super().__init__(
+            master=parent
+        )
+        self.parent = parent
+        self.command = command
 
-    parent = ThemedTk(theme='equilux') 
-    parent.wm_iconify()
+        self.on_image = tk.PhotoImage(file=r"img/on75percent.png")
+        self.off_image = tk.PhotoImage(file=r"img/off75percent.png")
+        # Starts ON
+        self.power_button = ttk.Button(self, image=self.off_image, command=self._on_click)
+        self.power_button.grid(row=0,column=0)
+        self.poweredOn = True
 
-    server = dstctl.DedicatedServer("C:/Users/ryanr/source/dstctl/data/Eden", parent)
-    
-    dialog = cls_dialog(parent, server)
-    dialog.show()
+    def _on_click(self):
+        self.parent.focus_set()
+        self.command()
+        if self.poweredOn:
+            self.power_button.configure(image=self.on_image)
+        else:
+            self.power_button.configure(image=self.off_image)
 
-    parent.mainloop()
+    def get(self):
+        return self.poweredOn
 
-def run_test():
-    print('Running test...')
-    test_widget_menu_bar()
+    def set_state(self, state):
+        self.power_button.configure(state=state)
 
+def test_toggle_button():
+    def dummy_command():
+        print('Hi, just calling you back...')
+
+    root = ThemedTk(theme='equilux')
+    toggle = WidgetPowerButton(root, command=dummy_command)
+    toggle.grid(row=0,column=0)
+    root.mainloop()
+
+        
 if __name__ == "__main__":
-    run_test()
+    test_toggle_button()
 

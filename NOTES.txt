@@ -1,0 +1,3 @@
+NOTES
+
+- processes being None if theyre not running (auto? no is_running()?)

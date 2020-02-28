@@ -1,6 +1,6 @@
 Button Panels
 
-1) Commands
+1) Console Commands
 
 Save
 Shutdown
@@ -11,8 +11,14 @@ Custom...
 
 2) Tasks
 
-Launch
-Kill
+On
+Off 
+    - Dialog (Attempting to shutdown server... (Cancel) (Force))
+       - Success
+         - Dialog (Success!)
+       - Failure
+         - Dialog (Server is not responding. Would you like to terminate it anyway? (Yes) (No))
+
 
 3) Other
 
