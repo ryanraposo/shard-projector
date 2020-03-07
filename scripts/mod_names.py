@@ -9,7 +9,7 @@ for member in mod_dir_list:
     if os.path.isdir(path) and ".zip" not in path:
         info_path = os.path.join(path, 'modinfo.lua')
         if os.path.isfile(info_path):
-            with open(os.path.normpath(info_path), encodi1ng='utf-8') as item:
+            with open(os.path.normpath(info_path), encoding='utf-8') as item:
                 for line in item:
                     if "name=" in line or "name =" in line:
                         workshop_id = os.path.basename(member)

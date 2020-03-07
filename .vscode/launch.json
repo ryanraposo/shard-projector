@@ -8,15 +8,17 @@
             "name": "Integrated",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "${cwd}/dstctl.py",
+            "console": "integratedTerminal",
+            "subProcess": true
         },
         {
             "name": "Internal",
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "internalConsole"
+            "console": "internalConsole",
+            "subProcess": true
         },
         {
             "name": "Python: Remote Attach",

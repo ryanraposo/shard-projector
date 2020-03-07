@@ -1,3 +1,51 @@
-NOTES
+INFO BAR
 
-- processes being None if theyre not running (auto? no is_running()?)
+- server/no server:
+    Field: "-"
+
+- configure button at rightmost side
+
+- fields:
+
+    - Name
+    - Gamemode
+    - Max Players
+    - Language
+
+    - ~PVP (leave out for now, work in greentext stuff later)~
+    - ~Description (leave out for now, figure out multiline handling later)~
+    - ~Players (leave out for now, eventually show current/max_players)~
+    - ~Tick Rate (leave out for now, until configs return defaults if not explicitly listed, like tick-rate often isn't)~
+
+
+
+placement:
+
+    - frame:
+        - constant width, best accomplished with column minimums
+          that dont expand vs. width=n option for frame
+
+    - field labels:
+        - dont need to be uniform size
+        - dont need minsize, as field will always be on screen
+        - xpadding on top of text size OK
+
+    - value labels:
+        - a set amount of space as minimum, approx the size of 
+          largest values that may occupy
+        - dont want the frame to shift or grow when values are 
+          populated
+
+
+
+
+
+
+
+
+PS
+
+Browse widget should show: Basename (fullpath) 
+ - would allow widget to function without knowing biz logic (yes!)
+ - accounts for MyDediServer type shit that will exist for sure
+ - cluster (server) name will be shown in info bar ^
