@@ -9,7 +9,6 @@
     "editor.fontFamily": "Consolas",
     "workbench.colorCustomizations": {
         "[Beyond the Horizon]": {
-            "titleBar.activeBackground": "#6a6a6a",
             "titleBar.inactiveBackground": "#505050"
         }
     },

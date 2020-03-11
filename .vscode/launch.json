@@ -5,10 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Integrated",
+            "name": "Current File",
             "type": "python",
             "request": "launch",
-            "program": "${cwd}/dstctl.py",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Model",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/model.py",
             "console": "integratedTerminal",
             "subProcess": true
         },

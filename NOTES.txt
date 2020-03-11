@@ -1,51 +1,83 @@
-INFO BAR
+Whats involved in a shutdown?
+- ServerEvent class? structured around an expected sequence?
+- ServerTimeline class? instantiated on sessions? skims output?
+    - fastest/non-obstructive way to check against defined lines of interest?
+    - choose milestones that can't possibly be skipped/missed, keep accurate lifespan checklist 
+    - good for GUI
+    - good for jumping to lines in console views (click item "Loaded Mods" to y-nav console view to that point in time)
+    - good diagnostics
+    - good.
+    - ex dict (use lists where sequence can be represented simply, dicts are wobbly bobbly)
 
-- server/no server:
-    Field: "-"
+        constants.SERVEREVENTFLAGS = {
+                "Truncating to snapshot" : "Saving",
+                "Removing server from" : "Unlisting",
+                "Shutting down" : "Shutdown safely"
+        }
 
-- configure button at rightmost side
+        ON ABOVE:
+         - maybe server starts -> sees first bootup flag -> starts checking off startup milestones -> all done? -> listen for sequence flags again -> sees server up/idle flag -> switches to idle sequence tracking -> etc
+         - simple version:
+            create active_server.status (str)
+            for flag in constants.SERVEREVENTFLAGS:
+                if flag in line:
+                    active_server.status = time.stamp() + constants.SERVEREVENTFLAGS[flag]
 
-- fields:
+        ALSO THOUGH:
+            - fuck that for now
+            - good brainteaser, bad time-sink
+            
+            
+    - ex skim code
 
-    - Name
-    - Gamemode
-    - Max Players
-    - Language
-
-    - ~PVP (leave out for now, work in greentext stuff later)~
-    - ~Description (leave out for now, figure out multiline handling later)~
-    - ~Players (leave out for now, eventually show current/max_players)~
-    - ~Tick Rate (leave out for now, until configs return defaults if not explicitly listed, like tick-rate often isn't)~
-
-
-
-placement:
-
-    - frame:
-        - constant width, best accomplished with column minimums
-          that dont expand vs. width=n option for frame
-
-    - field labels:
-        - dont need to be uniform size
-        - dont need minsize, as field will always be on screen
-        - xpadding on top of text size OK
-
-    - value labels:
-        - a set amount of space as minimum, approx the size of 
-          largest values that may occupy
-        - dont want the frame to shift or grow when values are 
-          populated
-
+        line = output_line
+        for type, event_dict in constants.SERVERSEQUENCES.items():
+            if line in event_dict:
+                server.process_server_event(value)
 
 
+        def process_server_event():
+
+
+    shutdown command recieved [00:00:40]: RemoteCommandInput: "c_shutdown()"
+    [00:00:40]: c_shutdown	nil	
+    [00:00:41]: Serializing world: session/0DDD26A768C3CB0D/0000000047 
+    saving [00:00:41]: <inconsistent> #47...
+    [00:00:41]:  - session/0DDD26A768C3CB0D/0000000041
+    [00:00:41]:    1 file(s) removed
+    [00:00:41]: Registering master server in US lobby
+    [00:00:42]: Serializing world: session/0DDD26A768C3CB0D/0000000048
+    [00:00:42]: Truncating to snapshot #48...
+    [00:00:42]:  - session/0DDD26A768C3CB0D/0000000042
+    [00:00:42]:    1 file(s) removed
+    removing listing [00:00:42]: Removing server from US lobby
+    stopping shard [00:00:42]: [Shard] Stopping shard mode
+    [00:00:42]: Collecting garbage...
+    [00:00:42]: lua_gc took 0.10 seconds
+    [00:00:42]: ~ShardLuaProxy()
+    [00:00:42]: ~cEventLeaderboardProxy()
+    [00:00:42]: ~ItemServerLuaProxy()
+    [00:00:42]: ~InventoryLuaProxy()
+    [00:00:42]: ~NetworkLuaProxy()
+    [00:00:42]: ~SimLuaProxy()
+    [00:00:42]: lua_close took 0.26 seconds
+    [00:00:42]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+    [00:00:43]: CurlRequestManager::ClientThread::Main() complete
+    [00:00:43]: HttpClient2 discarded 0 callbacks.
+    shutdown complete [00:00:43]: Shutting down
 
 
 
 
 
-PS
+
+
+
 
 Browse widget should show: Basename (fullpath) 
- - would allow widget to function without knowing biz logic (yes!)
- - accounts for MyDediServer type shit that will exist for sure
- - cluster (server) name will be shown in info bar ^
+
+    - would allow widget to function without knowing biz logic (yes!)
+
+    - accounts for MyDediServer type shit that will exist for sure
+    
+    - cluster (server) name will be shown in info bar ^

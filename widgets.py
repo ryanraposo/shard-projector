@@ -6,7 +6,7 @@ import os, json, configparser
 
 import PIL
 
-import dstctl
+import model
 
 
 class WidgetInfoPanel(ttk.Labelframe):
@@ -434,6 +434,10 @@ class DialogConfirmShardDirectories(tk.Toplevel):
         # Root
         self.wm_iconify()
         self.title("Confirm shard directories...")
+        self.lift()
+        self.focus_force()
+        self.grab_set()
+        self.grab_release()
 
         dialog_frame = ttk.Frame(self)
         dialog_frame.grid(row=0, column=0)
@@ -451,7 +455,7 @@ class DialogConfirmShardDirectories(tk.Toplevel):
                 toggle_enable=True,
                 label=os.path.basename(path),
                 input_var=var,
-                input_args={"width": 50},
+                input_args={"width": 90}
             )
             var.set(path)
             self.inputs[row_count].grid(row=row_count, column=0)
@@ -598,8 +602,6 @@ class WidgetPowerButton(ttk.Frame):
         else:
             self.power_button.configure(image=self.off_image)
 
-
-
 def test_toggle_button():
     def dummy_command():
         print("Hi, just calling you back...")
@@ -609,7 +611,40 @@ def test_toggle_button():
     toggle.grid(row=0, column=0)
     root.mainloop()
 
+class WidgetBarSeparator(ttk.Label):
+    def __init__(self, master, **kwargs):
+        super().__init__(master=master, **kwargs)
+        self.photo_image = tk.PhotoImage(master=master, file=r"img/custom-tk-bar-sep.png")
+        self.configure(image=self.photo_image)
+
+def test_bar_separator():
+    root = ThemedTk(theme="equilux")
+    root.geometry('300x300')
+
+    frame = ttk.Frame(root)
+    frame.place(x=0, y=100)
+
+    name_field = ttk.Label(frame, text="Name:")
+    name_field.grid(row=0,column=0, padx=5)
+    name_value = ttk.Label(frame, text="Eden")
+    name_value.grid(row=0,column=1, padx=5)
+    frame.columnconfigure(1, minsize=50)
+
+    separator = WidgetBarSeparator(frame)
+    separator.grid(row=0, column=2)
+
+    gamemode_info_field = ttk.Label(frame, text="Gamemode:", style="blendBg.TLabel")
+    gamemode_info_field.grid(row=0,column=3, padx=5)
+    gamemode_value = ttk.Label(frame, text="Survival")
+    gamemode_value.grid(row=0,column=4, padx=5)
+    frame.columnconfigure(4, minsize=50)
+
+    root.mainloop()
+        
+
+
+
 
 if __name__ == "__main__":
-    test_toggle_button()
+    test_bar_separator()
 
