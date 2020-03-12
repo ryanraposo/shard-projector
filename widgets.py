@@ -6,8 +6,6 @@ import os, json, configparser
 
 import PIL
 
-import model
-
 
 class WidgetInfoPanel(ttk.Labelframe):
     """Panel with labeled readonly fields for display information about something. Takes a dict of with labels as keys, and the functions
@@ -180,33 +178,42 @@ class WidgetConsoleView(ttk.Frame):
         self.configure(width=width)
         # Style
         self.style = ttk.Style()
-        self.style.configure("status.Label", background="#353535")
+        self.style.configure("status.Label", background="#353535", font="TkDefault 9")
         self.style.configure(
             "WidgetConsoleView.Treeview",
             foreground="#3eb489",
             background="#353535",
-            font="TkDefault, 8",
+            font="Consolas, 8",
+        )
+        self.style.configure(
+            "WidgetConsoleView.Treeview.Item",
+            padding=[0,0,0,0]
+        )
+        self.style.configure(
+            "WidgetConsoleView.Treeview.Heading",
+            font="TkDefault 9"
         )
         # Tree
-        self.tree = ttk.Treeview(
-            self, style="WidgetConsoleView.Treeview", height=height_in_rows
-        )  # Tree
+        self.tree = ttk.Treeview(self, style="WidgetConsoleView.Treeview", height=height_in_rows, padding=[0,0,0,0])
         self.tree.column("#0", width=width, stretch=False)
         self.rowconfigure(0, weight=1)
+        # self.tree.bind("<Motion>", self.on_motion)
         self.tree.grid(column=0, row=0, sticky=("nswe"))
 
         self.tree.update()
         self.update()
 
         self.status_label = ttk.Label(self, text="Status: ", style="status.Label")
-        self.status_label.place(
-            x=20, y=(self.tree.winfo_y() + self.height_in_pixels - 15)
-        )
+
+    # def on_motion(self, event):
+    #     self.status_label.place_forget()
 
     @property
     def height_in_pixels(self):
         self.update()
-        return self.winfo_height()
+        self.tree.update()
+        height_in_pixels = self.tree.winfo_height()
+        return height_in_pixels
 
     def write_line(self, line, scroll_matching=True):
         item = self.tree.insert("", tk.END, text=line)
@@ -217,7 +224,18 @@ class WidgetConsoleView(ttk.Frame):
         self.tree.heading("#0", text=str(text))
 
     def set_status(self, text):
+        tree_y = self.tree.winfo_y()
+        tree_height = self.tree.winfo_height()
+        tree_width = self.tree.winfo_width()
+
         self.status_label.configure(text="Status: " + text)
+        self.status_label.update()
+        status_width = self.status_label.winfo_width()
+
+        self.status_label.place(
+            x=tree_width - status_width - 5, y=(tree_y + tree_height - 20)
+        )
+
 
     def clear(self):
         self.tree.delete(*self.tree.get_children())
@@ -266,6 +284,8 @@ class WidgetDirectorySelect(ttk.Labelframe):
     def set(self, display_text):
         self.entry.delete(0, tk.END)
         self.entry.insert(0, display_text)
+        self.entry.configure(width=len(display_text))
+
 
 
 def test_widget_directory_select():
