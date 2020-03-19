@@ -82,30 +82,6 @@ class WidgetInfoPanel(ttk.Labelframe):
             return "white.TLabel"
 
 
-def test_widget_info_panel():
-    def get_data_string():
-        return "Cool Server"
-
-    def get_data_bool_true():
-        return True
-
-    def get_data_bool_false():
-        return False
-
-    root = ThemedTk(theme="equilux")
-    info_panel = WidgetInfoPanel(
-        parent=root,
-        info_items=[
-            ("Description:", get_data_string),
-            ("PVP:", get_data_bool_true),
-            ("Autosave:", get_data_bool_false),
-        ],
-        header="Frontbutt Beach",
-    )
-    info_panel.grid(column=0, row=0)
-    root.mainloop()
-
-
 class WidgetCommandPanel(ttk.Labelframe):
     def __init__(
         self,
@@ -140,32 +116,6 @@ class WidgetCommandPanel(ttk.Labelframe):
             else:
                 current_column = 0  # Move back to column zero
                 current_row += 1  # Move to new row
-
-
-def test_widget_command_panel():
-    def fake_callback():
-        print("I wish i was button with a real callback...")
-
-    root = ThemedTk(theme="equilux")
-
-    command_panel = WidgetCommandPanel(
-        parent=root,
-        buttons=[
-            ("Fake Button1", fake_callback),
-            ("Fake Button2", fake_callback),
-            ("Fake Button3", fake_callback),
-            ("Fake Button4", fake_callback),
-            ("Fake Button5", fake_callback),
-            ("Fake Button6", fake_callback),
-            ("Fake Button7", fake_callback),
-            ("Fake Button8", fake_callback),
-        ],
-        max_columns=3,
-        panel_text="Quick Commands",
-    )
-    command_panel.grid(column=0, row=0)
-
-    root.mainloop()
 
 
 class WidgetConsoleView(ttk.Frame):
@@ -245,25 +195,6 @@ class WidgetConsoleView(ttk.Frame):
         super().place(**kwargs)
 
 
-def test_widget_console_view(test_window_geometry="960x720"):
-    parent = ThemedTk(theme="equilux")
-    parent.geometry(test_window_geometry)
-    parent.configure(bg="#424242")
-    parent.wm_deiconify()
-
-    widget = WidgetConsoleView(parent=parent, view_width=460)
-    widget.place(x=0, y=0)
-    for i in range(100):
-        widget.write_line(
-            "[000."
-            + str(i)
-            + "]: "
-            + "WOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCHWOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCHWOWOWOWOWOWOWOWOHHHHHHHHHWOWOWOWOWOOOSSSSSSSSBITCH"
-        )
-
-    parent.mainloop()
-
-
 class WidgetDirectorySelect(ttk.Labelframe):
     """A ttk-styled Entry and Browse button for selecting a directory path. Use get to access value, set_display_name for prominent text display"""
 
@@ -272,7 +203,7 @@ class WidgetDirectorySelect(ttk.Labelframe):
         self.command=command
         null_label = ttk.Frame(master=None, height=0, width=0)
         self.configure(labelwidget=null_label)
-        self.entry = ttk.Entry(self, width=50)
+        self.entry = ttk.Entry(self, width=70)
         self.entry.grid(row=0, column=0)
         self.browse = ttk.Button(self, command=command, text="Browse")
         self.browse.grid(row=0, column=1)
@@ -284,15 +215,7 @@ class WidgetDirectorySelect(ttk.Labelframe):
     def set(self, display_text):
         self.entry.delete(0, tk.END)
         self.entry.insert(0, display_text)
-        self.entry.configure(width=len(display_text))
-
-
-
-def test_widget_directory_select():
-    root = ThemedTk(theme="equilux")
-    directory_select = WidgetDirectorySelect(root)
-    directory_select.grid(column=0, row=0)
-    root.mainloop()
+        # self.entry.configure(width=len(display_text) - 20)
 
 
 class WidgetLabelInput(ttk.Frame):
@@ -309,12 +232,14 @@ class WidgetLabelInput(ttk.Frame):
         input_var=None,
         input_args=None,
         label_args=None,
+        placeholder=None,
         **kwargs
     ):
         super().__init__(parent, **kwargs)
         input_args = input_args or {}
         label_args = label_args or {}
         self.variable = input_var
+
 
         if input_class in (ttk.Checkbutton, ttk.Radiobutton, ttk.Button):
             input_args["variable"] = tk.BooleanVar(value=input_var)
@@ -327,12 +252,20 @@ class WidgetLabelInput(ttk.Frame):
         self.input = input_class(self, **input_args)
         self.input.grid(row=0, column=2)  # , sticky=(tk.E))
 
+        if placeholder:
+            self.set_placeholder(placeholder)
+
         if toggle_enable:
             enabled = self.enabled = tk.BooleanVar(value=True)
             self.toggle_enable_checkbutton = ttk.Checkbutton(self, variable=enabled)
             self.toggle_enable_checkbutton.grid(row=0, column=0)
 
         self.columnconfigure(1, minsize=115)
+
+        style = ttk.Style()
+        style.configure('prominent.TEntry', foreground='#ffffff')
+        style.configure('non_prominent.TEntry', foreground='#969799')
+
 
     def grid(self, sticky=("we"), **kwargs):
         """Override of geometry manager's grid method, supplies sticky=(tk.E +
@@ -381,71 +314,39 @@ class WidgetLabelInput(ttk.Frame):
             self.input.insert(0, value)  # insert value at row 1 char 0
 
 
-class FrameConfigure(ttk.Frame):
-    """Accepts a dictionary representing an .ini file and frame containing LabelInputs for
-    viewing and configuring the values. Use get to retrieve its values in a similarly structured dictionary."""
+    def _populate_placeholder(self):
+        self.set_prominent(False)
+        self.set(self.placeholder)
 
-    def __init__(self, parent, target_configuration=None, **kwargs):
-        super().__init__(parent, **kwargs)
-        self.inputs = {}
-        self.target_configuration = target_configuration
-        self._initialize_widgets()
+    def _clear_placeholder(self):    
+        if not self.get_prominent():
+            self.set('')
+            self.set_prominent(True)
 
-    def _get_structure(self):
-        if "GAMEPLAY" in self.target_configuration.keys():
-            return self._get_cluster_ini_structure()
-        return self._get_shard_ini_structure()
+    def set_placeholder(self, value):
+        self.placeholder = value
+        self.input.bind('<FocusIn>', self._on_focus_in)
+        self.input.bind('<FocusOut>', self._on_focus_out)
+        self._populate_placeholder()
 
-    def _get_cluster_ini_structure(self):
-        with open("./data/ini/cluster_configuration.json") as json_file:
-            cluster_config_structure = dict(json.load(json_file))
-            return cluster_config_structure
+    def set_prominent(self, isProminent):
+        if isProminent:
+            self.input.configure(style='prominent.TEntry')
+        else:
+            self.input.configure(style='non_prominent.TEntry')
+    
+    def get_prominent(self):
+        input_style = self.input['style']
+        if input_style == 'prominent.TEntry':
+            return True
+        return False
 
-    def _get_shard_ini_structure(self):
-        with open("./data/ini/shard_configuration.json") as json_file:
-            shard_config_structure = dict(json.load(json_file))
-            return shard_config_structure
+    def _on_focus_in(self, event):
+        self._clear_placeholder()
 
-    def _initialize_widgets(self):
-        """Loops through """
-
-        configuration_json = self._get_structure()
-        x = 0
-        for section in configuration_json.keys():
-            y = 0
-            frmSection = ttk.Labelframe(self, text=section)
-            frmSection.grid(row=x, column=0)
-            for option in configuration_json[section].keys():
-                self.inputs[option] = WidgetLabelInput(
-                    parent=frmSection,
-                    toggle_enable=False,
-                    label=option,
-                    input_class=ttk.Entry,
-                    label_args={},
-                )
-
-                self.inputs[option].grid(row=y, column=0)
-                if self.target_configuration:
-                    try:
-                        target_section = self.target_configuration[section]
-                        self.inputs[option].set(target_section[option])
-                    except:
-                        pass
-                y += 1
-            x += 1
-
-    def grid(self, sticky=(tk.W + tk.E), fill=tk.BOTH, expand=True, **kwargs):
-        """Override of geometry manager's grid method, supplies sticky=(tk.E +
-        tk.W)"""
-        super().grid(sticky=sticky, fill=fill, expand=expand ** kwargs)
-
-    def get(
-        self,
-    ):  # TODO fix get method in configure cluster frame so that it returns sections as in the structure json
-        data = {}
-        for key, widget in self.inputs.items():
-            data[key] = widget.get()
-        return data
+    def _on_focus_out(self, event):
+        if self.get() == '':
+            self._populate_placeholder()
 
 
 class DialogConfirmShardDirectories(tk.Toplevel):
@@ -498,51 +399,6 @@ class DialogConfirmShardDirectories(tk.Toplevel):
         for each in self.vars:
             submitted_directories.append(each.get())
         return submitted_directories
-
-
-class DialogConfigureServer(tk.Toplevel):
-    def __init__(self, parent, server):
-        super().__init__(parent)
-        self.title("Settings")
-        self.configure(bg="#424242")
-        self.lift()
-        self.focus_force()
-        self.grab_set()
-        self.grab_release()
-
-        self.server = server
-
-        self.notebook = self._initialize_notebook()
-
-        self.page_cluster = FrameConfigure(self.notebook, server.config.as_dict())
-        self.notebook.add(child=self.page_cluster, text="Cluster")
-
-        for shard in server.shards:
-            page = FrameConfigure(self.notebook, shard.configuration.as_dict())
-            self.notebook.add(page, text=shard.name)
-
-        print(self.notebook.tabs())
-
-        self.apply = ttk.Button(self, text="Apply", command=self._on_apply)
-        self.cancel = ttk.Button(self, text="Cancel", command=self._on_cancel)
-
-    def _initialize_notebook(self):
-        notebook = ttk.Notebook(self)  # , width=400, height=700)
-        notebook.pack(fill=tk.BOTH, expand=True, padx=3, pady=3)
-        return notebook
-
-    def _on_apply(self):
-        pass
-
-    def _on_cancel(self):
-        pass
-
-    def show(self):
-        self.wm_deiconify()
-        self.wait_window()
-
-    def close(self):
-        self.destroy()
 
 
 class DialogCustomCommand(tk.Toplevel):
@@ -622,47 +478,12 @@ class WidgetPowerButton(ttk.Frame):
         else:
             self.power_button.configure(image=self.off_image)
 
-def test_toggle_button():
-    def dummy_command():
-        print("Hi, just calling you back...")
-
-    root = ThemedTk(theme="equilux")
-    toggle = WidgetPowerButton(root, command=dummy_command)
-    toggle.grid(row=0, column=0)
-    root.mainloop()
 
 class WidgetBarSeparator(ttk.Label):
     def __init__(self, master, **kwargs):
         super().__init__(master=master, **kwargs)
         self.photo_image = tk.PhotoImage(master=master, file=r"img/custom-tk-bar-sep.png")
         self.configure(image=self.photo_image)
-
-def test_bar_separator():
-    root = ThemedTk(theme="equilux")
-    root.geometry('300x300')
-
-    frame = ttk.Frame(root)
-    frame.place(x=0, y=100)
-
-    name_field = ttk.Label(frame, text="Name:")
-    name_field.grid(row=0,column=0, padx=5)
-    name_value = ttk.Label(frame, text="Eden")
-    name_value.grid(row=0,column=1, padx=5)
-    frame.columnconfigure(1, minsize=50)
-
-    separator = WidgetBarSeparator(frame)
-    separator.grid(row=0, column=2)
-
-    gamemode_info_field = ttk.Label(frame, text="Gamemode:", style="blendBg.TLabel")
-    gamemode_info_field.grid(row=0,column=3, padx=5)
-    gamemode_value = ttk.Label(frame, text="Survival")
-    gamemode_value.grid(row=0,column=4, padx=5)
-    frame.columnconfigure(4, minsize=50)
-
-    root.mainloop()
-        
-
-
 
 
 if __name__ == "__main__":

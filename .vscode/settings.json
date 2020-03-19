@@ -10,6 +10,10 @@
     "workbench.colorCustomizations": {
         "[Beyond the Horizon]": {
             "titleBar.inactiveBackground": "#505050"
+        },
+        "[Horizon]": {
+            "titleBar.activeBackground": "#278754",
+            "titleBar.inactiveBackground": "#278754"
         }
     },
 

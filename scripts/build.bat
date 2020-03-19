@@ -1,1 +1,7 @@
-pyinstaller -n="Shard Projector" -w --noconfirm --icon="./img/dstctl.ico" --add-data="./img/*;./img" --add-data="./data/ini/cluster_configuration.json;./data/ini" --add-data="./data/ini/shard_configuration.json;./data/ini" dstctl.py
+pyinstaller -n="shard_projector" -w --noconfirm ^
+--icon="./icon/icon.ico" ^
+--add-data="./icon/*;./icon" ^
+--add-data="./img/*;./img" ^
+--add-data="./data/ini/cluster_configuration.json;./data/ini" ^
+--add-data="./data/ini/shard_configuration.json;./data/ini" ^
+model.py
