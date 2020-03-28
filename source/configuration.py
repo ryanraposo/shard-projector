@@ -1,4 +1,5 @@
 import configparser
+import pathlib
 
 
 class Configuration():
@@ -6,10 +7,13 @@ class Configuration():
 
     def __init__(
         self,
-        path=None
+        path=None,
+        defaults_path=None
         ):
         self.path = path
-        self._parser = configparser.ConfigParser()
+        self._parser = configparser.ConfigParser(strict=False)
+        if defaults_path:
+            self.set_defaults(defaults_path)
         
     def _read(self):
         """Reads the INI configuration into internal memory.
@@ -27,6 +31,8 @@ class Configuration():
         for section in self._parser.sections():
             configuration_dict[section] = {}
             for key, val in self._parser.items(section):
+                val = val.strip('"')
+                val = val.strip("'")
                 configuration_dict[section][key] = val
         return configuration_dict
 
@@ -43,7 +49,7 @@ class Configuration():
         self._read()
         return self._parser.get(section, option)
 
-    def get_typed(self, section, option): #TODO: raise ValueError
+    def get_typed(self, section, option):
         """Gets value from configuration file as expected type.
 
         Args:
@@ -83,4 +89,8 @@ class Configuration():
                 self._parser.set(section, k, v)
         with open(self.path, 'w') as configfile:
             self._parser.write(configfile)
+
+    def set_defaults(self, path):
+        self._parser.read(path)
+        self.defaults = self.as_dict()
 

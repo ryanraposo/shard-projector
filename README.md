@@ -1,62 +1,90 @@
-# Don't Starve Together Dedicated Server Control
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=400px height=400px src="img\sp-icon-header.png" alt="Shard Projector"></a>
+</p>
 
-A desktop application for running & managing a dedicated server on a local machine running Windows.
+<p align="center" style="font-size: 300%"> Shard Projector
+</p>
 
-![Window](https://github.com/ryanraposo/dstctl/blob/master/img/ss_window.png)
+<div align="center">
 
-### Prerequisites
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
 
-- Steam (or SteamCMD) w/ Don't Starve Dedicated Server installed
+</div>
+
+<p align="center" style="font-size: 140%"> Desktop dedicated servers for Klei's Don't Starve Together.
+</p>
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+    - [Interface](#interface)
+    - [Colors](#colors)
+    - [Customization](#customization)
+- [Getting Started <a name = "getting_started"></a>](#getting-started)
+  - [Installing](#installing)
+  - [Usage](#usage)
+  - [Extension Settings](#extension-settings)
+- [Additional Info](#additional-info)
+  - [Get Involved](#get-involved)
+  - [Contributors](#contributors)
+  - [Technical Acknowledgements <a name = "acknowledgement"></a>](#technical-acknowledgements)
+  
+# Features
+
+### User Interface
+
+Simple yet powerful controls for running, monitoring, and configuring your servers- all in one place.
+
+<!-- ![Screenshot](./resources/readme/main-gradient.png) -->
+
+### Remote Control
+
+Connect to a machine running a Shard Projector server and manage it remotely via TCP, with all the same features & feedback.
+
+<!-- ![Favorite](./resources/readme/favorite.gif) -->
+
+# Getting Started <a name = "getting_started"></a>
+
+## Installing
+
+Users can download Shard Projector [here.](https://github.com/ryanraposo/codeui) 
+
+Alternatively, you can clone the repo here on [Github](https://github.com/ryanraposo/codeui) if you plan on : 
 
 ```
-Give examples
+code --install-extension codeui-0.2.0.vsix
 ```
 
-### Installing
+*Note: it may be necessary to reload vscode if installing via the terminal.*
 
-A step by step series of examples that tell you how to get a development env running
+## Usage
 
-Say what the step will be
+Refer to usage documentation [here. ](./USAGE.md)
 
-```
-Give the example
-```
+## Extension Settings
 
-And repeat
+ - ```codeui.showNotifications``` : Toggle various notifications about CodeUI's activity 
 
-```
-until finished
-```
+ - ```codeui.favoriteColors``` : User-defined colors for use by CodeUI
 
-End with an example of getting some data out of the system or using it for a little demo
+ - ```codeui.targetingMode``` : Controls target of customizations applied by CodeUI
 
-## Contributing
+# Additional Info
 
-Explain how to clone and contribute to the project.
+## Get Involved
+Help make CodeUI the standard theming tool for vscode! Whether it's new features, optimizations, documentation or general knowledge - I would very much appreciate your contributions & insights. You can join the project on [Github](https://github.com/ryanraposo/codeui).
 
-## Built With
+Users and developers alike, write to raposo.ryan@gmail.com any time if you have an idea, tip, or comment of any sort. Customizing the UI is a huge part of vscode's charm, and your feedback will help make it as fun & accessible as possible.
 
-* [Tkinter](https://docs.python.org/2/library/tkinter.html) - The GUI framework used
+Thank you for supporting CodeUI!
 
-## Contributing
+## Contributors
+  - See [contributors](https://github.com/ryanraposo/codeui/graphs/contributors) page on GitHub
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+## Technical Acknowledgements <a name = "acknowledgement"></a>
+- copy-paste (npm)
+- tiny-color2 (npm)
+- Various extension development blogs

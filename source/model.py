@@ -69,7 +69,7 @@ class Shard:
 
     def __init__(self, path, cluster_name):
         self.path = os.path.realpath(path)
-        self.config = Configuration(os.path.join(self.path, "server.ini"))
+        self.config = Configuration(os.path.join(self.path, "server.ini"), './shard_defaults.ini')
         self.is_master = self.config.get_typed("SHARD", "is_master")
         self.cluster_name = cluster_name
         self.name = os.path.basename(path)
@@ -104,16 +104,13 @@ class Shard:
             finally:
                 q.put(None)
 
-    def get_output(self):  # Schedule me
+    def get_output(self):
         """Returns output queue of the shard."""
-        # if self.process:
-        for line in iter_except(self.q.get_nowait, Empty):  # display all
+        for line in iter_except(self.q.get_nowait, Empty):
             if line is None:
                 return None
             else:
                 return line
-        # else:
-        #     return None
 
     def start(self):
         cwd = os.path.realpath(TEMP_CONST_STEAMCMD_DST_BIN_PATH)
@@ -162,22 +159,13 @@ class DedicatedServer:
 
     def __init__(self, path, server_control_window):
         self.server_control_window = server_control_window
-        self.path = os.path.abspath(path)
+        self.path = os.path.normpath(path)
         self.name = os.path.basename(self.path)
-        self.config = Configuration(os.path.join(self.path, "cluster.ini"))
-        self.shards = self._get_shards()
+        self.config = Configuration(os.path.join(self.path, "cluster.ini"), './cluster_defaults.ini')
 
-    def _get_shards(self):
-        shards = []
-        detected_shard_directories = self._detect_shard_directories()
-        user_confirmed_shard_directories = view.DialogConfirmShardDirectories(
-            parent=self.server_control_window,
-            detected_shard_directories=detected_shard_directories,
-        ).show()
-        for each in user_confirmed_shard_directories:
-            shard = Shard(each, self.name)
-            shards.append(shard)
-        return shards
+        self.shards = []
+        self._show_confirm_shard_directories_dialog()
+
 
     def _detect_shard_directories(self):
         shard_directories = []
@@ -188,8 +176,18 @@ class DedicatedServer:
                     shard_directories.append(path)
         return shard_directories
 
-    def set_shard_directories(self, directories):
-        self.shard_directories = directories
+    def _show_confirm_shard_directories_dialog(self):
+        detected_shard_directories = self._detect_shard_directories()
+        view.DialogConfirmShardDirectories(
+            parent=self.server_control_window,
+            detected_shard_directories=detected_shard_directories,
+            fn_callback=self.on_confirmed_shard_directories
+        )
+
+    def on_confirmed_shard_directories(self, directories):
+        for each in directories:
+            shard = Shard(each, self.name)
+            self.shards.append(shard)
 
     def is_valid_server_config(self, directory_path):
         # Check for real path, server.ini, clustertoken.txt, at least one folder containing cluster.ini
@@ -259,9 +257,13 @@ class ServerControl:
         self.window = root
         self.initialize_ui()
         self.active_server = None
+
+        config_path = os.path.realpath('C:/Users/ryanr/source/shard-projector/source/settings.ini')
+        config_defaults_path = os.path.realpath('C:/Users/ryanr/source/shard-projector/source/settings_defaults.ini')
+        self.config = Configuration(config_path, config_defaults_path)
             
-        local_ip = remote.get_ip()
-        self.remote_server = remote.ThreadedServer(local_ip, 8080, self.on_remote_command)
+        # local_ip = remote.get_ip()
+        # self.remote_server = remote.ThreadedServer(local_ip, 8080, self.on_remote_command)
         
         self.update()
 
@@ -275,28 +277,29 @@ class ServerControl:
         self.window.title("Shard Projector")
         icon_path = os.path.join("./img/icon.ico")
         self.window.iconbitmap(icon_path)
-        self.window.configure(bg="#414141")
         
         # Styling
         self.window.option_add("*TCombobox*Listbox.background", "#424242")
         self.window.option_add("*TCombobox*Listbox.selectBackground", "#525252")
 
+        self.frame_main = ttk.Frame(self.window, width=960, height=650)
         # Top Bar
-        self.frm_dir_select = ttk.Frame(self.window)
+        self.frm_dir_select = ttk.Frame(self.frame_main)
         self.frm_dir_select.place(x=36, y=0)
 
-        self.widget_directory_select = widgets.WidgetDirectorySelect(
-            self.frm_dir_select, self.on_browse
+        self.widget_directory_select = widgets.DirectorySelectEntry(
+            master=self.frm_dir_select,
+            on_select=self.on_browse
         )
         self.widget_directory_select.grid(row=0, column=0)
 
         # Action Bar
-        self.action_bar = ttk.Frame(self.window)
+        self.action_bar = ttk.Frame(self.frame_main)
         self.action_bar.columnconfigure(0, minsize=30)
         self.action_bar.columnconfigure(1, minsize=30)
         self.action_bar.rowconfigure(0, minsize=10)
 
-        self.action_settings = ttk.Button(self.action_bar, text="Settings")
+        self.action_settings = ttk.Button(self.action_bar, text="Settings", command=self.on_settings)
         self.action_settings.grid(row=0, column=0, sticky="ns")
 
         self.action_tasks = ttk.Menubutton(self.action_bar, text="Tasks")
@@ -305,38 +308,38 @@ class ServerControl:
         self.action_bar.place(x=620, y=0)
 
         # Power Button
-        self.btn_power = widgets.WidgetPowerButton(root, command=self.on_power)
+        self.btn_power = widgets.PowerButton(root, command=self.on_power)
         self.btn_power.set_fx(False)
         self.btn_power.place(x=868, y=12)
 
         # Info Bar
-        self.info_bar = view.InfoBar(master=self.window, command_configure=self.on_configure)
+        self.info_bar = view.InfoBar(master=self.frame_main, command_configure=self.on_configure)
         self.info_bar.place(x=0, y=85, width=960)
 
         # Console Views
         s = ttk.Style()
         s.configure("console.TFrame", background="#3A3A3A")
 
-        self.console_view_frame = ttk.Frame(self.window, style="console.TFrame")
+        self.console_view_frame = ttk.Frame(self.frame_main, style="console.TFrame")
         cv_width = 470
         cv_height_in_rows = 20
 
-        self.console_view_master = widgets.WidgetConsoleView(self.console_view_frame, width=cv_width, height_in_rows=cv_height_in_rows)
+        self.console_view_master = widgets.ConsoleView(self.console_view_frame, width=cv_width, height_in_rows=cv_height_in_rows)
         self.console_view_master.pack(side=tk.LEFT)
 
-        self.console_view_slave = widgets.WidgetConsoleView(self.console_view_frame, width=cv_width, height_in_rows=cv_height_in_rows)
+        self.console_view_slave = widgets.ConsoleView(self.console_view_frame, width=cv_width, height_in_rows=cv_height_in_rows)
         self.console_view_slave.pack(side=tk.RIGHT)
         
         self.console_view_frame.place(x=3, y=123, width=954)
 
         # Toggle Listen Server
         self.listen_server_enabled = tk.BooleanVar(False)
-        self.toggle_listen_server = widgets.WidgetLabelInput(self.window, label='Allow remote commands:', input_class=ttk.Checkbutton, label_args={'padding':[8,0,0,0]}, input_var=self.listen_server_enabled)
+        self.toggle_listen_server = widgets.LabelInput(self.frame_main, label='Allow remote commands:', input_class=ttk.Checkbutton, label_args={'padding':[8,0,0,0]}, input_var=self.listen_server_enabled)
         self.toggle_listen_server.place(x=664, y=40)
   
         # Quick Commands
-        self.command_panel = widgets.WidgetCommandPanel(
-            parent=self.window,
+        self.command_panel = widgets.CommandPanel(
+            parent=self.frame_main,
             buttons=[
                 ("Regenerate", self.on_regenerate),
                 ("Reset", self.on_reset),
@@ -346,7 +349,9 @@ class ServerControl:
             max_columns=5,
             panel_text="Commands",
         )
-        self.command_panel.place(x=400, y=570)
+        self.command_panel.place(x=556, y=574)
+
+        self.frame_main.place(x=0, y=0)
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states.
@@ -360,8 +365,7 @@ class ServerControl:
                     self.update_console_view(self.console_view_slave, self.active_server.slave)
                 self.update_power_button_fx()
         finally:
-            self.update_listen_server()
-            self.window.after(40, self.update)
+            self.window.after(20, self.update)
 
     def update_info_bar(self):
         dict_server_config = self.active_server.config.as_dict()
@@ -398,9 +402,9 @@ class ServerControl:
             else:
                 self.btn_power.set_fx(False)
         
-    def update_listen_server(self):
-        isEnabled = self.toggle_listen_server.get()
-        self.remote_server.listening = isEnabled
+    # def update_listen_server(self):
+    #     isEnabled = self.toggle_listen_server.get()
+    #     self.remote_server.listening = isEnabled
 
     def on_power(self):
         if self.active_server:
@@ -432,23 +436,27 @@ class ServerControl:
         if self.active_server:
             view.DialogConfigureServer(self.window, self.active_server, self.apply_config)
 
-    def on_browse(self):
-        selection = self.widget_directory_select.show_dialog()
-        if len(selection) > 0:
-            try:  # Try to create a DedicatedServer instance with user selected path
-                server = DedicatedServer(selection, self.window)
-            except:  # If unable, show warning that directory is unsuitable
-                messagebox.showwarning(
-                    title="DST Server Control",
-                    message="Failed to set active server from selection.",
-                )
-            else:  # If successful, unload any current server and set new
-                self.unload_server()
-                self.set_active_server(server)
+    def on_browse(self, selection_string):
+        try:  # Try to create a DedicatedServer instance with user selected path
+            server = DedicatedServer(selection_string, self.window)
+        except:  # If unable, show warning that directory is unsuitable
+            messagebox.showwarning(
+                title="DST Server Control",
+                message="Failed to set active server from selection.",
+            )
+        else:  # If successful, unload any current server and set new
+            self.unload_server()
+            self.set_active_server(server)
 
+    def on_settings(self):
+        """Handler for showing the application settings dialog.
+        """
+        view.DialogConfigureApplication(self)
+        
     def on_remote_command(self, command):
         print('> Remote command recieved: ' + command)
         self._send_command(command)
+    
 
     def unload_server(self):
         if self.active_server != None:

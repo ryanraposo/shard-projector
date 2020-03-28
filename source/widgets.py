@@ -1,13 +1,14 @@
+import os
+
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 from ttkthemes import ThemedTk
-import os
-
 import PIL
 
+from constants import FieldTypes
 
-class WidgetCommandPanel(ttk.Labelframe):
+class CommandPanel(ttk.Labelframe):
     def __init__(
         self,
         parent=None,
@@ -43,7 +44,7 @@ class WidgetCommandPanel(ttk.Labelframe):
                 current_row += 1  # Move to new row
 
 
-class WidgetConsoleView(ttk.Frame):
+class ConsoleView(ttk.Frame):
     """
     """
 
@@ -120,33 +121,69 @@ class WidgetConsoleView(ttk.Frame):
         super().place(**kwargs)
 
 
-class WidgetDirectorySelect(ttk.Labelframe):
-    """A ttk-styled Entry and Browse button for selecting a directory path. Use get to access value, set_display_name for prominent text display"""
+class DirectorySelectEntry(ttk.Frame):
+    def __init__(
+        self,
+        master=None,
+        on_select=None,
+        entry_args=None,
+        **kwargs
+    ):
+        super().__init__(master, **kwargs)
+        self.on_select = on_select
 
-    def __init__(self, parent, command=None):
-        super().__init__(parent)
-        self.command=command
-        null_label = ttk.Frame(master=None, height=0, width=0)
-        self.configure(labelwidget=null_label)
-        self.entry = ttk.Entry(self, width=70)
-        self.entry.grid(row=0, column=0)
-        self.browse = ttk.Button(self, command=command, text="Browse")
-        self.browse.grid(row=0, column=1)
+        entry_args = entry_args or {}
 
-    def show_dialog(self):
-        path = filedialog.askdirectory(master=self)
-        return path
+        self.entry = ttk.Entry(self, width=65, **entry_args)
+        self.browse_button = ttk.Button(self, command=self._on_browse, text="Browse")
+
+        self.columnconfigure(0, weight=1)
+        self.entry.grid(row=0, column=0, sticky='we')
+        self.browse_button.grid(row=0, column=1)
+
+    def insert(self, index, string):
+        self.entry.insert(index, string)
+
+    def delete(self, first, last=None):
+        self.entry.delete(first, last)
+
+    def get(self):
+        """Override of widgets get method. Redirects call to Entry from bounding Frame. 
+        """
+        return self.entry.get()
     
-    def set(self, display_text):
-        self.entry.delete(0, tk.END)
-        self.entry.insert(0, display_text)
-        # self.entry.configure(width=len(display_text) - 20)
+    def set(self, value):
+        self.delete(0, tk.END)
+        self.insert(0, value)
+    
+    def grid(self, sticky=("we"), **kwargs):
+        """Override of geometry manager's grid method, supplies sticky=(tk.E +
+         tk.W)"""
+        super().grid(sticky=sticky, **kwargs)
+
+    def _on_browse(self):
+        """Handles presses of the widgets Browse button.
+        
+        Sets Entry text to selection. Invokes on_select if supplied, passes selection.
+        """        
+        selection_str = filedialog.askdirectory()
+        if selection_str and selection_str != '':
+            self.entry.delete(0, tk.END)
+            self.entry.insert(0, selection_str)
+            if self.on_select:
+                self.on_select(selection_str)
 
 
-class WidgetLabelInput(ttk.Frame):
+class LabelInput(ttk.Frame):
     """A widget containing a label and input together. Accepts various ttk input widgets as input_class. Creates a paired ttk.Label to the left of
     those which lack a suitable label of their own. Ensures columns span entire widget contained. Optional end-user toggle for enabling/disabling
     the field."""
+
+    field_types = {
+        FieldTypes.standard: (ttk.Entry, tk.StringVar),
+        FieldTypes.path: (DirectorySelectEntry, tk.StringVar),
+        FieldTypes.boolean: (ttk.Checkbutton, tk.BooleanVar)
+    }
 
     def __init__(
         self,
@@ -167,14 +204,14 @@ class WidgetLabelInput(ttk.Frame):
 
         if input_class in (ttk.Checkbutton, ttk.Radiobutton, ttk.Button):
             input_args["variable"] = input_var
-        else:  # ttk.Entry
+        else: #ttk.Entry
             input_args["textvariable"] = input_var
 
         self.label = ttk.Label(self, text=label, **label_args)
         self.label.grid(row=0, column=1)  # sticky=(tk.W))
 
         self.input = input_class(self, **input_args)
-        self.input.grid(row=0, column=2)  # , sticky=(tk.E))
+        self.input.grid(row=0, column=2, sticky='we')
 
         if placeholder:
             self.set_placeholder(placeholder)
@@ -234,7 +271,7 @@ class WidgetLabelInput(ttk.Frame):
             else:
                 self.input.configure(variable=tk.BooleanVar(value=False))
 
-        elif type(self.input) == tk.Text:  # if ttk.Text...
+        elif type(self.input) == tk.Text:  # if tk.Text...
             self.input.delete("1.0", tk.END)  # delete row 1 char 0 to the end
             self.input.insert("1.0", value)  # insert value at row 1 char 0
         else:  # input is a ttk.Entry with no variable
@@ -276,7 +313,75 @@ class WidgetLabelInput(ttk.Frame):
             self._populate_placeholder()
 
 
-class WidgetPowerButton(ttk.Frame):
+class ConfigurationFrame(ttk.Frame):
+    """A frame with controls for editing an INI configuration supplied as a dictionary.
+    
+    Use get to retrieve its values in a similarly structured dictionary."""
+
+    def __init__(self, parent, ini_dict=None, ini_defaults_dict=None, placeholder_FX=True, human_readable_labels=False, **kwargs):
+        super().__init__(parent, **kwargs)
+
+        self.inputs = {}
+        self.ini = ini_dict
+        self.defaults = ini_defaults_dict
+
+        self.placeholder_FX = placeholder_FX
+        self.human_readable_labels = human_readable_labels
+
+        self._initialize_fields()
+        self._populate_defined()
+
+    def _initialize_fields(self):
+        """Creates sections and their field inputs with supplied defaults for placeholder fx (if enabled).
+        """        
+        for section in self.defaults:
+            section_label_frame = ttk.LabelFrame(self, text=section)
+            self.inputs[section_label_frame] = {}
+            for key, value in self.defaults[section].items():
+                input_class = ttk.Entry
+                if '_directory' in key:
+                    input_class = DirectorySelectEntry
+                label = key
+                if self.human_readable_labels:
+                    label = str(key).replace("_", " ").title()
+                self.inputs[section_label_frame][key] = LabelInput(
+                    parent=section_label_frame,
+                    label=label,
+                    input_class=input_class
+                )
+                if self.placeholder_FX:
+                    self.inputs[section_label_frame][key].set_placeholder(value)
+                else:
+                    self.inputs[section_label_frame][key].set(value)
+                self.inputs[section_label_frame][key].pack(side=tk.TOP, expand=True, fill=tk.X)
+            section_label_frame.pack(side=tk.TOP, expand=True, fill=tk.X)
+
+    def _populate_defined(self):
+        """Populates field inputs whose values are supplied in primary INI dictionary.
+        """   
+        for section in self.inputs: 
+            for key, _input in self.inputs[section].items():
+                section_name = section['text']
+                if key in self.ini[section_name]:
+                    defined_value = self.ini[section_name][key]
+                    _input.set(defined_value)
+                    if self.placeholder_FX:
+                        _input.set_prominent(True)
+
+    def get(self):
+        """Gets data from inputs in the frame. Does not include placeholder input values.
+        """
+        data = {}
+        for section in self.inputs:
+            section_name = section['text']
+            data[section_name] = {}
+            for key, entry in self.inputs[section].items():
+                if entry.get_prominent():
+                    data[section_name][key] = entry.get()
+        return data
+
+
+class PowerButton(ttk.Frame):
     def __init__(self, parent, command):
         super().__init__(master=parent)
         self.parent = parent
@@ -301,7 +406,7 @@ class WidgetPowerButton(ttk.Frame):
             self.power_button.configure(image=self.off_image)
 
 
-class WidgetBarSeparator(ttk.Label):
+class BarSeparator(ttk.Label):
     def __init__(self, master, **kwargs):
         super().__init__(master=master, **kwargs)
         self.photo_image = tk.PhotoImage(master=master, file=r"img/custom-tk-bar-sep.png")

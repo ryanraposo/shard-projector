@@ -15,7 +15,7 @@
             "name": "Model",
             "type": "python",
             "request": "launch",
-            "program": "${cwd}/model.py",
+            "program": "${cwd}/source/model.py",
             "console": "integratedTerminal",
             "subProcess": true
         },

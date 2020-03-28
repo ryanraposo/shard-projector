@@ -12,8 +12,8 @@
             "titleBar.inactiveBackground": "#505050"
         },
         "[Horizon]": {
-            "titleBar.activeBackground": "#323232",
-            "titleBar.inactiveBackground": "#323232"
+            "titleBar.activeBackground": "#175132",
+            "titleBar.inactiveBackground": "#113d26"
         }
     },
     "restructuredtext.confPath": "${workspaceFolder}",
