@@ -6,12 +6,6 @@
 <p align="center" style="font-size: 300%"> Shard Projector
 </p>
 
-<div align="center">
-
-  [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
-
-</div>
-
 <p align="center" style="font-size: 140%"> Desktop dedicated servers for Klei's Don't Starve Together.
 </p>
 
