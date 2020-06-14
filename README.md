@@ -26,7 +26,7 @@
 
 Simple yet powerful controls for running, monitoring, and configuring your server.
 
-![Shard Projector](img\sp-running-preview.png)
+![Shard Projector](img/sp-running-preview.png)
 
 ### Web Access
 
