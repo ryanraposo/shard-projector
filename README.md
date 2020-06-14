@@ -36,8 +36,7 @@ Connect to a machine running a Shard Projector server and check status remotely 
 
 ## Usage
 
-- (*Alpha*) Windows users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected.
-- (*Unstable*) Linux users will need some simple build knowledge to compile with pyinstaller, or run via python with source/model.py as entry-point.
+- (*Pre-alpha*) Windows users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected.
 
 # Notice
 

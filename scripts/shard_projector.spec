@@ -3,10 +3,10 @@
 block_cipher = None
 
 
-a = Analysis(['model.py'],
+a = Analysis(['..\\source\\model.py'],
              pathex=['C:\\Users\\ryanr\\source\\shard-projector\\scripts'],
              binaries=[],
-             datas=[('./icon/*', './icon'), ('./img/*', './img'), ('./data/ini/cluster_configuration.json', './data/ini'), ('./data/ini/shard_configuration.json', './data/ini')],
+             datas=[('../img/*', './icon'), ('../img/*', './img'), ('../data/ini/cluster_configuration.json', './data/ini'), ('../data/ini/shard_configuration.json', './data/ini')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -26,7 +26,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='icon\\icon.ico')
+          console=False , icon='..\\img\\icon.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
