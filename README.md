@@ -46,6 +46,8 @@ Developed with Tkinter, a framework for creating user-interfaces. Its included w
 
 (*Pre-alpha*) Windows 
 
+Requires a steamcmd installation of Don't Starve Dedicated Server!
+
 - Easy: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
 - Other: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip.
 
