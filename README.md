@@ -47,7 +47,6 @@ Developed with Tkinter, a framework for creating user-interfaces. Its included w
 
 ## Usage
 
-
 ### (Alpha) Windows 
 
 Requires a steamcmd installation of Don't Starve Together Dedicated Server! 
@@ -55,7 +54,7 @@ Requires a steamcmd installation of Don't Starve Together Dedicated Server!
 - Easy: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
 - Other: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip.
 
-*Known issue (v0.1a): if server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.*
+*Known issue (v0.1a): if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.*
 
 ### (*Unstable*) Linux
 
