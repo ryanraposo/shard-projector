@@ -1,7 +1,0 @@
-# Directories
-dist
-build
-extern
-.vscode
-.gitignore
-source\__pycache__
