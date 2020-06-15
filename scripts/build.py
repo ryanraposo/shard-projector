@@ -1,5 +1,10 @@
-import subprocess
+"""For f5 building in vscode. 
+"""
+
+import subprocess, os
+
+batch_path = os.path.abspath("scripts/build.bat")
 
 subprocess.call(
-    'C:/Users/ryanr/source/shard-projector/scripts/build.bat'
+    batch_path
 )
