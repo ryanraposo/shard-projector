@@ -14,7 +14,7 @@
 - [Table of Contents](#table-of-contents)
 - [Features](#features)
     - [Modern Interface](#modern-interface)
-    - [Web Access](#web-access)
+    - [Webview & Remote commands (experimental)](#webview--remote-commands-experimental)
     - [Cross-platform](#cross-platform)
 - [Getting Started](#getting-started)
   - [Usage](#usage)
@@ -32,9 +32,9 @@ Simple yet powerful controls for running, monitoring, and configuring your serve
 
 ![Shard Projector](img/sp-running-preview.png)
 
-### Web Access
+### Webview & Remote commands (experimental)
 
-Connect to a machine running a Shard Projector server and check status remotely via HTTP.
+Connect to a machine running a Shard Projector server remotely to check status (http), or send commands remotely
 
 ### Cross-platform
 
@@ -62,12 +62,12 @@ Developed with Tkinter, a framework for creating user-interfaces. Its included w
 - Shard input/output
 - In-app configuration of servers (cluster.ini, server.ini(s))
 - In-app configuration of application (environment, paths, etc) 
-- Web Interface (http, non-internet)
+- Web interface & remote commands (highly experimental)
 
 # What's being worked on?
 
 ### For developers:
-- MVC (Model, View, Controller) architecture
+- MVC architecture
 - Class architecture
 - Custom ttk widgets
 - Config-to-widget strategies

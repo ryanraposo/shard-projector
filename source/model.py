@@ -1,5 +1,5 @@
 """
-Desktop application for running & managing Don't Starve Together Dedicated Servers on local machines running Windows
+Desktop application for running & managing Don't Starve Together Dedicated Servers on machines running Windows
 """
 import sys, os
 
@@ -258,8 +258,10 @@ class ServerControl:
         self.initialize_ui()
         self.active_server = None
 
-        config_path = os.path.realpath('C:/Users/ryanr/source/shard-projector/source/settings.ini')
-        config_defaults_path = os.path.realpath('C:/Users/ryanr/source/shard-projector/source/settings_defaults.ini')
+        script_path = os.path.dirname(os.path.realpath(__file__))
+        
+        config_path = os.path.join(script_path, 'settings.ini')
+        config_defaults_path = os.path.join(script_path, 'settings_defaults.ini')
         self.config = Configuration(config_path, config_defaults_path)
             
         # local_ip = remote.get_ip()
@@ -336,7 +338,9 @@ class ServerControl:
         self.listen_server_enabled = tk.BooleanVar(False)
         self.toggle_listen_server = widgets.LabelInput(self.frame_main, label='Allow remote commands:', input_class=ttk.Checkbutton, label_args={'padding':[8,0,0,0]}, input_var=self.listen_server_enabled)
         self.toggle_listen_server.place(x=664, y=40)
-  
+
+        self.toggle_listen_server.input.state(["disabled"]) #* for v0.1-alpha
+
         # Quick Commands
         self.command_panel = widgets.CommandPanel(
             parent=self.frame_main,

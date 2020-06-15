@@ -91,7 +91,8 @@ class DialogConfigureApplication(tk.Toplevel):
         )
         configuration_frame.grid(row=0, column=0)
 
-        btn_apply = ttk.Button(self.root_frame, text='Apply', command=lambda: config.update_from_dict(configuration_frame.get()))
+
+        btn_apply = ttk.Button(self.root_frame, text='Apply', command=lambda: application.config.update_from_dict(configuration_frame.get()))
         btn_apply.grid(row=1, column=0)
         
         self.root_frame.grid(row=0,column=0, sticky='nswe')
