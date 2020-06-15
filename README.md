@@ -18,6 +18,8 @@
     - [Cross-platform](#cross-platform)
 - [Getting Started](#getting-started)
   - [Usage](#usage)
+    - [(*v0.1a*) Windows](#v01a-windows)
+    - [(*Unstable*) Linux](#unstable-linux)
 - [What's working right now?](#whats-working-right-now)
 - [What's being worked on?](#whats-being-worked-on)
     - [For developers](#for-developers)
@@ -46,7 +48,7 @@ Developed with Tkinter, a framework for creating user-interfaces. Its included w
 ## Usage
 
 
-(*v0.1a*) Windows 
+### (*v0.1a*) Windows 
 
 Requires a steamcmd installation of Don't Starve Together Dedicated Server! 
 
@@ -55,7 +57,7 @@ Requires a steamcmd installation of Don't Starve Together Dedicated Server!
 
 *Known issue: if server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.*
 
-(*Unstable*) Linux
+### (*Unstable*) Linux
 
 - Clone the repo and run with model.py as an entry point. Unstable and not optimized, but not far off :)
 
