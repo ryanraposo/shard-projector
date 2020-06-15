@@ -1,0 +1,5 @@
+# Directories
+dist
+build
+extern
+.vscode
