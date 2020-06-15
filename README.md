@@ -20,8 +20,8 @@
   - [Usage](#usage)
 - [What's working right now?](#whats-working-right-now)
 - [What's being worked on?](#whats-being-worked-on)
-    - [For developers:](#for-developers)
-    - [For users:](#for-users)
+    - [For developers](#for-developers)
+    - [For users](#for-users)
 - [Notice](#notice)
   
 # Features
@@ -66,7 +66,7 @@ Developed with Tkinter, a framework for creating user-interfaces. Its included w
 
 # What's being worked on?
 
-### For developers:
+### For developers
 - MVC architecture
 - Class architecture
 - Custom ttk widgets
@@ -77,8 +77,8 @@ Developed with Tkinter, a framework for creating user-interfaces. Its included w
 - Generation of new servers
 - Cluster-token generation out-of-game (may not be feasible)
 
-### For users:
-- Mod features
+### For users
+- Mod configuration 
 - Better scrolling (sorry!)
 - Better resizing (sorry!)
 - Documentation
