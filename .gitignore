@@ -3,5 +3,5 @@ dist
 build
 extern
 .vscode
-source/__pycache__/model.cpython-37.pyc
-shard_projector.spec
+*shard_projector.spec
+*__pycache__
