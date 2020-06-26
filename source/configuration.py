@@ -7,6 +7,7 @@ from constants import Platform
 class Environment:
     """A helper class for initialization of application environment variables.
     """
+
     def check_platform(self) -> Platform:
         if sys.platform == "win32":
             return Platform.WINDOWS
@@ -14,6 +15,7 @@ class Environment:
             return Platform.LINUX
         else:
             return Platform.UNSUPPORTED
+
 
 class Configuration:
     """A reader/writer for a specific (.ini) configuration file.
