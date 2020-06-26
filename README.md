@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=400px height=400px src="img\sp-icon-header.png" alt="Shard Projector"></a>
+ <img width=300px height=300px src="img\sp-icon-header.png" alt="Shard Projector"></a>
 </p>
 
 <p align="center" style="font-size: 300%"> Shard Projector
