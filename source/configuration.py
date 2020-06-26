@@ -1,10 +1,20 @@
+import sys
 import configparser
 import pathlib
 
+from constants import Platform
+
+def check_platform() -> Platform:
+    if sys.platform == "win32":
+        return Platform.WINDOWS
+    elif sys.platform == "linux" or sys.platform == "linux2":
+        return Platform.LINUX
+    else:
+        return Platform.UNSUPPORTED
 
 class Configuration():
-    """A reader/writer for a specific (.ini) configuration file."""
-
+    """A reader/writer for a specific (.ini) configuration file.
+    """
     def __init__(
         self,
         path=None,
