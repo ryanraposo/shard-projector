@@ -5,15 +5,19 @@
 
 <p align="center" style="font-size: 300%"> Shard Projector
 </p>
-<p align="center" style="font-size: 140%"> Desktop dedicated servers for Don't Starve Together
+<p align="center" style="font-size: 140%"> Desktop dedicated servers for Don't Starve Together. 
 </p>
 <br>
 
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Dev Journal](#dev-journal)
+  - [Simple Setup](#simple-setup)
+  - [In-app World Configuration](#in-app-world-configuration)
 - [Features](#features)
-    - [Modern Interface](#modern-interface)
+    - [Modern Interface & Architecture](#modern-interface--architecture)
     - [Webview & Remote commands (experimental)](#webview--remote-commands-experimental)
     - [Cross-platform](#cross-platform)
 - [Getting Started](#getting-started)
@@ -26,9 +30,48 @@
     - [For users](#for-users)
 - [Notice](#notice)
   
+# Introduction
+
+Shard Projector is a user-friendly, 64bit, multi-threaded desktop app for running Don't Starve Together servers on Windows & Linux. 
+
+Run worlds of all kinds easily for you & your friends; on dedicated servers that are simple to setup, manage, moderate and access- even when you're not online. Works great with both online and LAN servers, and supports all kinds of server setups.
+
+If you have a PC and internet connection from this decade, you might be able to drop your monthly hosting bill for good. No technical expertise necessary. 
+
+# Dev Journal
+
+These are the main feature goals for Shard Projector that are still in progress. Alot is already present, but I want to see the entire process even simpler, and for everybody.
+
+Check back for notes and dates for their implementation, I'll be journaling here as I work!
+
+## Simple Setup 
+Automated installation of everything you need to run your own dedicated servers. Just download the game from steam, the latest version of Shard Projector, and it will take care of the rest.
+
+- Installers
+  - [ ] Automatic, guided installer for SteamCMD and a version of DST that servers run on
+  - [ ] Auto-updating to make sure your servers stay current
+
+## In-app World Configuration
+Tools and a design that makes world management simple, just like in Don't Starve Together's interface. No need to trackdown setups from 5-year-old forum posts or mess around with text files (or terminals!).
+
+
+- Easy Menus
+  - [x] Settings (general) cluster.ini/server.ini
+  - [ ] Settings (mods) modoverrides.lua 
+  - [ ] Settings (worldgen) worldgenoverride.lua
+
+## No Limitation Remote Access
+
+
+
+
+
+
+
 # Features
 
-### Modern Interface
+### Modern Interface & Architecture
+
 
 Simple yet powerful controls for running, monitoring, and configuring your server.
 
@@ -40,7 +83,7 @@ Connect to a machine running a Shard Projector server remotely to check status (
 
 ### Cross-platform
 
-Developed with Tkinter, a framework for creating user-interfaces. Its included with Python by default, and works on all platforms.
+Developed with Tkinter, a framework for creating user-interfaces. Its a standard python library, and is packaged with all Python installations.
 
 # Getting Started
 
@@ -79,17 +122,14 @@ Requires a steamcmd installation of Don't Starve Together Dedicated Server!
 - Custom ttk widgets
 - Config-to-widget strategies
 - 'Mover' ui tool for development
-- 2-way implementation of the web interface
-- Viewing, configuration of mods
-- Generation of new servers
 - Cluster-token generation out-of-game (may not be feasible)
 
 ### For users
-- Mod configuration 
-- Better scrolling (sorry!)
+- 2-way implementation of the web interface
+- Better scrolling
 - Better resizing (sorry!)
-- Documentation
-- Whatever else you want! If its doable and you're patient, this is the time to let me know!
+- Viewing & configuration of mods
+- Generation of new servers
 
 # Notice
 
