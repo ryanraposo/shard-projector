@@ -4,17 +4,21 @@ import pathlib
 
 from constants import Platform
 
-def check_platform() -> Platform:
-    if sys.platform == "win32":
-        return Platform.WINDOWS
-    elif sys.platform == "linux" or sys.platform == "linux2":
-        return Platform.LINUX
-    else:
-        return Platform.UNSUPPORTED
+class Environment:
+    """A helper class for initialization of application environment variables.
+    """
+    def check_platform(self) -> Platform:
+        if sys.platform == "win32":
+            return Platform.WINDOWS
+        elif sys.platform == "linux" or sys.platform == "linux2":
+            return Platform.LINUX
+        else:
+            return Platform.UNSUPPORTED
 
-class Configuration():
+class Configuration:
     """A reader/writer for a specific (.ini) configuration file.
     """
+
     def __init__(
         self,
         path=None,
