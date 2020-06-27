@@ -59,7 +59,7 @@ class Environment:
         exec_path = os.path.join(install_path, "steamcmd.exe")
 
         if os.path.exists(exec_path):
-            raise Exception("SteamCMD already installed to shard-projector/ext/steamcmd.")
+            raise FileExistsError("SteamCMD add-in already installed.")
         
         # Download latest steamcmd installer zip to temp directory
         zurl = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
