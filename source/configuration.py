@@ -1,21 +1,45 @@
 import sys
 import configparser
 import pathlib
+import os
 
-from constants import Platform
+from constants import Platforms
+import installed_programs
 
 class Environment:
     """A helper class for initialization of application environment variables.
     """
 
-    def check_platform(self) -> Platform:
-        if sys.platform == "win32":
-            return Platform.WINDOWS
-        elif sys.platform == "linux" or sys.platform == "linux2":
-            return Platform.LINUX
-        else:
-            return Platform.UNSUPPORTED
+    def __init__(self):
+        self.platform = self._get_platform()
+        self.programs = self._get_installed_programs()
 
+    def _get_platform(self) -> Platforms:
+        if sys.platform == "win32":
+            return Platforms.WINDOWS
+        elif sys.platform == "linux" or sys.platform == "linux2":
+            return Platforms.LINUX
+        elif sys.platform == "darwin":
+            return Platforms.MACOSX
+    
+    def _get_installed_programs(self):
+        if self.platform == Platforms.WINDOWS:
+            return installed_programs.get_all()
+
+    def program_is_installed(self, patterns):
+        for each in self.programs:
+            name = each['name'].lower()
+            if all(elem in name for elem in patterns):
+                return True
+        return False
+
+    def debug_search_installed_programs(self, patterns):
+        matches = []
+        for each in self.programs:
+            name = each['name'].lower()
+            if all(elem in name for elem in patterns):
+                matches.append(name)
+        print('[debug search installed programs] matches:', matches)
 
 class Configuration:
     """A reader/writer for a specific (.ini) configuration file.

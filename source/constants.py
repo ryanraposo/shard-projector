@@ -1,9 +1,9 @@
 from enum import Enum
 
-class Platform(Enum):
+class Platforms(Enum):
     WINDOWS = 1
     LINUX = 2
-    UNSUPPORTED = 3
+    MACOSX = 3
 
 class FieldTypes:
     standard = 1
