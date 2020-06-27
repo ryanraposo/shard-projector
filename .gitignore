@@ -3,5 +3,7 @@ dist
 build
 extern
 .vscode
+temp/**
+ext/**
 *shard_projector.spec
 *__pycache__

@@ -1,4 +1,5 @@
 """
+===================================================================================
 Derivative of code originally authored by Orsiris de Jong
 """
 import winreg
@@ -39,3 +40,6 @@ def get_all():
 
     installed_program_list = local_32 + local_64 + current_user
     return installed_program_list
+"""
+===================================================================================
+"""

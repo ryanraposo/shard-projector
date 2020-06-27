@@ -1,13 +1,16 @@
 import sys
 import configparser
-import pathlib
+import pathlib, shutil
 import os
+import requests
+import zipfile
+import subprocess
 
 from constants import Platforms
-import installed_programs
+import wh
 
 class Environment:
-    """A helper class for initialization of application environment variables.
+    """Has methods for bootstrapping dependencies & initializing environment variables.
     """
 
     def __init__(self):
@@ -24,7 +27,7 @@ class Environment:
     
     def _get_installed_programs(self):
         if self.platform == Platforms.WINDOWS:
-            return installed_programs.get_all()
+            return wh.get_all()
 
     def program_is_installed(self, patterns):
         for each in self.programs:
@@ -40,6 +43,44 @@ class Environment:
             if all(elem in name for elem in patterns):
                 matches.append(name)
         print('[debug search installed programs] matches:', matches)
+
+    def install_steamcmd(self, update_config=False):
+        """Installs SteamCMD to shard-projector/ext/steamcmd with option to update application config accordingly.
+
+        Args:
+            update_config (bool, optional): If true, application config will be updated to reflect new install path. Defaults to False.
+
+        Raises:
+            Exception: If SteamCMD is already installed locally, an exception will be raised.
+        """
+
+        temp_path = os.path.join(pathlib.Path(__file__).parents[1], "temp")
+        install_path = os.path.join(pathlib.Path(__file__).parents[1], "ext", "steamcmd")
+        exec_path = os.path.join(install_path, "steamcmd.exe")
+
+        if os.path.exists(exec_path):
+            raise Exception("SteamCMD already installed to shard-projector/ext/steamcmd.")
+        
+        # Download latest steamcmd installer zip to temp directory
+        zurl = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
+        response = requests.get(zurl)
+        zpath = os.path.join(temp_path, "steamcmd.zip")
+        zfile_io = open(zpath, 'wb')
+        zfile_io.write(response.content)
+        zfile_io.close()
+
+        # Extract zip contents to ext/steamcmd and delete zip from temp
+        zfile = zipfile.ZipFile(zpath, 'r')
+        zfile.extractall(install_path)
+        zfile.close()
+        os.remove(zpath)
+
+        # Run installer in ext/steamcmd
+        exec_path = os.path.join(install_path, "steamcmd.exe")
+        subprocess.Popen(exec_path)
+
+        #TODO: update config
+
 
 class Configuration:
     """A reader/writer for a specific (.ini) configuration file.

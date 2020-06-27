@@ -1,5 +1,5 @@
 """
-Desktop application for running & managing Don't Starve Together Dedicated Servers on machines running Windows
+Desktop application for running & managing Don't Starve Together Dedicated Servers
 """
 import sys, os
 
