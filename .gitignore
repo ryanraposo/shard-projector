@@ -4,6 +4,6 @@ build
 extern
 .vscode
 temp/**
-ext/**
+steamcmd
 *shard_projector.spec
 *__pycache__
