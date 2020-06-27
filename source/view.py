@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import filedialog, messagebox, colorchooser
+from tkinter import filedialog, messagebox, colorchooser 
 from ttkthemes import ThemedTk
 
 import os, json
@@ -250,3 +250,26 @@ class DialogCustomCommand(tk.Toplevel):
         self.wm_deiconify()
         self.wait_window()
         return self.var
+
+
+class DialogInstallSteamCMD:
+    def __init__(self, task_fn):
+        confirm = messagebox.askokcancel(
+            title="Task",
+            message="This will attempt to install SteamCMD as an add-in.\n\nNote: Shard Projector will always prioritize add-ins to external installations. Delete the contents of the add-ins folder to safely uninstall them."
+        )
+
+        if confirm == True:
+            try:
+                task_fn()
+            except FileExistsError:
+                messagebox.showinfo("Info", "The SteamCMD add-in is already installed!")
+            except Exception as e:
+                messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
+        
+
+        # super().__init__(parent)
+        # self.title("Install SteamCMD add-in...")
+        # self.grab_set()
+        # self.transient(parent)
+        # self.root_frame = ttk.Frame(self)

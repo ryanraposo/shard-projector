@@ -13,10 +13,12 @@ from tkinter import ttk
 from tkinter import filedialog, messagebox
 from ttkthemes import ThemedTk
 
+from constants import PLATFORMS
+from configuration import Configuration, Environment
+
 import view
 import widgets
 import remote
-from configuration import Configuration
 
 import uitools
 
@@ -258,15 +260,16 @@ class ServerControl:
         self.initialize_ui()
         self.active_server = None
 
+        self.env = Environment()
+
         script_path = os.path.dirname(os.path.realpath(__file__))
-        
         config_path = os.path.join(script_path, 'settings.ini')
         config_defaults_path = os.path.join(script_path, 'settings_defaults.ini')
         self.config = Configuration(config_path, config_defaults_path)
             
         # local_ip = remote.get_ip()
         # self.remote_server = remote.ThreadedServer(local_ip, 8080, self.on_remote_command)
-        
+
         self.update()
 
     def initialize_ui(self):
@@ -304,7 +307,14 @@ class ServerControl:
         self.action_settings = ttk.Button(self.action_bar, text="Settings", command=self.on_settings)
         self.action_settings.grid(row=0, column=0, sticky="ns")
 
+        self.window.option_add("*Menu.background", "#424242")
+
         self.action_tasks = ttk.Menubutton(self.action_bar, text="Tasks")
+        self.action_tasks.menu = tk.Menu(self.action_tasks, tearoff = 0, background="#424242", foreground="white")
+        self.action_tasks["menu"] = self.action_tasks.menu
+
+        self.action_tasks.menu.add_command(label="Install SteamCMD add-in", command=self.on_task_install_steamcmd)
+
         self.action_tasks.grid(row=0, column=1, sticky="ns")
 
         self.action_bar.place(x=620, y=0)
@@ -461,6 +471,9 @@ class ServerControl:
         print('> Remote command recieved: ' + command)
         self._send_command(command)
     
+    def on_task_install_steamcmd(self):
+        if self.env.platform == PLATFORMS.WINDOWS:
+            view.DialogInstallSteamCMD(self.env.install_steamcmd)
 
     def unload_server(self):
         if self.active_server != None:

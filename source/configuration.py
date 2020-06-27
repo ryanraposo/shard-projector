@@ -6,7 +6,7 @@ import requests
 import zipfile
 import subprocess
 
-from constants import Platforms
+from constants import PLATFORMS
 import wh
 
 class Environment:
@@ -17,16 +17,16 @@ class Environment:
         self.platform = self._get_platform()
         self.programs = self._get_installed_programs()
 
-    def _get_platform(self) -> Platforms:
+    def _get_platform(self) -> PLATFORMS:
         if sys.platform == "win32":
-            return Platforms.WINDOWS
+            return PLATFORMS.WINDOWS
         elif sys.platform == "linux" or sys.platform == "linux2":
-            return Platforms.LINUX
+            return PLATFORMS.LINUX
         elif sys.platform == "darwin":
-            return Platforms.MACOSX
+            return PLATFORMS.MACOSX
     
     def _get_installed_programs(self):
-        if self.platform == Platforms.WINDOWS:
+        if self.platform == PLATFORMS.WINDOWS:
             return wh.get_all()
 
     def program_is_installed(self, patterns):
@@ -45,17 +45,14 @@ class Environment:
         print('[debug search installed programs] matches:', matches)
 
     def install_steamcmd(self, update_config=False):
-        """Installs SteamCMD to shard-projector/ext/steamcmd with option to update application config accordingly.
-
-        Args:
-            update_config (bool, optional): If true, application config will be updated to reflect new install path. Defaults to False.
+        """Installs SteamCMD to shard-projector/add-ins/steamcmd with option to update application config accordingly.
 
         Raises:
             Exception: If SteamCMD is already installed locally, an exception will be raised.
         """
 
         temp_path = os.path.join(pathlib.Path(__file__).parents[1], "temp")
-        install_path = os.path.join(pathlib.Path(__file__).parents[1], "ext", "steamcmd")
+        install_path = os.path.join(pathlib.Path(__file__).parents[1], "add-ins", "steamcmd")
         exec_path = os.path.join(install_path, "steamcmd.exe")
 
         if os.path.exists(exec_path):
@@ -69,13 +66,13 @@ class Environment:
         zfile_io.write(response.content)
         zfile_io.close()
 
-        # Extract zip contents to ext/steamcmd and delete zip from temp
+        # Extract zip contents to add-ins/steamcmd and delete zip from temp
         zfile = zipfile.ZipFile(zpath, 'r')
         zfile.extractall(install_path)
         zfile.close()
         os.remove(zpath)
 
-        # Run installer in ext/steamcmd
+        # Run installer in add-ins/steamcmd
         exec_path = os.path.join(install_path, "steamcmd.exe")
         subprocess.Popen(exec_path)
 
