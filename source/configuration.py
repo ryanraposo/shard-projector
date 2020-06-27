@@ -45,10 +45,10 @@ class Environment:
         print('[debug search installed programs] matches:', matches)
 
     def install_steamcmd(self, update_config=False):
-        """Installs SteamCMD to shard-projector/add-ins/steamcmd with option to update application config accordingly.
+        """Installs SteamCMD as an add-in (shard-projector/add-ins/steamcmd).
 
         Raises:
-            Exception: If SteamCMD is already installed locally, an exception will be raised.
+            Exception: If SteamCMD add-in is already installed, a FileExistsError will be raised.
         """
 
         temp_path = os.path.join(pathlib.Path(__file__).parents[1], "temp")
@@ -75,8 +75,6 @@ class Environment:
         # Run installer in add-ins/steamcmd
         exec_path = os.path.join(install_path, "steamcmd.exe")
         subprocess.Popen(exec_path)
-
-        #TODO: update config
 
 
 class Configuration:

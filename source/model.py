@@ -313,7 +313,7 @@ class ServerControl:
         self.action_tasks.menu = tk.Menu(self.action_tasks, tearoff = 0, background="#424242", foreground="white")
         self.action_tasks["menu"] = self.action_tasks.menu
 
-        self.action_tasks.menu.add_command(label="Install SteamCMD add-in", command=self.on_task_install_steamcmd)
+        self.action_tasks.menu.add_command(label="Install SteamCMD (add-in)", command=self.on_task_install_steamcmd)
 
         self.action_tasks.grid(row=0, column=1, sticky="ns")
 
@@ -474,6 +474,7 @@ class ServerControl:
     def on_task_install_steamcmd(self):
         if self.env.platform == PLATFORMS.WINDOWS:
             view.DialogInstallSteamCMD(self.env.install_steamcmd)
+            # TODO: relevant application config update 
 
     def unload_server(self):
         if self.active_server != None:

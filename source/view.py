@@ -266,10 +266,4 @@ class DialogInstallSteamCMD:
                 messagebox.showinfo("Info", "The SteamCMD add-in is already installed!")
             except Exception as e:
                 messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
-        
-
-        # super().__init__(parent)
-        # self.title("Install SteamCMD add-in...")
-        # self.grab_set()
-        # self.transient(parent)
-        # self.root_frame = ttk.Frame(self)
+    
