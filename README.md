@@ -1,8 +1,4 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img width=400px height=400px src="img\sp-icon-header.png" alt="Shard Projector"></a>
-</p>
-
+   
 <p align="center" style="font-size: 120%"> <b>Shard Projector</b>
 </p>
 <p align="center" style="font-size: 140%"> Desktop dedicated servers for Don't Starve Together. 
@@ -34,7 +30,7 @@ Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Use
 
 Shard Projector is a user-friendly, 64bit, multi-threaded desktop app for running Don't Starve Together servers on Windows & Linux. 
 
-It was designed to bridge the gap for non-technical players who want to host worlds of their own, and provide an option other than a monthly server-subscription. Use it to run worlds of all kinds easily for you & your friends on dedicated servers that are simple to setup, manage, moderate and access- even when you're not online!
+Its being developed to bridge the gap for non-technical players who want to host worlds of their own, and provide an option other than a monthly server-subscription. Use it to run worlds of all kinds easily for you & your friends on dedicated servers that are simple to setup, manage, moderate and access- even when you're not online!
 
 Whether you're running a LAN server at the house, hosting a 24-player online for your region, or debugging mods, Shard Projector has features you'll appreciate.
 
@@ -50,12 +46,13 @@ Simple yet powerful controls for running, monitoring, and configuring your serve
 
 Developed with Tkinter, a framework for creating user-interfaces that works wherever Python can run.
 
-Shard Projector currently supports Windows, with Linux and MAC OS X support in mind since the beginning. 
+Shard Projector currently supports Windows. Linux and MACOSX users should check back often. 
+
+Users with Python knowledge could very well have it running on those platforms in an afternoon. 
 
 *Note: get in touch with me at raposo.ryan@gmail.com if you'd like to assist with MACOSX optimization/testing. Early-access to new versions a guarantee!*
 
 # Getting Started
-
 
 ## Usage
 
@@ -97,6 +94,12 @@ Shard Projector currently supports Windows, with Linux and MAC OS X support in m
 - Better resizing (sorry!)
 - Viewing & configuration of mods
 - Generation of new servers
+
+# Contributing 
+
+For contribution efforts generally, message me first so I can send all the latest and swap notes. I want contributors to know their work is going to be included if they put the time in, and during this stage a quick email first would be best.
+
+When development becomes less-volatile and my intentions are better documented, I'll provide standard docs & a familiar license for contributors. 
 
 # Notice
 
