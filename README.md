@@ -59,11 +59,7 @@ Shard Projector currently supports Windows, with Linux and MAC OS X support in m
 
 ## Usage
 
-### (Alpha) Windows 
-
-NOTE: Shard Projector takes technical knowledge to play around with at the moment. Thats going to be characteristic for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait, the development build will take custom paths and even install steamcmd as an addin all on its own for you, but the release version (v0.1) is a tricky mistress. Thanks for waiting ❤
-
-moRequires a steamcmd installation of Don't Starve Together Dedicated Server! Localization & pathing are extremely basic in v0.1a, as they are being overhauled to account for Linux and MacOSX. Essentially you must have a steamcmd installation with the server installed at "C:/steamcmd". 
+### (Alpha) Windows
 
 - Easy: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
 - Other: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip.
