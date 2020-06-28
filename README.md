@@ -9,9 +9,13 @@
 </p>
 <br>
 
-NOTE: Shard Projector may require technical knowledge to play around with at the moment. In simple terms, it runs like a dream if you have a very predictable setup. Addressing that (localization) is a top priority and well underway. Its also the key to welcoming our non-windows friends and thats important. Even yours truly likes getting weird with filepaths on occasion. If the dual-boot fits, I like to say.
+# Note (28/06/20)
+
+Shard Projector may require technical knowledge to play around with at the moment. In simple terms, it runs like a dream if you have a very predictable setup. Addressing that (localization) is a top priority and well underway. Its also the key to welcoming our non-windows friends and thats important. Even yours truly likes getting weird with filepaths on occasion. If the dual-boot fits, I like to say.
 
 Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait. In fact the development branch build just above this readme will take custom paths and even install steamcmd as an addin all on its own for you, but the release version (v0.1) is a tricky, picky mistress. Thanks for waiting ❤
+
+I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help.
 
 # Table of Contents
 
@@ -52,7 +56,7 @@ Developed with Tkinter, a framework for creating user-interfaces that works wher
 
 Shard Projector currently supports Windows. Linux and MACOSX users should check back often. 
 
-Users with Python knowledge could very well have it running on those platforms in an afternoon. I'd love to hear about any such endevours and even assist with your specific patch. 
+Users with Python knowledge could very well have it running on those platforms in an afternoon. I'd love to hear about any such endevours and even assist with your specific patch, doesn't need to be release-ready code in any sense. 
 
 *Note: get in touch with me at raposo.ryan@gmail.com if you'd like to assist with MACOSX optimization/testing. Early-access to new versions a guarantee!*
 
