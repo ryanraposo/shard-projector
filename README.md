@@ -103,9 +103,9 @@ Users with Python knowledge could very well have it running on those platforms i
 
 For contribution efforts generally, message me first so I can send all the latest and swap notes. I want contributors to know their work is going to be included if they put the time in, and during this stage a quick email first would be best.
 
-When development becomes less-volatile and my intentions are better documented, I'll provide standard docs & a familiar license for contributors. 
+When development becomes less-volatile and my intentions are better documented, I'll provide standard docs & a familiar license.
 
-Whether or not you wait until then, I'm excited to work with you. Your interest is highly-valued, thats for sure. :)
+I'm excited to work with you and your interest is highly-valued, that much is certain. :)
 
 # Notice
 
