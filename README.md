@@ -3,13 +3,13 @@
  <img width=400px height=400px src="img\sp-icon-header.png" alt="Shard Projector"></a>
 </p>
 
-<p align="center" style="font-size: 300%"> Shard Projector
+<p align="center" style="font-size: 120%"> <b>Shard Projector</b>
 </p>
 <p align="center" style="font-size: 140%"> Desktop dedicated servers for Don't Starve Together. 
 </p>
 <br>
 
-NOTE: Shard Projector takes technical knowledge to play around with at the moment. In simple terms, it runs like a dream if you have a very predictable setup. Addressing that (localization) is a top priority and well underway. Its also the key to welcoming our non-windows friends and thats important. Even yours truly likes getting weird with filepaths on occasion. If the dual-boot fits, I like to say.
+NOTE: Shard Projector may require technical knowledge to play around with at the moment. In simple terms, it runs like a dream if you have a very predictable setup. Addressing that (localization) is a top priority and well underway. Its also the key to welcoming our non-windows friends and thats important. Even yours truly likes getting weird with filepaths on occasion. If the dual-boot fits, I like to say.
 
 Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait. In fact the development branch build just above this readme will take custom paths and even install steamcmd as an addin all on its own for you, but the release version (v0.1) is a tricky, picky mistress. Thanks for waiting ❤
 
