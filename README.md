@@ -1,4 +1,5 @@
-   
+<img width=400px height=400px src="img\sp-icon-header.png" alt="Shard Projector"></a>
+</p>
 <p align="center" style="font-size: 120%"> <b>Shard Projector</b>
 </p>
 <p align="center" style="font-size: 140%"> Desktop dedicated servers for Don't Starve Together. 
