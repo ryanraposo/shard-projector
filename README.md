@@ -15,9 +15,13 @@ Shard Projector may require technical knowledge to play around with at the momen
 
 Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait. In fact, the development branch build just above this readme can make better detections steadily, but more excitingly is beginning to retrieve everything it needs to run with only permission neccesary from users. Auto-installing SteamCMD as an Add-In is now possible. Look to the next release for that. For now, though, let it be known that (v0.1a) can be a tricky, picky mistress.
 
-Finally, I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help. Janky, emergency Python written just for you can be had. I released because its been in use at my apartment daily and without glaring issues, running servers for some time now. When it gets off the ground, its pretty neat, but it needs curveballs and non-unicorn environments to be improved intelligently at this point.
+Finally, I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help. Janky, emergency Python written just for you can be had.
 
-Thanks for reading and supporting the project, I'll likely be writing & archiving notes like this in the repo going forward.
+I released because its been in use at my apartment daily and without glaring issues, running servers for some time now. When it gets off the ground, its pretty neat! But, it needs curveballs and non-unicorn environments to be improved intelligently at this point; at least by me. Probably true *of* me, also. 
+
+So please, criticize generously, tell me your best (and wIlDeSt) Shard Projector uninstall stories. Help a guy and his code-thing grow.
+
+Thanks for reading and supporting the project, I'll likely be writing & archiving notes like this in the repo going forward. I'll set up a related branch that can be followed, or something like that.
 
 Ryan
 
