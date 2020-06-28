@@ -52,7 +52,7 @@ Developed with Tkinter, a framework for creating user-interfaces that works wher
 
 Shard Projector currently supports Windows. Linux and MACOSX users should check back often. 
 
-Users with Python knowledge could very well have it running on those platforms in an afternoon. 
+Users with Python knowledge could very well have it running on those platforms in an afternoon. I'd love to hear about any such endevours and even assist with your specific patch. 
 
 *Note: get in touch with me at raposo.ryan@gmail.com if you'd like to assist with MACOSX optimization/testing. Early-access to new versions a guarantee!*
 
