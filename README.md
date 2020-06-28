@@ -101,6 +101,8 @@ For contribution efforts generally, message me first so I can send all the lates
 
 When development becomes less-volatile and my intentions are better documented, I'll provide standard docs & a familiar license for contributors. 
 
+Whether or not you wait until then, I'm excited to work with you. Your interest is highly-valued, thats for sure. :)
+
 # Notice
 
 Klei Entertainment is not associated with this project in any way. 
