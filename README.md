@@ -11,7 +11,7 @@
 
 NOTE: Shard Projector takes technical knowledge to play around with at the moment. In simple terms, it runs like a dream if you have a very predictable setup. Addressing that (localization) is a top priority and well underway. Its also the key to welcoming our non-windows friends and thats important. Even yours truly likes getting weird with filepaths on occasion. If the dual-boot fits, I like to say.
 
-Some Tech knowledge an asset, at least for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait. In fact the development branch build just above this readme will take custom paths and even install steamcmd as an addin all on its own for you, but the release version (v0.1) is a tricky, picky mistress. Thanks for waiting ❤
+Dark arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait. In fact the development branch build just above this readme will take custom paths and even install steamcmd as an addin all on its own for you, but the release version (v0.1) is a tricky, picky mistress. Thanks for waiting ❤
 
 # Table of Contents
 
