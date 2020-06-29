@@ -11,11 +11,13 @@
 
 # Notes
 
+**06/28/20**
+
 Shard Projector v0.1a may require technical knowledge to work on your system. 
 
-06/28/20
-
 Incoming (1-3 days) release v0.2a introduces a feature (Add-ins) that enables reliable circumvention of the related issues. There are no releases planned before then.
+
+---
 
 While efforts will be made to keep documentation informatve and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
 
@@ -23,6 +25,7 @@ Thank you for your patience, and remember to report issues where able.
 
 # Table of Contents
 
+- [Notes](#notes)
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Features](#features)
@@ -32,6 +35,8 @@ Thank you for your patience, and remember to report issues where able.
   - [Usage](#usage)
     - [(Alpha) Windows](#alpha-windows)
     - [(Unstable) Linux & MACOSX](#unstable-linux--macosx)
+- [What's working right now?](#whats-working-right-now)
+- [Contributing](#contributing)
 - [Notice](#notice)
   
 # Introduction
@@ -66,10 +71,13 @@ Users with Python knowledge could very well have it running on those platforms i
 
 ### (Alpha) Windows
 
-- Easy: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
-- Other: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip.
+- Release: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
+- Development: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip. 
 
-*Known issues (v0.1a)*
+  7739de33fa52f8d74e311dfaac33a440a06965af
+
+
+*Known issues (v0.1a zip)*
 
 - if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.
 - a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise
