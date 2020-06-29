@@ -13,7 +13,7 @@
 
 06/28/20
 
-Shard Projector may require technical knowledge to play around with at the moment. [Read more..](notes/06-28-20)
+Shard Projector may require technical knowledge to play around with at the moment. [Read more..](notes/06-28-20.md)
 
 # Table of Contents
 
