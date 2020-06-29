@@ -470,7 +470,6 @@ class ServerControl:
     def on_task_install_steamcmd(self):
         if self.env.platform == PLATFORMS.WINDOWS:
             view.DialogInstallSteamCMD(self.env.install_steamcmd)
-            # TODO: relevant application config update 
 
     def get_addin_nullrenderer(self):
         """Returns add-in server root if a nullrenderer is found within.
