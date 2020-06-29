@@ -20,7 +20,6 @@ import view
 import widgets
 
 
-
 def iter_except(function, exception):
     """Works like builtin 2-argument `iter()`, but stops on `exception`."""
     try:
