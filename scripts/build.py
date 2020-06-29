@@ -3,7 +3,7 @@
 
 import subprocess, os
 
-batch_path = os.path.abspath("scripts/build-new.bat")
+batch_path = os.path.abspath("scripts/build.bat")
 
 subprocess.call(
     batch_path
