@@ -40,9 +40,9 @@ Thank you for your patience, and remember to report issues where able.
   
 # Introduction
 
-Shard Projector is a user-friendly, 64bit, multi-threaded desktop app for running Don't Starve Together servers on Windows & Linux. 
+Shard Projector is a user-friendly, 64bit, multi-threaded desktop app for running Don't Starve Together servers on Windows with support for Linux & MACOSX coming soon. 
 
-Its being developed to bridge the gap for non-technical players who want to host worlds of their own, and provide an option other than a monthly server-subscription (it will always be free!). Use it to run worlds of all kinds easily for you & your friends on dedicated servers that are simple to setup, manage, moderate and access- even when you're not online!
+Its being developed to bridge the gap for non-technical players who want to host worlds of their own, and provide an option other than a monthly server-subscription (it will always be free!). Use it to run worlds of all kinds easily for you & your friends on dedicated servers that are simple to setup, manage, moderate and access even when you're not playing.
 
 Whether you're running a LAN server at the house, hosting a 24-player online for your region, or debugging mods, Shard Projector has features you'll appreciate.
 
