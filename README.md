@@ -31,8 +31,7 @@ Thank you for your patience, and remember to report issues where able.
 - [Features](#features)
     - [Modern Interface](#modern-interface)
     - [Cross-platform](#cross-platform)
-- [Getting Started](#getting-started)
-  - [Usage](#usage)
+- [Usage](#usage)
     - [(Alpha) Windows](#alpha-windows)
     - [(Unstable) Linux & MACOSX](#unstable-linux--macosx)
 - [What's working right now?](#whats-working-right-now)
@@ -65,9 +64,7 @@ Users with Python knowledge could very well have it running on those platforms i
 
 *Note: get in touch with me at raposo.ryan@gmail.com if you'd like to assist with MACOSX optimization/testing. Early-access to new versions a guarantee!*
 
-# Getting Started
-
-## Usage
+# Usage
 
 ### (Alpha) Windows
 
@@ -93,13 +90,13 @@ Users with Python knowledge could very well have it running on those platforms i
 - Easy-to-use targeting of server configuration folders. ex 'MyDediServer'
 - Shard input/output
 - In-app configuration of servers (cluster.ini, server.ini(s))
-- In-app configuration of application (environment, paths, etc
+- In-app configuration of application (environment, paths, etc)
 
 # Contributing 
 
 For contribution efforts generally, message me first so I can send all the latest and swap notes. I want contributors to know their work is going to be included if they put the time in, and during this stage a quick email first would be best.
 
-When development becomes less-volatile and my intentions are better documented, I'll provide standard docs & a familiar license.
+When development becomes less volatile and my intentions are better documented, I'll provide standard docs & a familiar license.
 
 I'm excited to work with you and your interest is highly-valued, that much is certain. :)
 
