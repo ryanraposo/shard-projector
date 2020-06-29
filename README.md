@@ -13,7 +13,9 @@
 
 Shard Projector may require technical knowledge to play around with at the moment. In simple terms, it runs like a dream if you have a rather predictable setup. Addressing that (localization) is a top priority and well underway. Its also the key to welcoming our non-windows friends and thats important. Even yours truly likes getting weird with filepaths on occasion. If the dual-boot fits, I like to say.
 
-Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to the ease-of-use aspects don't have long to wait. In fact, the development branch build just above this readme can make better detections steadily, but more excitingly is beginning to retrieve everything it needs to run with only permission neccesary from users. Auto-installing SteamCMD as an Add-In is now possible. Look to the next release for that. For now, though, let it be known that (v0.1a) can be a tricky, picky mistress.
+Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to more of the ease-of-use aspects don't have long to wait, and shouldn't expect to. The development branch build just above this readme can make better detections steadily, but more excitingly is beginning to retrieve everything it needs to run with only permission neccesary from users. Auto-installing SteamCMD as an Add-In is now possible. Look to the next release for that. Beyond that, there is a single command entered into that SteamCMD Add-in outstanding, before Shard Projector can run servers on a brand new PC, immediately on logging in for the first time (not accounting for bugs or unintended behaviour, of course). 
+
+For now, though, let it be known that (v0.1a) can be a tricky, picky mistress. 
 
 Finally, I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help. Janky, emergency Python written just for you can be had.
 
