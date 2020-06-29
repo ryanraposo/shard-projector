@@ -15,6 +15,10 @@ Shard Projector v0.1a may require technical knowledge to work on your system.
 
 Incoming (1-3 days) release v0.2a introduces a feature (Add-ins) that enables reliable circumvention of the related issues. There are no releases planned before then.
 
+While efforts will be made to keep documentation informatve and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
+
+Thank you for your patience, and remember to report issues where able.
+
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -26,10 +30,6 @@ Incoming (1-3 days) release v0.2a introduces a feature (Add-ins) that enables re
   - [Usage](#usage)
     - [(Alpha) Windows](#alpha-windows)
     - [(Unstable) Linux & MACOSX](#unstable-linux--macosx)
-- [What's working right now?](#whats-working-right-now)
-- [What's being worked on?](#whats-being-worked-on)
-    - [For developers](#for-developers)
-    - [For users](#for-users)
 - [Notice](#notice)
   
 # Introduction
@@ -67,7 +67,11 @@ Users with Python knowledge could very well have it running on those platforms i
 - Easy: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
 - Other: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip.
 
-*Known issue (v0.1a): if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.*
+*Known issues (v0.1a)"
+
+- if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.
+- a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise. 
+
 
 ### (Unstable) Linux & MACOSX
 
@@ -81,25 +85,7 @@ Users with Python knowledge could very well have it running on those platforms i
 - Easy-to-use targeting of server configuration folders. ex 'MyDediServer'
 - Shard input/output
 - In-app configuration of servers (cluster.ini, server.ini(s))
-- In-app configuration of application (environment, paths, etc) 
-- Web interface & remote commands (highly experimental)
-
-# What's being worked on?
-
-### For developers
-- MVC architecture
-- Class architecture
-- Custom ttk widgets
-- Config-to-widget strategies
-- 'Mover' ui tool for development (& making Tkinter your b...*est friend*.)
-- Cluster token tasks in-app
-
-### For users
-- 2-way implementation of the web interface
-- Better scrolling
-- Better resizing (sorry!)
-- Viewing & configuration of mods
-- Generation of new servers
+- In-app configuration of application (environment, paths, etc
 
 # Contributing 
 
