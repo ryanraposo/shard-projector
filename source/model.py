@@ -472,7 +472,7 @@ class ServerControl:
     def get_addin_nullrenderer(self):
         """Returns add-in server root if a nullrenderer is found within.
         """
-        nullrenderer = os.path.join(pathlib.Path(__file__).parents[1], "add-ins", "steamcmd", "steamcmd.exe")
+        nullrenderer = os.path.join(pathlib.Path(__file__).parents[1], "add-ins/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe")
         if os.path.exists(nullrenderer):
             return nullrenderer
         return None
