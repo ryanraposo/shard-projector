@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="img\sp-icon-header.png" alt="Shard Projector"></a>
+ <img width=240px height=240px src="img\sp-icon-header.png" alt="Shard Projector"></a>
 </p>
 
 <p align="center" style="font-size: 300%"> <b>Shard Projector</b>
@@ -12,6 +12,8 @@
 # Notes
 
 Shard Projector v0.1a may require technical knowledge to work on your system. 
+
+06/28/20
 
 Incoming (1-3 days) release v0.2a introduces a feature (Add-ins) that enables reliable circumvention of the related issues. There are no releases planned before then.
 
@@ -67,10 +69,10 @@ Users with Python knowledge could very well have it running on those platforms i
 - Easy: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
 - Other: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip.
 
-*Known issues (v0.1a)"
+*Known issues (v0.1a)*
 
 - if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.
-- a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise. 
+- a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise
 
 
 ### (Unstable) Linux & MACOSX
