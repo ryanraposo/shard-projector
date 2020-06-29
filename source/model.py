@@ -421,7 +421,7 @@ class ServerControl:
                 add_in_nullrenderer = self.get_addin_nullrenderer()
                 if add_in_nullrenderer:
                      self.active_server.start(add_in_nullrenderer)
-                self.active_server.start(self.config.get("env", "server"))
+                self.active_server.start(self.config.get("ENVIRONMENT", "nullrenderer"))
 
     def on_regenerate(self):
         self._send_command("c_regenerateworld()")
