@@ -71,7 +71,7 @@ class Shard:
 
     def __init__(self, path, cluster_name):
         self.path = os.path.realpath(path)
-        self.config = Configuration(os.path.join(self.path, "server.ini"), './shard_defaults.ini')
+        self.config = Configuration(os.path.join(self.path, "server.ini"), './ini/shard_defaults.ini')
         self.is_master = self.config.get_typed("SHARD", "is_master")
         self.cluster_name = cluster_name
         self.name = os.path.basename(path)
@@ -163,7 +163,7 @@ class DedicatedServer:
         self.server_control_window = server_control_window
         self.path = os.path.normpath(path)
         self.name = os.path.basename(self.path)
-        self.config = Configuration(os.path.join(self.path, "cluster.ini"), './cluster_defaults.ini')
+        self.config = Configuration(os.path.join(self.path, "cluster.ini"), './ini/cluster_defaults.ini')
 
         self.shards = []
         self._show_confirm_shard_directories_dialog()
@@ -264,7 +264,7 @@ class ServerControl:
 
         script_path = os.path.dirname(os.path.realpath(__file__))
         config_path = os.path.join(script_path, 'settings.ini')
-        config_defaults_path = os.path.join(script_path, 'settings_defaults.ini')
+        config_defaults_path = os.path.join(script_path, 'ini/settings_defaults.ini')
         self.config = Configuration(config_path, config_defaults_path)
             
         # local_ip = remote.get_ip()
