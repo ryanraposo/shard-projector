@@ -13,9 +13,9 @@
 
 **06/28/20**
 
-Shard Projector v0.1a may require technical knowledge to work on your system. 
+- Shard Projector v0.1a may require technical knowledge to work on your system. 
 
-Incoming (1-3 days) release v0.2a introduces a feature (Add-ins) that enables reliable circumvention of the related issues. There are no releases planned before then.
+- Incoming (1-3 days) release v0.2a introduces a feature (Add-ins) that enables reliable circumvention of the related issues. There are no releases planned before then.
 
 ---
 
