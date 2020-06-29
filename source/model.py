@@ -18,8 +18,7 @@ from configuration import Configuration, Environment
 
 import view
 import widgets
-# import remote
-# import uitools
+
 
 
 def iter_except(function, exception):
