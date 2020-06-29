@@ -75,6 +75,7 @@ class DialogConfigureApplication(tk.Toplevel):
         super().__init__(master=application.window)
         self.title("Shard Projector Settings")
         self.configure(bg="#424242")
+        # self.geometry("450x450")
         self.wm_transient(application.window)
 
         self.root_frame =ttk.Frame(self)        
@@ -91,13 +92,16 @@ class DialogConfigureApplication(tk.Toplevel):
         )
         configuration_frame.grid(row=0, column=0)
 
-        lbl_nullrenderer_priority_reminder = ttk.Label(self.root_frame, 
+        lbl_nullrenderer_priority_reminder = ttk.Label(self.root_frame,
             text="""
-            IMPORTANT: an external nullrenderer path can be defined here, 
-            but SteamCMD Add-In nullrenderer will always take priority if found.
-            
-            To uninstall add-ins, delete folders found in 'shard_projector/add-ins'.            
-            """)
+NOTE: an external nullrenderer path can be defined here,
+but SteamCMD Add-In nullrenderer always takes priority.
+
+To uninstall add-ins, delete folders found in:
+'shard_projector/add-ins'
+        """
+            # relief="groove"
+        )
         lbl_nullrenderer_priority_reminder.grid(row=1, column=0)
 
         btn_apply = ttk.Button(self.root_frame, text='Apply', command=lambda: application.config.update_from_dict(configuration_frame.get()))
