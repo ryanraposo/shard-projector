@@ -15,9 +15,15 @@ Shard Projector may require technical knowledge to play around with at the momen
 
 Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Users looking forward to more of the ease-of-use aspects don't have long to wait, and shouldn't expect to. The development branch build just above this readme can make better detections steadily, but more excitingly is beginning to retrieve everything it needs to run with only permission neccesary from users. Auto-installing SteamCMD as an Add-In is now possible. Look to the next release for that. Beyond that, there is a single command entered into that SteamCMD Add-in outstanding, before Shard Projector can run servers on a brand new PC, immediately on logging in for the first time (not accounting for bugs or unintended behaviour, of course). 
 
-For now, though, let it be known that (v0.1a) can be a tricky, picky mistress. 
+For now, though, let it be known that (v0.1a) can be a tricky, picky mistress. It's in the very last state where I can (maybe) get feedback on it before its able to fend for itself/self-integrate but for that reason its of questionable use or symbolic significance for those who aren't a) a hobbyist b) me. It is deceptively bad at one of its main jobs. 
 
-Finally, I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help. Janky, emergency Python written just for you can be had.
+I plan to revisit the decision to release now in the future. Low risk let me make the decision but my judgement today, says the considerations were first impressions, data/good engineering, and chance with all three driving AND being driven by eachother, resulting in: freedom to not fret over it. 
+
+It wasn't my first release going in with limited wisdom but boy, knowing it too can really take the edge off. That was the highlight, for sure. Another project of mine of mine got some love today, and it made me think of the nerves I had releasing it last year, the sweetness of of today would have been lost on me almost entirely.
+
+So, the 'good times' for each project (read: life? need more data LOL but allow me the stretch while life=projects until paycheques in mailbox) are unpredictable, my gut says that will never change, and today in a rare twist: it was nice.
+
+On a another front, for those who do wander into the repo this early: I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help. Janky, emergency Python written just for you can be had.
 
 I released because its been in use at my apartment daily and without glaring issues, running servers for some time now. When it gets off the ground, its pretty neat! But, it needs curveballs and non-unicorn environments to be improved intelligently at this point; at least by me. Probably true *of* me, also. 
 
