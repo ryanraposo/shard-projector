@@ -18,15 +18,8 @@ from configuration import Configuration, Environment
 
 import view
 import widgets
-import remote
-
-import uitools
-
-
-TEMP_CONST_STEAMCMD_DST_BIN_PATH = (
-    "C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin"
-)
-TEMP_CONST_NULLRENDERER_PATH = "C:/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe"
+# import remote
+# import uitools
 
 
 def iter_except(function, exception):
