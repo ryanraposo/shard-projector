@@ -63,7 +63,10 @@ Windows (v0.1a)
 
 # Contributing 
 
-
 # Notice
 
+Valve is not associated with this project in any way. 
+
 Klei Entertainment is not associated with this project in any way. 
+
+
