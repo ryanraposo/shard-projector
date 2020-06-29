@@ -21,7 +21,7 @@ I plan to revisit the decision to release now in the future. Low risk let me mak
 
 It wasn't my first release going in with limited wisdom but boy, knowing it too can really take the edge off. That was the highlight, for sure. Another project of mine of mine got some love today, and it made me think of the nerves I had releasing it last year, the sweetness of of today would have been lost on me entirely.
 
-So, the 'good times' for each project  (read: life?) my gut says that will never change, and today in a rare twist: it was nice.
+So, the 'good times' for each project  (read: life?) are unpredictable and my gut says that will never change, and today in a rare twist: it was nice.
 
 On a another front, for those who do wander into the repo this early: I'm hard at work on robust implementations of several things in this project but I will 'slack-off' to help an early user get up & running in a heartbeat! Just shoot an email about your issue for that sort of help. Janky, emergency Python written just for you can be had.
 
