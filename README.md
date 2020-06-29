@@ -17,7 +17,7 @@ Dark-arts aside: some tech knowledge an asset, at least for the alpha phase. Use
 
 For now, though, let it be known that (v0.1a) can be a tricky, picky mistress. It's in the very last state where I can (maybe) get feedback on it before its able to fend for itself/self-integrate but for that reason its of questionable use or symbolic significance for those who aren't a) a hobbyist b) me. It is deceptively bad at one of its main jobs. 
 
-I plan to revisit the decision to release now in the future. Low risk let me make the decision but my judgement today, says the considerations were first impressions, data/good engineering, and chance with all three driving AND being driven by eachother, resulting in: freedom to not fret over it. 
+I plan to revisit the decision to release now in the future. Low risk let me make the decision but my judgement today said said the considerations were first impressions, data/good engineering, and chance with all three driving AND being driven by eachother, resulting in: freedom to not fret over it. 
 
 It wasn't my first release going in with limited wisdom but boy, knowing it too can really take the edge off. That was the highlight, for sure. Another project of mine of mine got some love today, and it made me think of the nerves I had releasing it last year, the sweetness of of today would have been lost on me entirely.
 
