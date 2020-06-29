@@ -1,7 +1,7 @@
 """
 Desktop application for running & managing Don't Starve Together Dedicated Servers
 """
-import sys, os
+import sys, os, pathlib
 
 from itertools import islice
 from subprocess import Popen, PIPE
@@ -69,7 +69,6 @@ class Shard:
         self.cluster_name = cluster_name
         self.name = os.path.basename(path)
         self.process = None
-        self.command = self._get_command()
         self.output_queue = Queue(maxsize=1024)  # limit output buffering (may stall subprocess)
         self.input_queue = Queue(maxsize=1024)
 
@@ -78,9 +77,9 @@ class Shard:
             return "master"
         return "slave"
 
-    def _get_command(self):
+    def _get_command_args(self, nullrenderer):
         command = [
-            TEMP_CONST_NULLRENDERER_PATH,
+            str(nullrenderer),
             "-console_enabled",
             "-cluster",
             self.cluster_name,
@@ -107,9 +106,11 @@ class Shard:
             else:
                 return line
 
-    def start(self):
-        cwd = os.path.realpath(TEMP_CONST_STEAMCMD_DST_BIN_PATH)
-        self.process = Popen(self.command, cwd=cwd, stdout=PIPE, stdin=PIPE, shell=True)
+    def start(self, nullrenderer):
+        cwd = pathlib.Path(nullrenderer).parent
+        command_args = self._get_command_args(nullrenderer)
+
+        self.process = Popen(command_args, cwd=cwd, stdout=PIPE, stdin=PIPE, shell=True)
         self.q = Queue(maxsize=1024)
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
@@ -160,7 +161,6 @@ class DedicatedServer:
 
         self.shards = []
         self._show_confirm_shard_directories_dialog()
-
 
     def _detect_shard_directories(self):
         shard_directories = []
@@ -223,10 +223,10 @@ class DedicatedServer:
                 processes.append(shard.process)
         return processes
 
-    def start(self):
+    def start(self, nullrenderer):
         for shard in self.shards:
             if not shard.process:
-                shard.start()
+                shard.start(nullrenderer)
 
     def run_command(self, command):
         for shard in self.shards:
@@ -418,7 +418,10 @@ class ServerControl:
             if len(self.active_server.processes) > 0:
                 self.active_server.run_command("c_shutdown()")
             else:
-                self.active_server.start()
+                add_in_nullrenderer = self.get_addin_nullrenderer()
+                if add_in_nullrenderer:
+                     self.active_server.start(add_in_nullrenderer)
+                self.active_server.start(self.config.get("env", "server"))
 
     def on_regenerate(self):
         self._send_command("c_regenerateworld()")
@@ -469,6 +472,14 @@ class ServerControl:
             view.DialogInstallSteamCMD(self.env.install_steamcmd)
             # TODO: relevant application config update 
 
+    def get_addin_nullrenderer(self):
+        """Returns add-in server root if a nullrenderer is found within.
+        """
+        nullrenderer = os.path.join(pathlib.Path(__file__).parents[1], "add-ins", "steamcmd", "steamcmd.exe")
+        if os.path.exists(nullrenderer):
+            return nullrenderer
+        return None
+        
     def unload_server(self):
         if self.active_server != None:
             # Shutdown server

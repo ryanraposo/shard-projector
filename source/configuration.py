@@ -44,7 +44,7 @@ class Environment:
                 matches.append(name)
         print('[debug search installed programs] matches:', matches)
 
-    def install_steamcmd(self, update_config=False):
+    def install_steamcmd(self):
         """Installs SteamCMD as an add-in (shard-projector/add-ins/steamcmd).
 
         Raises:
