@@ -72,12 +72,10 @@ Users with Python knowledge could very well have it running on those platforms i
 ### (Alpha) Windows
 
 - Release: Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
-- Development: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip. 
-
-  7739de33fa52f8d74e311dfaac33a440a06965af
+- Development: Building isn't necessary. Clone the repo and run with model.py as an entry point. Might need to install a few packages using pip. Planning to add an indicator for important development commits/working status soon.
 
 
-*Known issues (v0.1a zip)*
+*Known issues (v0.1a)*
 
 - if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.
 - a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise
