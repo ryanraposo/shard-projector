@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">Desktop dedicated servers for Don't Starve Together</h4>
+<h3 align="center">Desktop dedicated servers for Don't Starve Together</h3>
 <p align="center">
   <a href="#features">Features</a> | 
   <a href="#usage">Usage</a> |
@@ -15,11 +15,20 @@
   <a href="#notice">Notice</a>
 </p>
 
+
+<a align="center">
+
+![built-with-love](https://gist.githubusercontent.com/ryanraposo/4aad8e64cd9c91db72b1b641cce4c90b/raw/5cbddb10fed1f0bb02a8632ea83a06a325b2d9a8/built-with-love.svg)  ![might-just-ship-it](img/might-just-ship-it.png)
+
+</a>
+
+
 # Notes
 
 Shard Projector is in active development. While efforts will be made to keep documentation informatve and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
 
-Thank you for your patience, and remember to report issues where able.
+Thank you for your patience, and remember to report issues where able!
+
 
 **06/28/20**
 
