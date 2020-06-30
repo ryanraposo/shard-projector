@@ -45,7 +45,7 @@ Shard Projector is a 64bit, multi-threaded desktop app for running Don't Starve 
 # Usage
 
 ## Release
-Users can download Shard Projector from releases. No installation necessary. Unzip to a convenient location and run as expected. 
+Users can download Shard Projector from [releases](https://github.com/ryanraposo/shard-projector/releases). No installation necessary. Unzip to a convenient location and run as expected. 
 
 ## Source
  
