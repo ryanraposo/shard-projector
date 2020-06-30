@@ -18,8 +18,7 @@
 
 <a align="center">
 
-![built-with-love](https://gist.githubusercontent.com/ryanraposo/4aad8e64cd9c91db72b1b641cce4c90b/raw/5cbddb10fed1f0bb02a8632ea83a06a325b2d9a8/built-with-love.svg)
-![might-just-ship-it](img/might-just-ship-it.png)
+![built-with-love](https://gist.githubusercontent.com/ryanraposo/4aad8e64cd9c91db72b1b641cce4c90b/raw/5cbddb10fed1f0bb02a8632ea83a06a325b2d9a8/built-with-love.svg) ![might-just-ship-it](img/might-just-ship-it.png)
 
 </a>
 
