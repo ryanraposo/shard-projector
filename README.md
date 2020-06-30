@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h3 align="center">Desktop dedicated servers for Don't Starve Together</h3>
+<h4 align="center">Desktop dedicated servers for Don't Starve Together</h4>
 <p align="center">
   <a href="#features">Features</a> | 
   <a href="#usage">Usage</a> |
@@ -16,12 +16,12 @@
 </p>
 
 
-<a align="center">
+<!-- <a align="center">
 
 ![built-with-love](https://gist.githubusercontent.com/ryanraposo/4aad8e64cd9c91db72b1b641cce4c90b/raw/5cbddb10fed1f0bb02a8632ea83a06a325b2d9a8/built-with-love.svg)
 ![might-just-ship-it](img/might-just-ship-it.png)
 
-</a>
+</a> -->
 
 
 # Notes
