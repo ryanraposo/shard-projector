@@ -92,7 +92,7 @@ Later on, I would love to see more miscellaneous, small or clear-cut issues pick
 
 A lot of this is translating to lacking documentation, and possibly an appearance of heard-headedness. It couldn't be more off the mark so to restate, this is what would mean the most to the project. This is what is possible and wanted. There are walls at a glance (no style-guide for another example) but behind a small extra step is very potentially a core position on this team. Please forgive lack of proper signage if need be and know that I would love to grow and build on this vision with anyone who'd like to co-create it. If I'm among friends, tripping for the most part and some words like these will more than sort the issue, well that'd be just fine, too.
 
-Thanks for reading,
+Thanks for reading,  
 Ryan
 
 # Notice
