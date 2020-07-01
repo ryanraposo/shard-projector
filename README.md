@@ -70,7 +70,30 @@ Windows (v0.1a)
 - if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.
 - a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise
 
-# Contributing 
+# Contributing
+
+At this stage, the most prized contribution would be guidance and project-specific insight on the following topics:
+
+- Version control
+- Management of a hosted repository in the initial development phase (I have experience but with a far more stable first release)
+- Accomplishing the above wiith allowance for personal freedom in direction and style, but with informed regard for those taking the time to support and the ettiquete they might expect or rely on.
+
+Given that these 'meta-contributions' are difficult to initiate through normal channels, rooted in discussion, and in some cases intangible I ask those willing to oblige to contact me through email at raposo.ryan@gmail.com
+
+Contributions of other kinds are not unwelcome with regards to Shard Projector, but I'd like to learn about my options and space to move with tact as a project leader before completing this section with boilerplate docs. It can feel hard for me to reconcile a few things with intense aspirations to work more teams and willing contributors. And I want to, because... well it's the best! 
+
+I've spent a lot of time solo-developing this application with head-buried and several facets of it are "not on paper"; but none-the-less quite real, planned for and built around. If anyone can suggest tools or other for documenting from this vantage point for others, like mind/road-mapping made for the purpose that'd be really cool.
+
+Plainly put: I feel no reservations about keeping the front-facing control I want, but don't see similar expressed or in form on this site very often. I sometimes think that GitHub's lack of intimate messaging and other features are ok as-is because if you manage on trend, contribution is essentially so open that comments on already laboured over work will always be enough to maintain respect for time and wishes.
+
+I could throw in a to-do list, but what if I want to forumulate a to-do list with someone similarly passionate, who likes whats been done so far and wants to respectfully learn the vision? I feel this all the time, and I want to signal those who relate. What I don't want, is wasted effort on the part of well-meaning, talented people on great work that ultimately doesn't mesh and so won't be included. I would rather scare a contributor away then have that happen and it be avoidable, had I represented things a little better. 
+
+Later on, I would love to see more miscellaneous, small or clear-cut issues picked up and solved by those with only the time or ability or interest for those things, but right now, love is needed. It can be a beautiful hellscape in those source folders on occassion, but carefully planned architecture is laid out where it counts and rolling through. As a learning project at least in part, to think of casual collaboration that I can facilitate efficiently... we're just not there yet. Not without a chat. Or five.
+
+A lot of this is translating to lacking documentation, and possibly an appearance of heard-headedness. It couldn't be more off the mark so to restate, this is what would mean the most to the project. This is what is possible and wanted. There are walls at a glance (no style-guide for another example) but behind a small extra step is very potentially a core position on this team. Please forgive lack of proper signage if need be and know that I would love to grow and build on this vision with anyone who'd like to co-create it. If I'm among friends, tripping for the most part and some words like these will more than sort the issue, well that'd be just fine, too.
+
+Thanks for reading,
+Ryan
 
 # Notice
 
