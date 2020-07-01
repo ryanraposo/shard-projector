@@ -80,7 +80,7 @@ At this stage, the most prized contribution would be guidance and project-specif
 
 Given that these 'meta-contributions' are difficult to initiate through normal channels, rooted in discussion, and in some cases intangible I ask those willing to oblige to contact me through email at raposo.ryan@gmail.com
 
-Contributions of other kinds are not unwelcome with regards to Shard Projector, but I'd like to learn about my options and space to move with tact as a project leader before completing this section with boilerplate docs. It can feel hard for me to reconcile a few things with intense aspirations to work more teams and willing contributors. And I want to, because... well it's the best! 
+Contributions of other kinds are not unwelcome with regards to Shard Projector, but I'd like to learn about my options and space to move with tact as a project leader before completing this section with boilerplate docs. It can feel hard for me to reconcile a few things with intense aspirations to work with more teams and willing contributors. And I want to, because... well it's the best! 
 
 I've spent a lot of time solo-developing this application with head-buried and several facets of it are "not on paper"; but none-the-less quite real, planned for and built around. If anyone can suggest tools or other for documenting from this vantage point for others, like mind/road-mapping made for the purpose that'd be really cool.
 
