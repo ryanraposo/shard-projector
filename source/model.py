@@ -33,7 +33,7 @@ class Job:
     """A job with threaded proccessing of stdout. Use method get_output to
     do something with the output on a scheduled interval."""
 
-    def __init__(self, args, fn_output):
+    def __init__(self, args):
         self.process = Popen(args, stdout=PIPE, stdin=PIPE, shell=True)
         self.q = Queue(maxsize=1024)
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
