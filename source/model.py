@@ -29,6 +29,38 @@ def kill_existing_server_procs():
     return str(stdout)
 
 
+class Job:
+    """A job with threaded proccessing of stdout. Use method get_ouput to
+    do something with the output on a scheduled interval."""
+
+    def __init__(self, args, fn_output):
+        self.process = Popen(args, stdout=PIPE, stdin=PIPE, shell=True)
+        self.q = Queue(maxsize=1024)
+        self.thread_reader = Thread(target=self._update_output, args=[self.q])
+        self.thread_reader.daemon = True
+        self.thread_reader.start()
+
+
+    def _update_output(self, q):
+        """Adds stdout of associated process to job's output queue."""
+        if self.process:
+            try:
+                with self.process.stdout as pipe:
+                    for line in iter(pipe.readline, b""):
+                        q.put(line)
+            finally:
+                q.put(None)
+
+
+    def get_output(self):
+        """Returns output queue of the job."""
+        for line in iter_except(self.q.get_nowait, Empty):
+            if line is None:
+                return None
+            else:
+                return line
+
+
 class Shard:
     """Represents a server shard instance, has has methods and properties related to its folder on disk, 
     configuration (server.ini), and the translated subprocess to be threaded when controlling a parent server cluster.
