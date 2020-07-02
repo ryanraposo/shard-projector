@@ -29,7 +29,7 @@ Shard Projector is in active development. While efforts will be made to keep doc
 
 Thank you for your patience, and remember to report issues where able!
 
-**06/28/20**
+**07/02/20**
 
 - Update: development/prep for v0.2.0 is moving along well. Needs a little more time.  
 
