@@ -44,7 +44,7 @@ class Shard:
         
         process (subprocess): The subprocess associated with the shard.
         
-        thread_reader (Thread): The thread started to house the subprocess and run it successfully in parallel with the GUI loop.
+        thread_reader (Thread): The thread started to read stdout from the subprocess into a queue in parallel with the GUI loop. 
         
         queue_input (Queue): A queue used for writing to the shard's process stdin, processed at constant intervals.
         

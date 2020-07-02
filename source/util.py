@@ -15,6 +15,10 @@ def iter_except(function, exception):
         return
 
 
+class Thread
+
+
+
 class Mover(ThemedTk):
     def __init__(self, target_widget : ttk.Widget, target_parent : ttk.Widget, widget_name : str, increment=1):
         super().__init__(theme='equilux')
