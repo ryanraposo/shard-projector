@@ -31,13 +31,13 @@ def kill_existing_server_procs():
 
 
 class CallEvent:
-    """A function call with an optional conditional and resultant behaviour.
+    """A function call with optional conditional and resultant behaviour.
 
     Args:
-    name (str) : ID for the call being registered.
-    fn (function) : Function to be called.
-    conditional (function) : Optional. Determines whether the call will be made. Default is None.
-    condition_unmet (function) : Optional. A function to be called if the condition is not met. Default is None."""
+        name (str): ID for the call being registered.
+        fn (function): Function to be called.
+        conditional (function): Optional. Determines whether the call will be made. Default is None.
+        condition_unmet (function): Optional. A function to be called if the condition is not met. Default is None."""
  
     def __init__(self, name, fn, conditional=None, condition_unmet=None, strict=False):
         self.name = fn
@@ -416,12 +416,20 @@ class ServerControl:
 
         self.frame_main.place(x=0, y=0)
 
+        #!Debug
+        job = Job(["git", "--help"])
+        dialog = view.DialogStatus(self.window)
+        self.register(CallEvent(
+            name="debug",
+            fn=lambda : dialog.update_status(job.get_output())
+        ))
+
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states. Also
         evaluates registered calls.
         """
         for call in self.calls:
-            if not call.evaluate():
+            if call.evaluate() == False:
                 self.calls.pop(call)
         try:
             if self.active_server:  # Update ConsoleViews & button states

@@ -295,9 +295,9 @@ class DialogStatus(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.title("Status")
-        # self.grab_set_global()
         # self.transient(parent)
         parent.wm_attributes("-disabled", True)
+        self.grab_set()
 
         self.root_frame = ttk.Frame(self)
         self.status_view = widgets.ConsoleView(self, 400, 10)
