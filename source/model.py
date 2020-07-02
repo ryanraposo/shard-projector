@@ -30,7 +30,7 @@ def kill_existing_server_procs():
 
 
 class Job:
-    """A job with threaded proccessing of stdout. Use method get_ouput to
+    """A job with threaded proccessing of stdout. Use method get_output to
     do something with the output on a scheduled interval."""
 
     def __init__(self, args, fn_output):
