@@ -31,7 +31,7 @@ def kill_existing_server_procs():
 
 class Job:
     """A job with threaded proccessing of stdout. Use method get_output to
-    do something with the output on a scheduled interval."""
+    do something with the output. Should be on a scheduled interval."""
 
     def __init__(self, args):
         self.process = Popen(args, stdout=PIPE, stdin=PIPE, shell=True)

@@ -284,9 +284,9 @@ class DialogInstallSteamCMD:
             except Exception as e:
                 messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
     
-    
+
 class DialogStatus(tk.Toplevel):
-    """Dialog for indicated status of various application activities.
+    """Dialog for indicating status of various application activities.
 
     Args:
         parent (Tk): Tk window object responsible for spawning the dialog and handling callbacks
@@ -307,7 +307,7 @@ class DialogStatus(tk.Toplevel):
 
 
     def update_status(self, line):
-        """Updates dialog's status view using the output queue.
+        """Updates dialog's status view.
         """
         if line:
             self.status_view.write_line(line)
