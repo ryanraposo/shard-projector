@@ -31,7 +31,7 @@ def kill_existing_server_procs():
 
 class Job:
     """A job with threaded proccessing of stdout. Use method get_output to
-    do something with the output. Should be on a scheduled interval."""
+    do something with the output, should be on a scheduled interval."""
 
     def __init__(self, args):
         self.process = Popen(args, stdout=PIPE, stdin=PIPE, shell=True)
@@ -59,6 +59,7 @@ class Job:
                 return line
     
     def is_running(self):
+        """Returns True if job still active, False if it has terminated."""
         if self.process:
             exit_code = self.process.poll()
             if exit_code != None: 
@@ -388,12 +389,13 @@ class ServerControl:
         self.frame_main.place(x=0, y=0)
 
         # TODO: delete
-        test_job = Job(["git", "--help"])
-        test_status_dialog = view.DialogStatus(self.window)
+        job = Job(["git", "--help"])
+        dialog = view.DialogStatus(self.window)
         self.register(
-            name="Debug",
-            fn=lambda : test_status_dialog.update_status(test_job.get_output()),
-            conditional=None,
+            name="Update dialog",
+            fn=lambda : dialog.update_status(job.get_output()),
+            conditional=job.is_running,
+            conditional_fn=lambda : dialog.destroy(),
             strict=False
         )
 
@@ -412,8 +414,10 @@ class ServerControl:
                 if call["conditional"] == None or call["conditional"]() == True:
                     call["fn"]()
                 else:
-                    if call["strict"] == True:
-                        self.calls.pop(name)
+                    if call["conditional"]() == False:
+                        call["conditional_fn"]()
+                        if call["strict"]:
+                            self.calls.pop(name)
         finally:
             self.window.after(20, self.update)
 
@@ -563,7 +567,7 @@ class ServerControl:
         if hasattr(self, "active_server"):
             return self.active_server.config.get(section, option)
 
-    def register(self, name, fn, conditional, strict=False):
+    def register(self, name, fn, conditional, conditional_fn=None, strict=False):
         """Register a function to be called at each interval of the applications main update cycle.
         Can be an anonymous (lambda) function.
 
@@ -571,12 +575,14 @@ class ServerControl:
             name (str) : ID for the call being registered.
             fn (function) : Function to be called.
             conditional (function | None) : Determines whether the call will be made. Can be None.
-            strict (bool) : If True, call will be deregistered when the condition is not met. False by default.
+            conditional_fn (function) : Optional. A function to be called if the condition is not met. 
+            strict (bool) : if
         """        
         self.calls[name] = {
             "fn" : fn,
             "conditional" : conditional,
-            "strict": strict
+            "conditional_fn" : conditional_fn,
+            "strict" : strict
         }
 
     def deregister(self, name):
@@ -587,7 +593,6 @@ class ServerControl:
         """
         self.calls.pop(name)
     
-
     def quit(self):
         self.unload_server()
         self.window.destroy()
