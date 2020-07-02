@@ -400,8 +400,8 @@ class ServerControl:
                 if self.active_server.slave:
                     self.update_console_view(self.console_view_slave, self.active_server.slave)
                 self.update_power_button_fx()
-            for name, call in self.calls.items(): # Calls
-                if not call["conditional"] or call["conditional"]() == True:
+            for name, call in self.calls.items(): # Registered calls
+                if call["conditional"] == None or call["conditional"]() == True:
                     call["fn"]()
                 else:
                     if call["strict"] == True:
