@@ -9,14 +9,7 @@ from threading import Thread
 
 import widgets
 
-
-def iter_except(function, exception):
-    """Works like builtin 2-argument `iter()`, but stops on `exception`."""
-    try:
-        while True:
-            yield function()
-    except exception:
-        return
+from util import iter_except
 
 
 class InfoBar(ttk.LabelFrame):

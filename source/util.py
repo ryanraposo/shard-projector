@@ -5,6 +5,16 @@ from ttkthemes import ThemedTk
 
 import pyperclip
 
+
+def iter_except(function, exception):
+    """Iter-like that stops on exception"""
+    try:
+        while True:
+            yield function()
+    except exception:
+        return
+
+
 class Mover(ThemedTk):
     def __init__(self, target_widget : ttk.Widget, target_parent : ttk.Widget, widget_name : str, increment=1):
         super().__init__(theme='equilux')

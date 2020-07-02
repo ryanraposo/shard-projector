@@ -18,16 +18,7 @@ from configuration import Configuration, Environment
 
 import view
 import widgets
-
-
-def iter_except(function, exception):
-    """Works like builtin 2-argument `iter()`, but stops on `exception`."""
-    try:
-        while True:
-            yield function()
-    except exception:
-        return
-
+from util import iter_except
 
 def kill_existing_server_procs():
     """Executes a Windows native 'taskkill' command targeting any dedicated server nullrenderer
