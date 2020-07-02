@@ -57,6 +57,14 @@ class Job:
                 return None
             else:
                 return line
+    
+    def is_running(self):
+        if self.process:
+            exit_code = self.process.poll()
+            if exit_code != None: 
+                return False
+            else:
+                return True
 
 
 class Shard:
@@ -156,8 +164,8 @@ class Shard:
     def poll(self):
         """Checks for a process id associated with attr process, if none, sets process to None."""
         if self.process:
-            p = self.process.poll()
-            if p != None:
+            exit_code = self.process.poll()
+            if exit_code != None:
                 self.process = None
 
 
