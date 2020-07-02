@@ -556,7 +556,7 @@ class ServerControl:
         Can be an anonymous (lambda) function.
 
         Args:
-            name :
+            name (str) : ID for the call being registered.
             fn (function) : Function to be called.
             fn_conditional (function) : Function that determines whether the call will be made.
             strict (bool) : If True, call will be deregistered when the condition is not met. False by default.
