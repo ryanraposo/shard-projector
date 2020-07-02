@@ -4,8 +4,19 @@ from tkinter import filedialog, messagebox, colorchooser
 from ttkthemes import ThemedTk
 
 import os, json
+from queue import Queue, Empty
+from threading import Thread
 
 import widgets
+
+
+def iter_except(function, exception):
+    """Works like builtin 2-argument `iter()`, but stops on `exception`."""
+    try:
+        while True:
+            yield function()
+    except exception:
+        return
 
 
 class InfoBar(ttk.LabelFrame):
@@ -94,11 +105,11 @@ class DialogConfigureApplication(tk.Toplevel):
 
         lbl_nullrenderer_priority_reminder = ttk.Label(self.root_frame,
             text="""
-NOTE: an external nullrenderer path can be defined here,
-but SteamCMD Add-In nullrenderer always takes priority.
+    NOTE: an external nullrenderer path can be defined here,
+    but SteamCMD Add-In nullrenderer always takes priority.
 
-To uninstall add-ins, delete folders found in:
-'shard_projector/add-ins'
+    To uninstall add-ins, delete folders found in:
+    'shard_projector/add-ins'
         """
             # relief="groove"
         )
@@ -279,3 +290,60 @@ class DialogInstallSteamCMD:
             except Exception as e:
                 messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
     
+
+class DialogStatus(tk.Toplevel):
+    """Dialog for indicating jobs, their progress, and handling milestones thereof. 
+
+    Args:
+        parent (Tk): Tk window object responsible for spawning the dialog and handling callbacks
+        fn_register (function) : Function that allows actions to be registered on the main application update schedule
+        process (process) : Process with readable stdout
+    """    
+
+    def __init__(self, parent, fn_register, process):
+        super().__init__(parent)
+        self.title("Status")
+        self.grab_set()
+        self.transient(parent)
+
+        self.root_frame = ttk.Frame(self)
+        self.status_view = widgets.ConsoleView(self, 150, 8)
+        
+        self.fn_register = fn_register
+        self.process = process
+        self.q = Queue(maxsize=1024)
+
+        thread_reader = Thread(target=self._update_output, args=[self.q])
+        thread_reader.daemon = True
+        thread_reader.start()
+
+        self.fn_register(self.update_status)
+
+        self.status_view.grid(row=0, column=0)
+        self.root_frame.grid(row=0, column=0, sticky='nswe')
+
+
+    def _update_output(self, q):
+        """Adds stdout of associated process to dialog's output queue."""
+        if self.process:
+            try:
+                with self.process.stdout as pipe:
+                    for line in iter(pipe.readline, b""):
+                        q.put(line)
+            finally:
+                q.put(None)
+
+    def get_output(self):
+        """Returns output queue of the dialog."""
+        for line in iter_except(self.q.get_nowait, Empty):
+            if line is None:
+                return None
+            else:
+                return line
+
+    def update_status(self):
+        """Updates dialog's status view using the output queue.
+        """
+        line = self.get_output()
+        if line:
+            self.status_view.write_line(line)

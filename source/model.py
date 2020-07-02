@@ -248,11 +248,10 @@ class ServerControl:
 
     def __init__(self, root):
         self.window = root
+        self.calls = []
         self.initialize_ui()
         self.active_server = None
-
         self.env = Environment()
-
         script_path = os.path.dirname(os.path.realpath(__file__))
         config_path = os.path.join(script_path, 'settings.ini')
         config_defaults_path = os.path.join(script_path, 'ini/settings_defaults.ini')
@@ -358,6 +357,14 @@ class ServerControl:
 
         self.frame_main.place(x=0, y=0)
 
+        # TODO: Debug (delete!) 
+        proc = Popen(['start', r'C:\steamcmd\steamcmd.exe +login anonymous +app_update 343050 validate +quit'],
+                        stdout=PIPE,
+                        stdin=PIPE,
+                        shell=True)
+
+        view.DialogStatus(self.window, self.register, proc)
+
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states.
         """
@@ -369,6 +376,8 @@ class ServerControl:
                 if self.active_server.slave:
                     self.update_console_view(self.console_view_slave, self.active_server.slave)
                 self.update_power_button_fx()
+            for call in self.calls:
+                call()
         finally:
             self.window.after(20, self.update)
 
@@ -517,6 +526,14 @@ class ServerControl:
     def get_server_info(self, section, option):
         if hasattr(self, "active_server"):
             return self.active_server.config.get(section, option)
+
+    def register(self, fn):
+        """Register a function to be called at each interval of the applications main update cycle.
+
+        Args:
+            fn (function) : Function to be called.
+        """        
+        self.calls.append(fn)
 
     def quit(self):
         self.unload_server()
