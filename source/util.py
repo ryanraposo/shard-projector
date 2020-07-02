@@ -7,7 +7,7 @@ import pyperclip
 
 
 def iter_except(function, exception):
-    """Iter-like that stops on exception"""
+    """Iter-like that stops on exception."""
     try:
         while True:
             yield function()

@@ -20,6 +20,7 @@ import view
 import widgets
 from util import iter_except
 
+
 def kill_existing_server_procs():
     """Executes a Windows native 'taskkill' command targeting any dedicated server nullrenderer
     instances. Returns a string containing the commands encoded stdout."""
@@ -29,8 +30,34 @@ def kill_existing_server_procs():
     return str(stdout)
 
 
+class CallEvent:
+    """A function call with an optional conditional and resultant behaviour.
+
+    Args:
+    name (str) : ID for the call being registered.
+    fn (function) : Function to be called.
+    conditional (function) : Optional. Determines whether the call will be made. Default is None.
+    condition_unmet (function) : Optional. A function to be called if the condition is not met. Default is None."""
+ 
+    def __init__(self, name, fn, conditional=None, condition_unmet=None, strict=False):
+        self.name = fn
+        self.fn = fn
+        self.conditional = conditional
+        self.condition_unmet = condition_unmet
+        self.strict = strict
+
+    def evaluate(self):
+        """Processess the CallEvent. Returns False if strict and condition was unmet.
+        """
+        if not self.conditional or self.conditional() == True:
+            self.fn()
+        else:
+            if callable(self.condition_unmet):
+                self.condition_unmet()
+
+
 class Job:
-    """A job with threaded proccessing of stdout. Use method get_output to
+    """A system job with threaded proccessing of stdout. Use method get_output to
     do something with the output, should be on a scheduled interval."""
 
     def __init__(self, args):
@@ -39,6 +66,7 @@ class Job:
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
         self.thread_reader.start()
+
 
     def _update_output(self, q):
         """Adds stdout of associated process to job's output queue."""
@@ -278,8 +306,8 @@ class ServerControl:
 
     def __init__(self, root):
         self.window = root
-        self.calls = {} # {"fn":function, "conditional":bool, "strict":bool}
-        
+        self.calls = []    
+
         self.initialize_ui()
         self.active_server = None
         self.env = Environment()
@@ -388,20 +416,13 @@ class ServerControl:
 
         self.frame_main.place(x=0, y=0)
 
-        # TODO: delete
-        job = Job(["git", "--help"])
-        dialog = view.DialogStatus(self.window)
-        self.register(
-            name="Update dialog",
-            fn=lambda : dialog.update_status(job.get_output()),
-            conditional=job.is_running,
-            conditional_fn=lambda : dialog.destroy(),
-            strict=False
-        )
-
     def update(self):
-        """Self-scheduling update (40ms) of various UI elements and application states.
+        """Self-scheduling update (40ms) of various UI elements and application states. Also
+        evaluates registered calls.
         """
+        for call in self.calls:
+            if not call.evaluate():
+                self.calls.pop(call)
         try:
             if self.active_server:  # Update ConsoleViews & button states
                 self.active_server.poll()
@@ -410,14 +431,6 @@ class ServerControl:
                 if self.active_server.slave:
                     self.update_console_view(self.console_view_slave, self.active_server.slave)
                 self.update_power_button_fx()
-            for name, call in self.calls.items(): # Registered calls
-                if call["conditional"] == None or call["conditional"]() == True:
-                    call["fn"]()
-                else:
-                    if call["conditional"]() == False:
-                        call["conditional_fn"]()
-                        if call["strict"]:
-                            self.calls.pop(name)
         finally:
             self.window.after(20, self.update)
 
@@ -567,31 +580,11 @@ class ServerControl:
         if hasattr(self, "active_server"):
             return self.active_server.config.get(section, option)
 
-    def register(self, name, fn, conditional, conditional_fn=None, strict=False):
-        """Register a function to be called at each interval of the applications main update cycle.
-        Can be an anonymous (lambda) function.
-
-        Args:
-            name (str) : ID for the call being registered.
-            fn (function) : Function to be called.
-            conditional (function | None) : Determines whether the call will be made. Can be None.
-            conditional_fn (function) : Optional. A function to be called if the condition is not met. 
-            strict (bool) : Optional. If true, deregister call on unmet condition. Default False.
+    def register(self, call_event):
+        """Register a CallEvent to be evaluated at each interval of the applications main update cycle.
+        Can use anonymous (lambda) functions.
         """        
-        self.calls[name] = {
-            "fn" : fn,
-            "conditional" : conditional,
-            "conditional_fn" : conditional_fn,
-            "strict" : strict
-        }
-
-    def deregister(self, name):
-        """Deregister a call.
-
-        Args:
-            name (str) : ID of the call being deregistered.
-        """
-        self.calls.pop(name)
+        self.calls.append(call_event)
     
     def quit(self):
         self.unload_server()
