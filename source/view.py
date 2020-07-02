@@ -285,8 +285,8 @@ class DialogInstallSteamCMD:
                 messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
     
 # TODO: refactor, best to handle as little threading/proc stuff as possible here. Consider simple blocking/job indicators, or even just cmd window & doc it 
-class DialogJob(tk.Toplevel):
-    """Dialog for running jobs, indicating their progress, and handling milestones thereof. 
+class DialogStatus(tk.Toplevel):
+    """Dialog for indicated status of various application activities.
 
     Args:
         parent (Tk): Tk window object responsible for spawning the dialog and handling callbacks
@@ -309,6 +309,5 @@ class DialogJob(tk.Toplevel):
     def update_status(self, line):
         """Updates dialog's status view using the output queue.
         """
-        line = self.get_output()
         if line:
             self.status_view.write_line(line)
