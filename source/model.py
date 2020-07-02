@@ -269,7 +269,8 @@ class ServerControl:
 
     def __init__(self, root):
         self.window = root
-        self.calls = []
+        self.calls = {} # {"fn":function, "fn_conditional":bool, "strict":bool}
+        
         self.initialize_ui()
         self.active_server = None
         self.env = Environment()
@@ -394,8 +395,12 @@ class ServerControl:
                 if self.active_server.slave:
                     self.update_console_view(self.console_view_slave, self.active_server.slave)
                 self.update_power_button_fx()
-            for call in self.calls:
-                call()
+        # Calls
+            for name, call in self.calls.items():
+                if call["fn_conditional"]() == True:
+                    call["fn"]()
+                if call["strict"] == True:
+                    self.calls.pop(name)
         finally:
             self.window.after(20, self.update)
 
@@ -545,13 +550,21 @@ class ServerControl:
         if hasattr(self, "active_server"):
             return self.active_server.config.get(section, option)
 
-    def register(self, fn):
+    def register(self, name, fn, fn_conditional, strict=False):
         """Register a function to be called at each interval of the applications main update cycle.
+        Can be an anonymous (lambda) function.
 
         Args:
+            name :
             fn (function) : Function to be called.
+            fn_conditional (function) : Function that determines whether the call will be made.
+            strict (bool) : If True, call will be deregistered when the condition is not met. False by default.
         """        
-        self.calls.append(fn)
+        self.calls[name] = {
+            "fn" : fn,
+            "fn_conditional" : fn_conditional,
+            "strict": strict
+        }
 
     def quit(self):
         self.unload_server()
