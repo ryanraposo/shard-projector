@@ -40,7 +40,6 @@ class Job:
         self.thread_reader.daemon = True
         self.thread_reader.start()
 
-
     def _update_output(self, q):
         """Adds stdout of associated process to job's output queue."""
         if self.process:
@@ -50,7 +49,6 @@ class Job:
                         q.put(line)
             finally:
                 q.put(None)
-
 
     def get_output(self):
         """Returns output queue of the job."""
@@ -380,6 +378,10 @@ class ServerControl:
 
         self.frame_main.place(x=0, y=0)
 
+        # TODO: delete
+        test_job = Job(["git", "--help"])
+        test_status_dialog = view.DialogStatus(self.window)
+        self.register(lambda : test_status_dialog.update_status(test_job.get_output()))
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states.
