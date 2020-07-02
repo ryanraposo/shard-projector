@@ -576,7 +576,7 @@ class ServerControl:
             fn (function) : Function to be called.
             conditional (function | None) : Determines whether the call will be made. Can be None.
             conditional_fn (function) : Optional. A function to be called if the condition is not met. 
-            strict (bool) : if
+            strict (bool) : Optional. If true, deregister call on unmet condition. Default False.
         """        
         self.calls[name] = {
             "fn" : fn,
