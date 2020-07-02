@@ -25,10 +25,13 @@
 
 # Notes
 
-Shard Projector is in active development. While efforts will be made to keep documentation informatve and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
+Shard Projector is in active development. While efforts will be made to keep documentation informative and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
 
 Thank you for your patience, and remember to report issues where able!
 
+**06/28/20**
+
+- Update: development/prep for v0.2.0 is moving along well. Needs a little more time.  
 
 **06/28/20**
 
