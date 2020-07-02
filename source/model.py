@@ -269,7 +269,7 @@ class ServerControl:
 
     def __init__(self, root):
         self.window = root
-        self.calls = {} # {"fn":function, "fn_conditional":bool, "strict":bool}
+        self.calls = {} # {"fn":function, "conditional":bool, "strict":bool}
         
         self.initialize_ui()
         self.active_server = None
@@ -382,7 +382,12 @@ class ServerControl:
         # TODO: delete
         test_job = Job(["git", "--help"])
         test_status_dialog = view.DialogStatus(self.window)
-        self.register(lambda : test_status_dialog.update_status(test_job.get_output()))
+        self.register(
+            name="Debug",
+            fn=lambda : test_status_dialog.update_status(test_job.get_output()),
+            conditional=None,
+            strict=False
+        )
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states.
@@ -397,7 +402,7 @@ class ServerControl:
                 self.update_power_button_fx()
         # Calls
             for name, call in self.calls.items():
-                if call["fn_conditional"]() == True:
+                if call["conditional"]() == True:
                     call["fn"]()
                 else:
                     if call["strict"] == True:
@@ -551,21 +556,30 @@ class ServerControl:
         if hasattr(self, "active_server"):
             return self.active_server.config.get(section, option)
 
-    def register(self, name, fn, fn_conditional, strict=False):
+    def register(self, name, fn, conditional, strict=False):
         """Register a function to be called at each interval of the applications main update cycle.
         Can be an anonymous (lambda) function.
 
         Args:
             name (str) : ID for the call being registered.
             fn (function) : Function to be called.
-            fn_conditional (function) : Function that determines whether the call will be made.
+            conditional (function | None) : Determines whether the call will be made. Can be None.
             strict (bool) : If True, call will be deregistered when the condition is not met. False by default.
         """        
         self.calls[name] = {
             "fn" : fn,
-            "fn_conditional" : fn_conditional,
+            "conditional" : conditional,
             "strict": strict
         }
+
+    def deregister(self, name):
+        """Deregister a call.
+
+        Args:
+            name (str) : ID of the call being deregistered.
+        """
+        self.calls.pop(name)
+    
 
     def quit(self):
         self.unload_server()
