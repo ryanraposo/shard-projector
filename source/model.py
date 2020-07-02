@@ -399,8 +399,9 @@ class ServerControl:
             for name, call in self.calls.items():
                 if call["fn_conditional"]() == True:
                     call["fn"]()
-                if call["strict"] == True:
-                    self.calls.pop(name)
+                else:
+                    if call["strict"] == True:
+                        self.calls.pop(name)
         finally:
             self.window.after(20, self.update)
 
