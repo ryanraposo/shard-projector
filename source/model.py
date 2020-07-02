@@ -348,13 +348,6 @@ class ServerControl:
 
         self.frame_main.place(x=0, y=0)
 
-        # TODO: Debug (delete!) 
-        proc = Popen(['start', r'C:\steamcmd\steamcmd.exe +login anonymous +app_update 343050 validate +quit'],
-                        stdout=PIPE,
-                        stdin=PIPE,
-                        shell=True)
-
-        view.DialogStatus(self.window, self.register, proc)
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states.

@@ -283,7 +283,7 @@ class DialogInstallSteamCMD:
             except Exception as e:
                 messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
     
-
+# TODO: refactor, best to handle as little threading/proc stuff as possible here. Consider simple blocking/job indicators, or even just cmd window & doc it 
 class DialogStatus(tk.Toplevel):
     """Dialog for indicating jobs, their progress, and handling milestones thereof. 
 
