@@ -78,7 +78,6 @@ class Job:
         self.thread_statuscheck.daemon = True
         self.thread_statuscheck.start()
 
-
     def _update_output(self, q):
         """Adds stdout of associated process to job's output queue."""
         if self.process:
@@ -556,7 +555,7 @@ class ServerControl:
     
     def on_task_install_steamcmd(self):
         if self.env.platform == PLATFORMS.WINDOWS:
-            view.DialogInstallSteamCMD(self.env.install_steamcmd)
+            view.DialogInstallSteamCMD(self.env.download_steamcmd, self.env.install_steamcmd)
 
     def get_addin_nullrenderer(self):
         """Returns add-in server root if a nullrenderer is found within.

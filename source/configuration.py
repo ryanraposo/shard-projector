@@ -75,7 +75,9 @@ class Environment:
 
         # Run installer in add-ins/steamcmd
         return os.path.join(install_path, "steamcmd.exe")
-
+    
+    def install_steamcmd(self, exec_path):
+        subprocess.Popen(exec_path).communicate()
 
 class Configuration:
     """A reader/writer for a specific (.ini) configuration file.

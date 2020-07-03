@@ -29,6 +29,32 @@ Shard Projector is in active development. While efforts will be made to keep doc
 
 Thank you for your patience, and remember to report issues where able!
 
+**07/03/20**
+
+Hi! Thought I would give another status update on the next release v0.2.0, aka "The Add-In Update".
+
+This time around I wanted to share some notes! These are the highlights, challenges, and considerations guiding
+development at the moment:
+
+- Installations/downloads for Add-Ins are sensitive to cancellation
+- Using Shard Projector while they are in progress will A) not work and B) interrupt/corrupt installations
+- Would like to show status/output while preventing or heavily discouraging using/closing Shard Projector
+- Need to account for installations that fail or otherwise result in a sensible reason to end or restart 
+- Need to maintain/diligently indicate 3rd party nature of any Add-Ins (most immediately: SteamCMD, a non-graphical, compact version of Steam). This includes displaying output and placing reminders in Shard Projector where appropriate 
+- Many related CLI processes started with robust Python built-in ```subproccess.Popen``` are not indicating termination using typical methods, and novel methods:
+- Must not significantly disturb current interactions/methods of handling subprocesses because they are:
+  -  A) The basis of Shard Projector *and* 
+  -  B) its primary design challenges. These interactions are threaded (run in parallel) the way they are currently because GUI frameworks tend to demand and depend on an uninterrupted execution loop. We are using one that was chosen because it is shipped with Python, and it is no exception to these common restrictions by *any* stretch of the imagination. 
+- Would like to implement a scalable and elegant combination of classes and methods that will handle this sensitive, multi-stage, multi-resource process with its numerous potential points-of-failure.
+
+This update is a big one! It is a (rather ironic) manifestation of this project's primary goals: less dependencies, less downloads, and less explanations.
+
+It depends, however, on some graciously provided tools and as such, this update seeks to gather and set them up for users.
+
+I decided that although it's nice to use and can be made to work on my machine and others where those tools might already exist, further work was misplaced until Shard Projector was made useful to those who have trouble with technical stuff. Having a server of your own is awesome, and Shard Projector was designed to get those users all the way there.
+
+Thanks for reading!
+
 **07/02/20**
 
 - Update: development/prep for v0.2.0 is moving along well. Needs a little more time.  

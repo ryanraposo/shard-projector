@@ -270,19 +270,22 @@ class DialogCustomCommand(tk.Toplevel):
 
 
 class DialogInstallSteamCMD:
-    def __init__(self, task_fn):
+    def __init__(self, fn_download, fn_install):
         confirm = messagebox.askokcancel(
             title="Task",
             message="This will attempt to install SteamCMD as an add-in.\n\nNote: Shard Projector will always prioritize add-ins to external installations. Delete the contents of the add-ins folder to safely uninstall them."
         )
-
-        if confirm == True:
+        if confirm == True: # TODO: refactor
             try:
-                task_fn()
+                exec_path = fn_download()
+                messagebox.showinfo("Shard Projector", "SteamCMD Add-In downloaded successfully. Press OK to continue the installation.")
+                fn_install(exec_path)
+                messagebox.showinfo("Shard Projector", "SteamCMD Add-In was successfully installed.")
             except FileExistsError:
-                messagebox.showinfo("Info", "The SteamCMD add-in is already installed!")
+                messagebox.showinfo("Info", "The SteamCMD Add-In is already installed!")
             except Exception as e:
-                messagebox.showerror("Error", "Installation of the SteamCMD add-in failed with error: " + e)
+                messagebox.showerror("Error", "Installation of the SteamCMD Add-In failed with error: " + e)
+
     
 
 class DialogStatus(tk.Toplevel):
