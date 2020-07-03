@@ -33,7 +33,8 @@ def kill_existing_server_procs():
 class CallEvent: # TODO: not sure if genius or fall of functional programming. revisit often.
     """A function call with optionally conditional behaviour. 
     
-    Use the evaluate method in conjunction with the strict parameter to monitor & handle execution results. 
+    Schedule on GUI loop with anonymous functions as needed. Use the evaluate method in 
+    conjunction with the strict parameter to monitor & handle execution results.
     
     Args:
         name (str): ID for the call being registered.
@@ -59,7 +60,6 @@ class CallEvent: # TODO: not sure if genius or fall of functional programming. r
                 self.condition_unmet()
                 return False
             
-
 
 class Job:
     """A system job with threaded proccessing of stdout. Use method get_output to
