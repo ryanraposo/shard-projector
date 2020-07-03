@@ -58,7 +58,8 @@ class CallEvent: # TODO: not sure if genius or fall of functional programming. r
         else:
             if callable(self.condition_unmet):
                 self.condition_unmet()
-                return False
+                if self.strict:
+                    return False
             
 
 class Job:
@@ -111,7 +112,6 @@ class Job:
                 print("Could not write to Job stdin.")
     
     
-
 class Shard:
     """Represents a server shard instance, has has methods and properties related to its folder on disk, 
     configuration (server.ini), and the translated subprocess to be threaded when controlling a parent server cluster.
@@ -441,10 +441,8 @@ class ServerControl:
             conditional=lambda : job.is_running == True,
             condition_unmet=lambda : print("job finished")
         ))
-        #!debug
+        #!Debug
         self.action_tasks.menu.add_command(label="Debug", command=lambda : job.input_line("\n\n"))
-
-
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states. Also
