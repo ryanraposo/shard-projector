@@ -292,12 +292,13 @@ class DialogStatus(tk.Toplevel):
         parent (Tk): Tk window object responsible for spawning the dialog and handling callbacks
     """    
 
-    def __init__(self, parent):
+    def __init__(self, parent, blocking_enabled=False):
         super().__init__(parent)
         self.title("Status")
         # self.transient(parent)
         # parent.wm_attributes("-disabled", True)
-        self.grab_set()
+        if blocking_enabled:
+            self.grab_set()
         self.focus_set()
 
         self.root_frame = ttk.Frame(self)

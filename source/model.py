@@ -34,7 +34,7 @@ class CallEvent: # TODO: not sure if genius or fall of functional programming. r
     """A function call with optionally conditional behaviour. 
     
     Schedule on GUI loop with anonymous functions as needed. Use the evaluate method in 
-    conjunction with the strict parameter to monitor & handle execution results.
+    conjunction with the strict parameter to monitor execution flow for further handling.
     
     Args:
         name (str): ID for the call being registered.
@@ -62,15 +62,20 @@ class CallEvent: # TODO: not sure if genius or fall of functional programming. r
             
 
 class Job:
-    """A system job with threaded proccessing of stdout. Use method get_output to
-    do something with the output, should be on a scheduled interval."""
+    """A system job with threaded queueing of stdout. Use method get_output on a scheduled
+    interval to monitor & handle output."""
 
     def __init__(self, args):
         self.process = Popen(args, stdout=PIPE, stdin=PIPE, shell=True)
+        self.is_running = True
         self.q = Queue(maxsize=1024)
         self.thread_reader = Thread(target=self._update_output, args=[self.q])
         self.thread_reader.daemon = True
         self.thread_reader.start()
+
+        self.thread_statuscheck = Thread(target=self._update_status)
+        self.thread_statuscheck.daemon = True
+        self.thread_statuscheck.start()
 
 
     def _update_output(self, q):
@@ -82,6 +87,12 @@ class Job:
                         q.put(line)
             finally:
                 q.put(None)
+    
+    def _update_status(self):
+        if self.process.poll() is None:
+            self.is_running = True
+        else:
+            self.is_running = False
 
     def get_output(self):
         """Returns output queue of the job."""
@@ -91,15 +102,15 @@ class Job:
             else:
                 return line
     
-    def is_running(self):
-        """Returns True if job still active, False if it has terminated."""
+    def input_line(self, text):
         if self.process:
-            exit_code = self.process.poll()
-            if exit_code != None: 
-                return False
-            else:
-                return True
-
+            try:
+                with self.process.stdin as pipe:
+                    pipe.write(text.encode())
+            except:
+                print("Could not write to Job stdin.")
+    
+    
 
 class Shard:
     """Represents a server shard instance, has has methods and properties related to its folder on disk, 
@@ -422,20 +433,25 @@ class ServerControl:
         self.frame_main.place(x=0, y=0)
 
         #!Debug
-        job = Job(["git", "--help"])
+        job = Job(["python", "C:/Users/ryanr/source/moDSTogether/tools/nstald/source/nstald.py"])
         dialog = view.DialogStatus(self.window)
         self.register(CallEvent(
             name="debug",
-            fn=lambda : dialog.update_status(job.get_output())
+            fn=lambda : dialog.update_status(job.get_output()),
+            conditional=lambda : job.is_running == True,
+            condition_unmet=lambda : print("job finished")
         ))
+        #!debug
+        self.action_tasks.menu.add_command(label="Debug", command=lambda : job.input_line("\n\n"))
+
+
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states. Also
         evaluates registered calls.
         """
         for call in self.calls:
-            if call.evaluate() == False:
-                self.calls.pop(call)
+            call.evaluate()
         try:
             if self.active_server:  # Update ConsoleViews & button states
                 self.active_server.poll()
@@ -595,10 +611,14 @@ class ServerControl:
 
     def register(self, call_event):
         """Register a CallEvent to be evaluated at each interval of the applications main update cycle.
-        Can use anonymous (lambda) functions.
         """        
         self.calls.append(call_event)
-    
+
+    def deregister(self, call_event):
+        """Deregister a CallEvent from main application update cycle.
+        """        
+        self.calls.remove(call_event)
+
     def quit(self):
         self.unload_server()
         self.window.destroy()
