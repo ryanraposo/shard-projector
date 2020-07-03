@@ -30,10 +30,10 @@ def kill_existing_server_procs():
     return str(stdout)
 
 
-class CallEvent:
+class CallEvent: # TODO: not sure if genius or fall of functional programming. revisit often.
     """A function call with optionally conditional behaviour. 
     
-    Use the evaluate method in conjunction with the strict parameter to monitor & handle execution results.
+    Use the evaluate method in conjunction with the strict parameter to monitor & handle execution results. 
     
     Args:
         name (str): ID for the call being registered.
