@@ -31,14 +31,17 @@ def kill_existing_server_procs():
 
 
 class CallEvent:
-    """A function call with optional conditional and resultant behaviour.
-
+    """A function call with optionally conditional behaviour. 
+    
+    Use the evaluate method in conjunction with the strict parameter to monitor & handle execution results.
+    
     Args:
         name (str): ID for the call being registered.
         fn (function): Function to be called.
         conditional (function): Optional. Determines whether the call will be made. Default is None.
-        condition_unmet (function): Optional. A function to be called if the condition is not met. Default is None."""
- 
+        condition_unmet (function): Optional. A function to be called if the condition is not met. Default is None.
+        strict (bool): Optional. Toggle reporting of execution results. Default is False."""
+
     def __init__(self, name, fn, conditional=None, condition_unmet=None, strict=False):
         self.name = fn
         self.fn = fn
@@ -47,7 +50,7 @@ class CallEvent:
         self.strict = strict
 
     def evaluate(self):
-        """Processess the CallEvent. Returns False if strict and condition was unmet.
+        """Processes the CallEvent. Returns False if strict and condition was unmet.
         """
         if not self.conditional or self.conditional() == True:
             self.fn()
