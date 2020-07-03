@@ -57,6 +57,8 @@ class CallEvent: # TODO: not sure if genius or fall of functional programming. r
         else:
             if callable(self.condition_unmet):
                 self.condition_unmet()
+                return False
+            
 
 
 class Job:
