@@ -2,6 +2,7 @@
 Desktop application for running & managing Don't Starve Together Dedicated Servers
 """
 import sys, os, pathlib
+from os.path import join
 
 from itertools import islice
 from subprocess import Popen, PIPE
@@ -13,104 +14,14 @@ from tkinter import ttk
 from tkinter import filedialog, messagebox
 from ttkthemes import ThemedTk
 
-from constants import PLATFORMS
-from configuration import Configuration, Environment
+from constants import ADDINS
+from configuration import Ini, ResourceManager
 
 import view
 import widgets
 from util import iter_except
-
-
-def kill_existing_server_procs():
-    """Executes a Windows native 'taskkill' command targeting any dedicated server nullrenderer
-    instances. Returns a string containing the commands encoded stdout."""
-
-    process = Popen('taskkill /F /IM "dontstarve_dedicated_server_nullrenderer.exe"', stdout=PIPE)
-    stdout = process.communicate()[0]
-    return str(stdout)
-
-
-class CallEvent: # TODO: not sure if genius or fall of functional programming. revisit often.
-    """A function call with optionally conditional behaviour. 
     
-    Schedule on GUI loop with anonymous functions as needed. Use the evaluate method in 
-    conjunction with the strict parameter to monitor execution flow for further handling.
-    
-    Args:
-        name (str): ID for the call being registered.
-        fn (function): Function to be called.
-        conditional (function): Optional. Determines whether the call will be made. Default is None.
-        condition_unmet (function): Optional. A function to be called if the condition is not met. Default is None.
-        strict (bool): Optional. Toggle reporting of execution results. Default is False."""
 
-    def __init__(self, name, fn, conditional=None, condition_unmet=None, strict=False):
-        self.name = fn
-        self.fn = fn
-        self.conditional = conditional
-        self.condition_unmet = condition_unmet
-        self.strict = strict
-
-    def evaluate(self):
-        """Processes the CallEvent. Returns False if strict and condition was unmet.
-        """
-        if not self.conditional or self.conditional() == True:
-            self.fn()
-        else:
-            if callable(self.condition_unmet):
-                self.condition_unmet()
-                if self.strict:
-                    return False
-            
-
-class Job:
-    """A system job with threaded queueing of stdout. Use method get_output on a scheduled
-    interval to monitor & handle output."""
-
-    def __init__(self, args):
-        self.process = Popen(args, stdout=PIPE, stdin=PIPE, shell=True)
-        self.is_running = True
-        self.q = Queue(maxsize=1024)
-        self.thread_reader = Thread(target=self._update_output, args=[self.q])
-        self.thread_reader.daemon = True
-        self.thread_reader.start()
-
-        self.thread_statuscheck = Thread(target=self._update_status)
-        self.thread_statuscheck.daemon = True
-        self.thread_statuscheck.start()
-
-    def _update_output(self, q):
-        """Adds stdout of associated process to job's output queue."""
-        if self.process:
-            try:
-                with self.process.stdout as pipe:
-                    for line in iter(pipe.readline, b""):
-                        q.put(line)
-            finally:
-                q.put(None)
-    
-    def _update_status(self):
-        if self.process.poll() is None:
-            self.is_running = True
-        else:
-            self.is_running = False
-
-    def get_output(self):
-        """Returns output queue of the job."""
-        for line in iter_except(self.q.get_nowait, Empty):
-            if line is None:
-                return None
-            else:
-                return line
-    
-    def input_line(self, text):
-        if self.process:
-            try:
-                with self.process.stdin as pipe:
-                    pipe.write(text.encode())
-            except:
-                print("Could not write to Job stdin.")
-    
-    
 class Shard:
     """Represents a server shard instance, has has methods and properties related to its folder on disk, 
     configuration (server.ini), and the translated subprocess to be threaded when controlling a parent server cluster.
@@ -118,7 +29,7 @@ class Shard:
     Attributes:
         path (str): An absolute-path to the shard's directory.
 
-        config (Configuration): A read/writeable interface to shard configuration (server.ini) file.
+        config (Ini): A read/writeable interface to shard configuration (server.ini) file.
         
         cluster_name (str): The name of the shards parent server-cluster.
         
@@ -135,7 +46,7 @@ class Shard:
 
     def __init__(self, path, cluster_name):
         self.path = os.path.realpath(path)
-        self.config = Configuration(os.path.join(self.path, "server.ini"), './ini/shard_defaults.ini')
+        self.config = Ini(join(self.path, "server.ini"), './ini/shard_defaults.ini')
         self.is_master = self.config.get_typed("SHARD", "is_master")
         self.cluster_name = cluster_name
         self.name = os.path.basename(path)
@@ -205,7 +116,7 @@ class Shard:
             self.process.kill()
             self.process = None
 
-    def poll(self):
+    def poll(self): #TODO: test polling methods 
         """Checks for a process id associated with attr process, if none, sets process to None."""
         if self.process:
             exit_code = self.process.poll()
@@ -228,7 +139,7 @@ class DedicatedServer:
         self.server_control_window = server_control_window
         self.path = os.path.normpath(path)
         self.name = os.path.basename(self.path)
-        self.config = Configuration(os.path.join(self.path, "cluster.ini"), './ini/cluster_defaults.ini')
+        self.config = Ini(join(self.path, "cluster.ini"), './ini/cluster_defaults.ini')
 
         self.shards = []
         self._show_confirm_shard_directories_dialog()
@@ -236,7 +147,7 @@ class DedicatedServer:
     def _detect_shard_directories(self):
         shard_directories = []
         for directory in os.listdir((self.path)):
-            path = os.path.join(self.path, directory)
+            path = join(self.path, directory)
             if os.path.isdir(path):
                 if "server.ini" in os.listdir(path):
                     shard_directories.append(path)
@@ -264,7 +175,7 @@ class DedicatedServer:
                 item in directory_root_contents for item in root_file_reqs
             ):  # Check 2: contains server.ini and clustertoken.txt
                 for member in directory_root_contents:
-                    full_member_path = os.path.join(directory_path, member)
+                    full_member_path = join(directory_path, member)
                     if os.path.isdir(
                         full_member_path
                     ):  # Check 3: contains at least one subdirectory containing cluster.ini
@@ -325,14 +236,11 @@ class ServerControl:
 
         self.initialize_ui()
         self.active_server = None
-        self.env = Environment()
+
         script_path = os.path.dirname(os.path.realpath(__file__))
-        config_path = os.path.join(script_path, 'settings.ini')
-        config_defaults_path = os.path.join(script_path, 'ini/settings_defaults.ini')
-        self.config = Configuration(config_path, config_defaults_path)
-            
-        # local_ip = remote.get_ip()
-        # self.remote_server = remote.ThreadedServer(local_ip, 8080, self.on_remote_command)
+        config_path = join(script_path, 'ini/settings.ini')
+        config_defaults_path = join(script_path, 'ini/settings_defaults.ini')
+        self.config = Ini(config_path, config_defaults_path)
 
         self.update()
 
@@ -344,7 +252,7 @@ class ServerControl:
         self.window.resizable(0, 0)
         self.window.protocol("WM_DELETE_WINDOW", self.quit)
         self.window.title("Shard Projector")
-        icon_path = os.path.join("./img/icon.ico")
+        icon_path = join("./img/icon.ico")
         self.window.iconbitmap(icon_path)
         
         # Styling
@@ -376,8 +284,6 @@ class ServerControl:
         self.action_tasks = ttk.Menubutton(self.action_bar, text="Tasks")
         self.action_tasks.menu = tk.Menu(self.action_tasks, tearoff = 0, background="#424242", foreground="white")
         self.action_tasks["menu"] = self.action_tasks.menu
-
-        self.action_tasks.menu.add_command(label="Install SteamCMD (add-in)", command=self.on_task_install_steamcmd)
 
         self.action_tasks.grid(row=0, column=1, sticky="ns")
 
@@ -412,8 +318,7 @@ class ServerControl:
         self.listen_server_enabled = tk.BooleanVar(False)
         self.toggle_listen_server = widgets.LabelInput(self.frame_main, label='Allow remote commands:', input_class=ttk.Checkbutton, label_args={'padding':[8,0,0,0]}, input_var=self.listen_server_enabled)
         self.toggle_listen_server.place(x=664, y=40)
-
-        self.toggle_listen_server.input.state(["disabled"]) #* for v0.1-alpha
+        self.toggle_listen_server.input.state(["disabled"])
 
         # Quick Commands
         self.command_panel = widgets.CommandPanel(
@@ -430,18 +335,6 @@ class ServerControl:
         self.command_panel.place(x=556, y=574)
 
         self.frame_main.place(x=0, y=0)
-
-        #!Debug
-        job = Job(["python", "C:/Users/ryanr/source/moDSTogether/tools/nstald/source/nstald.py"])
-        dialog = view.DialogStatus(self.window)
-        self.register(CallEvent(
-            name="debug",
-            fn=lambda : dialog.update_status(job.get_output()),
-            conditional=lambda : job.is_running == True,
-            condition_unmet=lambda : print("job finished")
-        ))
-        #!Debug
-        self.action_tasks.menu.add_command(label="Debug", command=lambda : job.input_line("\n\n"))
 
     def update(self):
         """Self-scheduling update (40ms) of various UI elements and application states. Also
@@ -494,10 +387,6 @@ class ServerControl:
                 self.btn_power.set_fx(True)
             else:
                 self.btn_power.set_fx(False)
-        
-    # def update_listen_server(self):
-    #     isEnabled = self.toggle_listen_server.get()
-    #     self.remote_server.listening = isEnabled
 
     def on_power(self):
         if self.active_server:
@@ -548,19 +437,11 @@ class ServerControl:
         """Handler for showing the application settings dialog.
         """
         view.DialogConfigureApplication(self)
-        
-    def on_remote_command(self, command):
-        print('> Remote command recieved: ' + command)
-        self._send_command(command)
-    
-    def on_task_install_steamcmd(self):
-        if self.env.platform == PLATFORMS.WINDOWS:
-            view.DialogInstallSteamCMD(self.env.download_steamcmd, self.env.install_steamcmd)
 
-    def get_addin_nullrenderer(self):
-        """Returns add-in server root if a nullrenderer is found within.
+    def get_nullrenderer(self):
+        """Gets a nullrenderer with Add-In taking priority over user-defined.
         """
-        nullrenderer = os.path.join(pathlib.Path(__file__).parents[1], "add-ins/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe")
+        nullrenderer = join(pathlib.Path(__file__).parents[1], "add-ins/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe")
         if os.path.exists(nullrenderer):
             return nullrenderer
         return None

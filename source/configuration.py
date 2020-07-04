@@ -2,84 +2,15 @@ import sys
 import configparser
 import pathlib, shutil
 import os
+from os.path import join
 import requests
 import zipfile
 import subprocess
 
-from constants import PLATFORMS
-import wh
+from constants import ADDINS, APP_DIR
 
-class Environment:
-    """Has methods for bootstrapping dependencies & initializing environment variables.
-    """
 
-    def __init__(self):
-        self.platform = self._get_platform()
-        self.programs = self._get_installed_programs()
-
-    def _get_platform(self) -> PLATFORMS:
-        if sys.platform == "win32":
-            return PLATFORMS.WINDOWS
-        elif sys.platform == "linux" or sys.platform == "linux2":
-            return PLATFORMS.LINUX
-        elif sys.platform == "darwin":
-            return PLATFORMS.MACOSX
-    
-    def _get_installed_programs(self):
-        if self.platform == PLATFORMS.WINDOWS:
-            return wh.get_all()
-
-    def program_is_installed(self, patterns):
-        for each in self.programs:
-            name = each['name'].lower()
-            if all(elem in name for elem in patterns):
-                return True
-        return False
-
-    def debug_search_installed_programs(self, patterns):
-        matches = []
-        for each in self.programs:
-            name = each['name'].lower()
-            if all(elem in name for elem in patterns):
-                matches.append(name)
-        print('[debug search installed programs] matches:', matches)
-
-    def download_steamcmd(self):
-        """Downloads SteamCMD Add-In (shard-projector/add-ins/steamcmd). Returns path of installer executable
-        if successful.
-
-        Raises:
-            Exception: If SteamCMD add-in is already installed, a FileExistsError will be raised.
-        """
-
-        temp_path = os.path.join(pathlib.Path(__file__).parents[1], "temp")
-        install_path = os.path.join(pathlib.Path(__file__).parents[1], "add-ins", "steamcmd")
-        exec_path = os.path.join(install_path, "steamcmd.exe")
-
-        if os.path.exists(exec_path):
-            raise FileExistsError("SteamCMD add-in already installed.")
-        
-        # Download latest steamcmd installer zip to temp directory
-        zurl = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
-        response = requests.get(zurl)
-        zpath = os.path.join(temp_path, "steamcmd.zip")
-        zfile_io = open(zpath, 'wb')
-        zfile_io.write(response.content)
-        zfile_io.close()
-
-        # Extract zip contents to add-ins/steamcmd and delete zip from temp
-        zfile = zipfile.ZipFile(zpath, 'r')
-        zfile.extractall(install_path)
-        zfile.close()
-        os.remove(zpath)
-
-        # Run installer in add-ins/steamcmd
-        return os.path.join(install_path, "steamcmd.exe")
-    
-    def install_steamcmd(self, exec_path):
-        subprocess.Popen(exec_path).communicate()
-
-class Configuration:
+class Ini:
     """A reader/writer for a specific (.ini) configuration file.
     """
 
@@ -94,12 +25,12 @@ class Configuration:
             self.set_defaults(defaults_path)
         
     def _read(self):
-        """Reads the INI configuration into internal memory.
+        """Reads the Ini configuration into internal memory.
         """
         return self.path in self._parser.read(self.path)
 
     def as_dict(self):
-        """Gets INI configuration as a dictionary.
+        """Gets Ini configuration as a dictionary.
            
         Returns:
             configuration_dict (dict): Sections mapped to a dictionary of key-value pairs.
@@ -147,7 +78,7 @@ class Configuration:
             return int(value)
 
     def get_sections(self):
-        """Gets sections from the INI configuration file.
+        """Gets sections from the Ini configuration file.
         
         Returns:
             sections (list): A list of section names.
@@ -156,7 +87,7 @@ class Configuration:
         return self._parser.sections()
 
     def update_from_dict(self, dictionary):
-        """Updates INI configuration file from a dictionary. 
+        """Updates Ini configuration file from a dictionary. 
         
         Args:
             dictionary (dict): Sections mapped to key-value pairs.
@@ -167,8 +98,99 @@ class Configuration:
                 self._parser.set(section, k, v)
         with open(self.path, 'w') as configfile:
             self._parser.write(configfile)
-
+    
+    def set(self, section, option, value):
+        self._read()
+        if value is None:
+            value = ""
+        self._parser.set(section, option, value)
+        with open(self.path, 'w') as configfile:
+            self._parser.write(configfile)
+            
     def set_defaults(self, path):
         self._parser.read(path)
         self.defaults = self.as_dict()
+
+
+class ResourceManager:
+    """Responsible for: downloading, unpacking, installing, updating and tracking of application Add-Ins
+    according to defined specifications and sequences.
+    """
+    def __init__(self):
+        self.installed_dir = join(APP_DIR, "add-ins")
+        self.downloaded_dir = join(APP_DIR, "temp")
+
+        script_path = os.path.dirname(os.path.realpath(__file__))
+        config_path = join(script_path, 'ini/resource_manifest.ini')
+
+        self.manifest = Ini(config_path)
+        self.update_manifest()
+
+    def update_manifest(self):
+        """Updates manifest records for downloaded Add-In packages and installations.
+        """        
+        for name, item in ADDINS.items():
+            # Check for Add-In installation, update record.
+            installation_path = join(self.installed_dir, item["PATH"])
+            if os.path.exists(installation_path):
+                self.manifest.set(name, "installed", installation_path)
+            else:
+                self.manifest.set(name, "installed", None)
+            # Check for Add-In downloaded, update record.
+            if item["DOWNLOAD"]:
+                payload = os.path.basename(item["DOWNLOAD"])
+                downloaded_path = join(self.downloaded_dir, payload)
+            if os.path.exists(downloaded_path):
+                self.manifest.set(name, "downloaded", downloaded_path)
+            else:
+                self.manifest.set(name, "downloaded", None)
+        
+
+    def download(self, addin):
+        """Downloads Add-In zip from its defined web source.
+        """
+        if addin["DOWNLOAD"]:
+            response = requests.get(addin["DOWNLOAD"])
+            z_path = join(self.downloaded_dir, os.path.basename(addin["DOWNLOAD"]))
+            z_file_io = open(z_path, 'wb') #TODO: debug
+            z_file_io.write(response.content)
+            z_file_io.close()
+
+
+    def unpack(self, addin):
+        """Extracts Add-In zip to its defined unpack location.
+        """
+        if addin["UNPACK"]:
+            zip_path = join(self.downloaded_dir, os.path.basename(addin["DOWNLOAD"]))
+            zfile = zipfile.ZipFile(zip_path, 'r')
+            zfile.extractall(addin["UNPACK"])
+            zfile.close()
+            os.remove(zip_path)
+
+
+    def install(self, addin):
+        """Install Add-In  using its defined installation executable and returns
+        the subprocess.
+        """
+        self.update_manifest()
+        exec_install = addin["INSTALL"]
+        if exec_install:
+            return subprocess.Popen(exec_install)
+
+
+    def uninstall(self, addin): 
+        """Uninstall Add-In by deleting its installation folder.
+        """
+        self.update_manifest()
+        installation = join(self.installed_dir, addin["PATH"])
+        shutil.rmtree(installation)
+    
+
+rm = ResourceManager()
+man = rm.manifest.as_dict()
+
+rm.download(ADDINS["STEAMCMD"])
+
+
+print(man)
 

@@ -6,7 +6,6 @@ from tkinter import ttk
 from ttkthemes import ThemedTk
 import PIL
 
-from constants import FieldTypes
 
 class CommandPanel(ttk.Labelframe):
     def __init__(
@@ -80,9 +79,6 @@ class ConsoleView(ttk.Frame):
         self.update()
 
         self.status_label = ttk.Label(self, text="Status: ", style="status.Label")
-
-    # def on_motion(self, event):
-    #     self.status_label.place_forget()
 
     @property
     def height_in_pixels(self):
@@ -178,12 +174,6 @@ class LabelInput(ttk.Frame):
     """A widget containing a label and input together. Accepts various ttk input widgets as input_class. Creates a paired ttk.Label to the left of
     those which lack a suitable label of their own. Ensures columns span entire widget contained. Optional end-user toggle for enabling/disabling
     the field."""
-
-    field_types = {
-        FieldTypes.standard: (ttk.Entry, tk.StringVar),
-        FieldTypes.path: (DirectorySelectEntry, tk.StringVar),
-        FieldTypes.boolean: (ttk.Checkbutton, tk.BooleanVar)
-    }
 
     def __init__(
         self,
@@ -313,8 +303,8 @@ class LabelInput(ttk.Frame):
             self._populate_placeholder()
 
 
-class ConfigurationFrame(ttk.Frame):
-    """A frame with controls for editing an INI configuration supplied as a dictionary.
+class IniFrame(ttk.Frame):
+    """A frame with controls for editing an Ini configuration supplied as a dictionary.
     
     Use get to retrieve its values in a similarly structured dictionary."""
 
@@ -357,7 +347,7 @@ class ConfigurationFrame(ttk.Frame):
             section_label_frame.pack(side=tk.TOP, expand=True, fill=tk.X)
 
     def _populate_defined(self):
-        """Populates field inputs whose values are supplied in primary INI dictionary.
+        """Populates field inputs whose values are supplied in primary Ini dictionary.
         """   
         for section in self.inputs: 
             for key, _input in self.inputs[section].items():

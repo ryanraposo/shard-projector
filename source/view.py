@@ -88,7 +88,7 @@ class DialogConfigureApplication(tk.Toplevel):
         config = application.config.as_dict()
         config_defaults = application.config.defaults
 
-        configuration_frame = widgets.ConfigurationFrame(
+        configuration_frame = widgets.IniFrame(
             parent=self.root_frame,
             ini_dict=config,
             ini_defaults_dict=config_defaults, 
@@ -128,7 +128,7 @@ class DialogConfigureServer(tk.Toplevel):
 
         self.notebook = ttk.Notebook(self)
         self.tabs = {}
-        self.tabs[server] = widgets.ConfigurationFrame(
+        self.tabs[server] = widgets.IniFrame(
             parent=self.notebook,
             ini_dict=server.config.as_dict(),
             ini_defaults_dict=server.config.defaults
@@ -136,7 +136,7 @@ class DialogConfigureServer(tk.Toplevel):
 
         self.notebook.add(child=self.tabs[server], text="Cluster")
         for shard in server.shards:
-            self.tabs[shard] = widgets.ConfigurationFrame(
+            self.tabs[shard] = widgets.IniFrame(
                 parent=self.notebook,
                 ini_dict=shard.config.as_dict(),
                 ini_defaults_dict=shard.config.defaults
