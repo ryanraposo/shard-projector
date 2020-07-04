@@ -2,7 +2,7 @@ from enum import Enum
 import os, pathlib
 
 
-APP_DIR = os.path.join(pathlib.Path(__file__).parents[1], "add")
+APP_DIR = os.path.join(pathlib.Path(__file__).parents[1])
 
 ADDINS = {    
     "STEAMCMD" : {
