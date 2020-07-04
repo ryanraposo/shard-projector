@@ -186,11 +186,3 @@ class ResourceManager:
         shutil.rmtree(installation)
     
 
-rm = ResourceManager()
-man = rm.manifest.as_dict()
-
-rm.download(ADDINS["STEAMCMD"])
-
-
-print(man)
-

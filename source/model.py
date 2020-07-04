@@ -245,82 +245,67 @@ class ServerControl:
         self.update()
 
     def initialize_ui(self):
-        """Setup widgets and styling of main window."""
-
-        # Window
+        """Setup widgets and styling of main window.
+        """
+     # Window
         self.window.geometry("960x650")
         self.window.resizable(0, 0)
         self.window.protocol("WM_DELETE_WINDOW", self.quit)
         self.window.title("Shard Projector")
         icon_path = join("./img/icon.ico")
         self.window.iconbitmap(icon_path)
-        
-        # Styling
+     # Styling
         self.window.option_add("*TCombobox*Listbox.background", "#424242")
         self.window.option_add("*TCombobox*Listbox.selectBackground", "#525252")
-
+        self.window.option_add("*Menu.background", "#424242")
+     # Main Frame
         self.frame_main = ttk.Frame(self.window, width=960, height=650)
-        # Top Bar
-        self.frm_dir_select = ttk.Frame(self.frame_main)
-        self.frm_dir_select.place(x=36, y=0)
-
+     # Top Bar
+        self.frame_main = ttk.Frame(self.frame_main)
+        self.frame_main.place(x=36, y=0)
         self.widget_directory_select = widgets.DirectorySelectEntry(
-            master=self.frm_dir_select,
-            on_select=self.on_browse
-        )
+            master=self.frame_main,
+            on_select=self.on_browse)
         self.widget_directory_select.grid(row=0, column=0)
-
-        # Action Bar
+     # Action Bar
         self.action_bar = ttk.Frame(self.frame_main)
         self.action_bar.columnconfigure(0, minsize=30)
         self.action_bar.columnconfigure(1, minsize=30)
         self.action_bar.rowconfigure(0, minsize=10)
-
         self.action_settings = ttk.Button(self.action_bar, text="Settings", command=self.on_settings)
         self.action_settings.grid(row=0, column=0, sticky="ns")
-
-        self.window.option_add("*Menu.background", "#424242")
-
         self.action_tasks = ttk.Menubutton(self.action_bar, text="Tasks")
-        self.action_tasks.menu = tk.Menu(self.action_tasks, tearoff = 0, background="#424242", foreground="white")
+        self.action_tasks.menu = tk.Menu(self.action_tasks,
+            tearoff = 0,
+            background="#424242",
+            foreground="white")
         self.action_tasks["menu"] = self.action_tasks.menu
-
         self.action_tasks.grid(row=0, column=1, sticky="ns")
-
         self.action_bar.place(x=620, y=0)
-
-        # Power Button
+     # Power Button
         self.btn_power = widgets.PowerButton(root, command=self.on_power)
         self.btn_power.set_fx(False)
         self.btn_power.place(x=868, y=12)
-
-        # Info Bar
+     # Info Bar
         self.info_bar = view.InfoBar(master=self.frame_main, command_configure=self.on_configure)
         self.info_bar.place(x=0, y=85, width=960)
-
-        # Console Views
+     # Console Views
         s = ttk.Style()
         s.configure("console.TFrame", background="#3A3A3A")
-
         self.console_view_frame = ttk.Frame(self.frame_main, style="console.TFrame")
         cv_width = 470
         cv_height_in_rows = 20
-
         self.console_view_master = widgets.ConsoleView(self.console_view_frame, width=cv_width, height_in_rows=cv_height_in_rows)
         self.console_view_master.pack(side=tk.LEFT)
-
         self.console_view_slave = widgets.ConsoleView(self.console_view_frame, width=cv_width, height_in_rows=cv_height_in_rows)
         self.console_view_slave.pack(side=tk.RIGHT)
-        
         self.console_view_frame.place(x=3, y=123, width=954)
-
-        # Toggle Listen Server
+     # (Disabled) Toggle Listen Server 
         self.listen_server_enabled = tk.BooleanVar(False)
         self.toggle_listen_server = widgets.LabelInput(self.frame_main, label='Allow remote commands:', input_class=ttk.Checkbutton, label_args={'padding':[8,0,0,0]}, input_var=self.listen_server_enabled)
         self.toggle_listen_server.place(x=664, y=40)
         self.toggle_listen_server.input.state(["disabled"])
-
-        # Quick Commands
+     # Quick Commands
         self.command_panel = widgets.CommandPanel(
             parent=self.frame_main,
             buttons=[
@@ -333,15 +318,12 @@ class ServerControl:
             panel_text="Commands",
         )
         self.command_panel.place(x=556, y=574)
-
+     # End
         self.frame_main.place(x=0, y=0)
 
     def update(self):
-        """Self-scheduling update (40ms) of various UI elements and application states. Also
-        evaluates registered calls.
+        """Self-scheduling update (40ms) of various UI elements and application states.
         """
-        for call in self.calls:
-            call.evaluate()
         try:
             if self.active_server:  # Update ConsoleViews & button states
                 self.active_server.poll()
@@ -388,28 +370,27 @@ class ServerControl:
             else:
                 self.btn_power.set_fx(False)
 
-    def on_power(self):
+    def on_power(self): # # TODO: ResourceManager refactor
         if self.active_server:
             if len(self.active_server.processes) > 0:
-                self.active_server.run_command("c_shutdown()")
+                self.unload_server(clearOutput=False)
             else:
-                add_in_nullrenderer = self.get_addin_nullrenderer()
-                if add_in_nullrenderer:
-                     self.active_server.start(add_in_nullrenderer)
-                self.active_server.start(self.config.get("ENVIRONMENT", "nullrenderer"))
+                nullrenderer = self.get_nullrenderer()
+                self.active_server.start(nullrenderer)
+
 
     def on_regenerate(self):
-        self._send_command("c_regenerateworld()")
+        self.send_command("c_regenerateworld()")
 
     def on_reset(self):
-        self._send_command("c_reset()")
+        self.send_command("c_reset()")
 
     def on_save(self):
-        self._send_command("c_save()")
+        self.send_command("c_save()")
 
     def on_custom(self):
         custom_command = view.DialogCustomCommand(parent=self.window).show()
-        self._send_command(custom_command)
+        self.send_command(custom_command)
 
     def on_update(self):
         if self.active_server:
@@ -438,15 +419,22 @@ class ServerControl:
         """
         view.DialogConfigureApplication(self)
 
-    def get_nullrenderer(self):
-        """Gets a nullrenderer with Add-In taking priority over user-defined.
+    def get_nullrenderer(self): # TODO: ResourceManager refactor
+        """Gets a nullrenderer with an Add-In installation taking priority over user-defined.
         """
-        nullrenderer = join(pathlib.Path(__file__).parents[1], "add-ins/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe")
-        if os.path.exists(nullrenderer):
-            return nullrenderer
+        addin_nullrenderer = join(pathlib.Path(__file__).parents[1], "add-ins/steamcmd/steamapps/common/Don't Starve Together Dedicated Server/bin/dontstarve_dedicated_server_nullrenderer.exe")
+        if os.path.exists(addin_nullrenderer):
+            return addin_nullrenderer
+        else:
+            user_nullrenderer = self.config.get("ENVIRONMENT", "nullrenderer")
+            if os.path.exists(user_nullrenderer):
+                return user_nullrenderer
         return None
         
-    def unload_server(self):
+    def unload_server(self, clearOutput=True):
+        """Attempts to safely shutdown any active server, waits 2 seconds before killing it and
+        optionally clears any output.
+        """
         if self.active_server != None:
             # Shutdown server
             self.active_server.run_command("c_shutdown()")
@@ -479,23 +467,19 @@ class ServerControl:
         except Exception as e:
             print(e)
     
-    def _send_command(self, command):
+    def send_command(self, command):
+        """Helper function that forwards a command to the active server
+        if one is present.
+
+        Args:
+            command (str): [description]
+        """
         if self.active_server:
             self.active_server.run_command(command)
 
     def get_server_info(self, section, option):
-        if hasattr(self, "active_server"):
+        if self.active_server:
             return self.active_server.config.get(section, option)
-
-    def register(self, call_event):
-        """Register a CallEvent to be evaluated at each interval of the applications main update cycle.
-        """        
-        self.calls.append(call_event)
-
-    def deregister(self, call_event):
-        """Deregister a CallEvent from main application update cycle.
-        """        
-        self.calls.remove(call_event)
 
     def quit(self):
         self.unload_server()
