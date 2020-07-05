@@ -255,10 +255,10 @@ class ServerControl:
      # Main Frame
         self.frame_main = ttk.Frame(self.window, width=960, height=650)
      # Top Bar
-        self.frame_main = ttk.Frame(self.frame_main)
-        self.frame_main.place(x=36, y=0)
+        self.frm_dir_select = ttk.Frame(self.frame_main)
+        self.frm_dir_select.place(x=36, y=0)
         self.widget_directory_select = widgets.DirectorySelectEntry(
-            master=self.frame_main,
+            master=self.frm_dir_select,
             on_select=self.on_browse)
         self.widget_directory_select.grid(row=0, column=0)
      # Action Bar
@@ -422,6 +422,9 @@ class ServerControl:
             user_nullrenderer = self.config.get("ENVIRONMENT", "nullrenderer")
             if os.path.exists(user_nullrenderer):
                 return user_nullrenderer
+        messagebox.showinfo("Shard Projector",
+            "Nullrenderer (dontstarve_dedicated_server_nullrenderer.exe) not found. Please define one in Settings, or install as an Add-In."
+        )
         return None
         
     def unload_server(self, clearOutput=True):

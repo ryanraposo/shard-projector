@@ -249,7 +249,7 @@ def test_verified_installs():
     resource_mgr.verified_install(ADDINS["NULLRENDERER"])
 
 
-test_verified_installs()
+# test_verified_installs()
 
 
 
