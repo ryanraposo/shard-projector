@@ -1,1 +1,0 @@
-- 'Nicole's Bugfix': increase safety of switching active servers while a server is running 

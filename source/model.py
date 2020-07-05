@@ -1,6 +1,7 @@
 """
 Desktop application for running & managing Don't Starve Together Dedicated Servers
 """
+
 import sys, os, pathlib
 from os.path import join
 

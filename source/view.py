@@ -296,12 +296,12 @@ class DialogStatus(tk.Toplevel):
 
     def __init__(self, parent, blocking_enabled=False):
         super().__init__(parent)
-        self.title("Status")
+        self.title("")
+        self.iconbitmap(os.path.join("./img/icon.ico"))
         # self.transient(parent)
         # parent.wm_attributes("-disabled", True)
         if blocking_enabled:
             self.grab_set()
-        self.focus_set()
 
         self.root_frame = ttk.Frame(self)
         self.status_view = widgets.ConsoleView(self, 400, 10)

@@ -7,9 +7,15 @@ import requests
 import zipfile
 import subprocess
 
-
 from constants import ADDINS, APP_DIR
 
+#*DEBUG
+from view import DialogStatus 
+import tkinter as tk
+from tkinter import ttk
+from tkinter import filedialog, messagebox
+from ttkthemes import ThemedTk
+#*DEBUG
 
 class Ini:
     """A reader/writer for a specific (.ini) configuration file.
@@ -193,10 +199,10 @@ class ResourceManager:
         installation = join(self.installed_dir, addin["PATH"])
         shutil.rmtree(installation, True)
 
-    def verified_install(self, addin, shouldReaquire=False): #! TODO: [DEBUG WITH CAUTION]
-        """[DEBUG WITH CAUTION] Performs Add-In component checks where applicable in descending
-        order of necessity: Dependencies, executable, and base directory. If all
-        pass, returns True. If any fail, returns False. 
+    def verified_install(self, addin, shouldReaquire=False):
+        """Performs Add-In component checks where applicable in descending
+        order of necessity: Dependencies, base directory, and executable. If all
+        pass, returns True. If any fail, returns False. [DEBUG WITH CAUTION]
 
         Args:
             addin (const Dict):  Dictionary of sequence and component information
@@ -234,21 +240,35 @@ class ResourceManager:
         return join(self.installed_dir, segment)
 
 
-def test_verified_installs(): #! [DEBUG WITH CAUTION]
-    """[DEBUG WITH CAUTION] Test ResourceManager aptitude in various cases.  
-    """    
-    resource_mgr = ResourceManager()
-    # Uninstall all 
-    resource_mgr._uninstall(ADDINS["NULLRENDERER"])
-    resource_mgr._uninstall(ADDINS["STEAMCMD"])
-    # verified_install SteamCMD
-    resource_mgr.verified_install(ADDINS["STEAMCMD"], True)
-    # Uninstall SteamCMD
-    resource_mgr._uninstall(ADDINS["STEAMCMD"])
-    # verified_install Nullrenderer (proceed to catch and install missing dependency via self call)
-    resource_mgr.verified_install(ADDINS["NULLRENDERER"])
+if __name__ == "__main__":
+    def test_verified_installs():
+        """Test verified_install (ResourceManager) aptitude in various cases.    
+        """    
+        manager = ResourceManager()
+        # Uninstall all 
+        manager._uninstall(ADDINS["NULLRENDERER"])
+        manager._uninstall(ADDINS["STEAMCMD"])
+        # verified_install SteamCMD
+        manager.verified_install(ADDINS["STEAMCMD"], True)
+        # Uninstall SteamCMD
+        manager._uninstall(ADDINS["STEAMCMD"])
+        # verified_install Nullrenderer (proceed to catch and install missing dependency via self call)
+        manager.verified_install(ADDINS["NULLRENDERER"])
 
+    def test_dialog_install_steamcmd():
+        """Test ResourceManager aptitude for installing SteamCMD with proper output streaming
+        and toplevel dialogs. [DEBUG WITH CAUTION]
+        """ 
+        manager = ResourceManager()
+        root = ThemedTk(theme="equilux")
+        root.wm_iconify()
+        dialog = DialogStatus(root, True)
 
+        
+    
+        root.mainloop()
+
+    test_dialog_install_steamcmd()
 
 
 
