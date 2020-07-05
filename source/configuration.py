@@ -235,7 +235,7 @@ class ResourceManager:
 
 
 def test_verified_installs(): #! [DEBUG WITH CAUTION]
-    """Test ResourceManager aptitude in various cases.  
+    """[DEBUG WITH CAUTION] Test ResourceManager aptitude in various cases.  
     """    
     resource_mgr = ResourceManager()
     # Uninstall all 
@@ -249,7 +249,6 @@ def test_verified_installs(): #! [DEBUG WITH CAUTION]
     resource_mgr.verified_install(ADDINS["NULLRENDERER"])
 
 
-test_verified_installs()
 
 
 
