@@ -41,13 +41,13 @@ development at the moment:
 - Would like to show status/output while preventing or heavily discouraging using/closing Shard Projector
 - Need to account for installations that fail or otherwise result in a sensible reason to end or restart 
 - Need to maintain/diligently indicate 3rd party nature of any Add-Ins (most immediately: SteamCMD, a non-graphical, compact version of Steam). This includes displaying output and placing reminders in Shard Projector where appropriate 
-- Many related CLI processes started with robust Python built-in ```subproccess.Popen``` are not indicating termination using typical methods, and novel methods:
+- Some Add-In related CLI processes started with robust Python built-in ```subproccess.Popen``` pose monitoring challenges using typical methods, and novel methods:
 - Must not significantly disturb current interactions/methods of handling subprocesses because they are:
   -  A) The basis of Shard Projector *and* 
   -  B) its primary design challenges. These interactions are threaded (run in parallel) the way they are currently because GUI frameworks tend to demand and depend on an uninterrupted execution loop. We are using one that was chosen because it is shipped with Python, and it is no exception to these common restrictions by *any* stretch of the imagination. 
 - Would like to implement a scalable and elegant combination of classes and methods that will handle this sensitive, multi-stage, multi-resource process with its numerous potential points-of-failure.
 
-This update is a big one! It is a (rather ironic) manifestation of this project's primary goals: less dependencies, less downloads, and less explanations.
+This update is a big one! It is a (rather ironic) manifestation of this project's primary goals: fewer dependencies, fewer downloads, and fewer explanations.
 
 It depends, however, on some graciously provided tools and as such, this update seeks to gather and set them up for users.
 
