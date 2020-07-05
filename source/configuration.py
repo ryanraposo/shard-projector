@@ -178,11 +178,11 @@ class ResourceManager:
             return subprocess.Popen(self.path_to(exec_install))
 
     def _update(self, addin):
-        """Update Add-In  using its defined installation executable and returns
+        """Update Add-In using its defined update executable and returns
         the subprocess.
         """
         self._update_manifest()
-        exec_update = addin["INSTALL"]
+        exec_update = addin["UPDATE"]
         if exec_update:
             return subprocess.Popen(self.path_to(exec_update))
 
