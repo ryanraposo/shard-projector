@@ -371,7 +371,17 @@ class ServerControl:
                 self.unload_server(clearOutput=False)
             else:
                 nullrenderer = self.get_nullrenderer()
-                self.active_server.start(nullrenderer)
+                if nullrenderer:
+                    self.active_server.start(nullrenderer)
+                else:
+                    messagebox.showinfo("Shard Projector",
+                    "Nullrenderer (dontstarve_dedicated_server_nullrenderer.exe) not found. Please define one in Settings, or install as an Add-In."
+                    )
+        else:
+            messagebox.showinfo("Shard Projector",
+            "Please browse for a valid server configuration folder."
+            )  
+
 
     def on_regenerate(self):
         self.send_command("c_regenerateworld()")
@@ -423,9 +433,6 @@ class ServerControl:
             user_nullrenderer = self.config.get("ENVIRONMENT", "nullrenderer")
             if os.path.exists(user_nullrenderer):
                 return user_nullrenderer
-        messagebox.showinfo("Shard Projector",
-            "Nullrenderer (dontstarve_dedicated_server_nullrenderer.exe) not found. Please define one in Settings, or install as an Add-In."
-        )
         return None
         
     def unload_server(self, clearOutput=True):
