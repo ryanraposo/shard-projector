@@ -368,7 +368,7 @@ class ServerControl:
     def on_power(self): # # TODO: ResourceManager refactor
         if self.active_server:
             if len(self.active_server.processes) > 0:
-                self.unload_server(clearOutput=False)
+                self.unload_server()
             else:
                 nullrenderer = self.get_nullrenderer()
                 if nullrenderer:
@@ -381,7 +381,6 @@ class ServerControl:
             messagebox.showinfo("Shard Projector",
             "Please browse for a valid server configuration folder."
             )  
-
 
     def on_regenerate(self):
         self.send_command("c_regenerateworld()")
@@ -435,7 +434,7 @@ class ServerControl:
                 return user_nullrenderer
         return None
         
-    def unload_server(self, clearOutput=True):
+    def unload_server(self): # TODO: Reimplement clearOutput when easy access to logs is provided
         """Attempts to safely shutdown any active server, waits 2 seconds before killing it and
         optionally clears any output.
         """
@@ -446,12 +445,10 @@ class ServerControl:
             self.window.after(2000)
             # Kill procs
             self.active_server.kill()
-            # Clear console views
-            self.console_view_master.clear()
-            self.console_view_slave.clear()
 
     def set_active_server(self, server):
-        """Updates active_server attribute from server and updates various UI elements accordingly."""
+        """Updates active_server attribute from server and updates various UI elements accordingly.
+        """
         self.active_server = server
         self.widget_directory_select.set(
             "%s (%s)" % (os.path.basename(self.active_server.path), self.active_server.path)
