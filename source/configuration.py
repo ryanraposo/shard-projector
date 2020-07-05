@@ -193,8 +193,8 @@ class ResourceManager:
         installation = join(self.installed_dir, addin["PATH"])
         shutil.rmtree(installation, True)
 
-    def verified_install(self, addin, shouldReaquire=False):
-        """Performs Add-In component checks where applicable in descending
+    def verified_install(self, addin, shouldReaquire=False): #! TODO: [DEBUG WITH CAUTION]
+        """[DEBUG WITH CAUTION] Performs Add-In component checks where applicable in descending
         order of necessity: Dependencies, executable, and base directory. If all
         pass, returns True. If any fail, returns False. 
 
@@ -209,7 +209,7 @@ class ResourceManager:
             dependency = addin["REQUIRES"]
             check["Dependency"] = self.verified_install(ADDINS[dependency], shouldReaquire)             
         if addin["EXECUTE"]: # Note presence if expected 
-            check["Executable"] = exists(self.path_to(addin["EXECUTABLE"]))
+            check["Executable"] = exists(self.path_to(addin["EXECUTE"]))
         if addin["PATH"]: # Note presence if expected
             check["Directory"] = exists(self.path_to(addin["PATH"]))
 
@@ -234,7 +234,7 @@ class ResourceManager:
         return join(self.installed_dir, segment)
 
 
-def test_verified_installs():
+def test_verified_installs(): #! [DEBUG WITH CAUTION]
     """Test ResourceManager aptitude in various cases.  
     """    
     resource_mgr = ResourceManager()
@@ -242,14 +242,14 @@ def test_verified_installs():
     resource_mgr._uninstall(ADDINS["NULLRENDERER"])
     resource_mgr._uninstall(ADDINS["STEAMCMD"])
     # verified_install SteamCMD
-    resource_mgr.verified_install(ADDINS["STEAMCMD"])
+    resource_mgr.verified_install(ADDINS["STEAMCMD"], True)
     # Uninstall SteamCMD
     resource_mgr._uninstall(ADDINS["STEAMCMD"])
     # verified_install Nullrenderer (proceed to catch and install missing dependency via self call)
     resource_mgr.verified_install(ADDINS["NULLRENDERER"])
 
 
-# test_verified_installs()
+test_verified_installs()
 
 
 
