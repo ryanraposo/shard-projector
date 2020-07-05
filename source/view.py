@@ -287,7 +287,6 @@ class DialogInstallSteamCMD:
                 messagebox.showerror("Error", "Installation of the SteamCMD Add-In failed with error: " + e)
 
     
-
 class DialogStatus(tk.Toplevel):
     """Dialog for indicating status of various application activities.
 
