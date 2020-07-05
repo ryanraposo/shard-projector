@@ -2,10 +2,11 @@ import sys
 import configparser
 import pathlib, shutil
 import os
-from os.path import join
+from os.path import join, exists
 import requests
 import zipfile
 import subprocess
+
 
 from constants import ADDINS, APP_DIR
 
@@ -124,15 +125,15 @@ class ResourceManager:
         config_path = join(script_path, 'ini/resource_manifest.ini')
 
         self.manifest = Ini(config_path)
-        self.update_manifest()
+        self._update_manifest()
 
-    def update_manifest(self):
+    def _update_manifest(self):
         """Updates manifest records for downloaded Add-In packages and installations.
         """        
         for name, item in ADDINS.items():
             # Check for Add-In installation, update record.
             installation_path = join(self.installed_dir, item["PATH"])
-            if os.path.exists(installation_path):
+            if exists(installation_path):
                 self.manifest.set(name, "installed", installation_path)
             else:
                 self.manifest.set(name, "installed", None)
@@ -140,49 +141,115 @@ class ResourceManager:
             if item["DOWNLOAD"]:
                 payload = os.path.basename(item["DOWNLOAD"])
                 downloaded_path = join(self.downloaded_dir, payload)
-            if os.path.exists(downloaded_path):
+            if exists(downloaded_path):
                 self.manifest.set(name, "downloaded", downloaded_path)
             else:
                 self.manifest.set(name, "downloaded", None)
         
-
-    def download(self, addin):
-        """Downloads Add-In zip from its defined web source.
+    def _download(self, addin):
+        """Downloads Add-In zip from its defined web source. Replaces any existing
+        web download for Add-In.
         """
         if addin["DOWNLOAD"]:
             response = requests.get(addin["DOWNLOAD"])
             z_path = join(self.downloaded_dir, os.path.basename(addin["DOWNLOAD"]))
+            shutil.rmtree(z_path, True)
             z_file_io = open(z_path, 'wb') #TODO: debug
             z_file_io.write(response.content)
             z_file_io.close()
 
-
-    def unpack(self, addin):
+    def _unpack(self, addin):
         """Extracts Add-In zip to its defined unpack location.
         """
         if addin["UNPACK"]:
             zip_path = join(self.downloaded_dir, os.path.basename(addin["DOWNLOAD"]))
             zfile = zipfile.ZipFile(zip_path, 'r')
-            zfile.extractall(addin["UNPACK"])
+            zfile.extractall(join(self.installed_dir, addin["UNPACK"]))
             zfile.close()
             os.remove(zip_path)
 
-
-    def install(self, addin):
+    def _install(self, addin):
         """Install Add-In  using its defined installation executable and returns
         the subprocess.
         """
-        self.update_manifest()
+        self._update_manifest()
         exec_install = addin["INSTALL"]
         if exec_install:
-            return subprocess.Popen(exec_install)
+            return subprocess.Popen(self.path_to(exec_install))
 
+    def _update(self, addin):
+        """Update Add-In  using its defined installation executable and returns
+        the subprocess.
+        """
+        self._update_manifest()
+        exec_update = addin["INSTALL"]
+        if exec_update:
+            return subprocess.Popen(self.path_to(exec_update))
 
-    def uninstall(self, addin): 
+    def _uninstall(self, addin): 
         """Uninstall Add-In by deleting its installation folder.
         """
-        self.update_manifest()
+        self._update_manifest()
         installation = join(self.installed_dir, addin["PATH"])
-        shutil.rmtree(installation)
-    
+        shutil.rmtree(installation, True)
+
+    def verified_install(self, addin, shouldReaquire=False):
+        """Performs Add-In component checks where applicable in descending
+        order of necessity: Dependencies, executable, and base directory. If all
+        pass, returns True. If any fail, returns False. 
+
+        Args:
+            addin (const Dict):  Dictionary of sequence and component information
+            for a compatible Add-In.
+            reaquire (bool): If true, any failed checks will also result in an attempted
+            reaquisition.
+        """
+        check = {}
+        if addin["REQUIRES"]: # If expected and missing, verified_install it then continue
+            dependency = addin["REQUIRES"]
+            check["Dependency"] = self.verified_install(ADDINS[dependency], shouldReaquire)             
+        if addin["EXECUTE"]: # Note presence if expected 
+            check["Executable"] = exists(self.path_to(addin["EXECUTABLE"]))
+        if addin["PATH"]: # Note presence if expected
+            check["Directory"] = exists(self.path_to(addin["PATH"]))
+
+        if all(case == True for case in check.values()): 
+            return True
+
+        if any(not case for case in [check["Executable"], check["Directory"]]):
+            if shouldReaquire:
+                self.reaquire(addin)
+            return False
+
+    def reaquire(self, addin):
+        self._uninstall(addin)
+        if addin["DOWNLOAD"]: self._download(addin)            
+        if addin["UNPACK"]: self._unpack(addin)
+        if addin["INSTALL"]: self._unpack(addin)
+        if addin["UPDATE"]: self._update(addin)
+
+    def path_to(self, segment):
+        if 'zip' in segment:
+            return join(self.downloaded_dir, segment)
+        return join(self.installed_dir, segment)
+
+
+def test_verified_installs():
+    """Test ResourceManager aptitude in various cases.  
+    """    
+    resource_mgr = ResourceManager()
+    # Uninstall all 
+    resource_mgr._uninstall(ADDINS["NULLRENDERER"])
+    resource_mgr._uninstall(ADDINS["STEAMCMD"])
+    # verified_install SteamCMD
+    resource_mgr.verified_install(ADDINS["STEAMCMD"])
+    # Uninstall SteamCMD
+    resource_mgr._uninstall(ADDINS["STEAMCMD"])
+    # verified_install Nullrenderer (proceed to catch and install missing dependency via self call)
+    resource_mgr.verified_install(ADDINS["NULLRENDERER"])
+
+
+test_verified_installs()
+
+
 

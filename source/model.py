@@ -182,21 +182,18 @@ class DedicatedServer:
                         if "server.ini" in os.listdir(full_member_path):
                             return True
         return False
-
     @property
     def master(self):
         for shard in self.shards:
             if shard.is_master:
                 return shard
         return None
-
     @property
     def slave(self):
         for shard in self.shards:
             if not shard.is_master:
                 return shard
         return None
-
     @property
     def processes(self):
         processes = []
@@ -229,14 +226,11 @@ class ServerControl:
     
     Displays output from shards and is host to various server controls. Parent to a DedicatedServer object.
     """
-
     def __init__(self, root):
         self.window = root
-        self.calls = []    
-
         self.initialize_ui()
-        self.active_server = None
 
+        self.active_server=None
         script_path = os.path.dirname(os.path.realpath(__file__))
         config_path = join(script_path, 'ini/settings.ini')
         config_defaults_path = join(script_path, 'ini/settings_defaults.ini')
@@ -325,7 +319,7 @@ class ServerControl:
         """Self-scheduling update (40ms) of various UI elements and application states.
         """
         try:
-            if self.active_server:  # Update ConsoleViews & button states
+            if self.active_server != None:  # Update ConsoleViews & button states
                 self.active_server.poll()
                 if self.active_server.master:
                     self.update_console_view(self.console_view_master, self.active_server.master)
@@ -377,7 +371,6 @@ class ServerControl:
             else:
                 nullrenderer = self.get_nullrenderer()
                 self.active_server.start(nullrenderer)
-
 
     def on_regenerate(self):
         self.send_command("c_regenerateworld()")
