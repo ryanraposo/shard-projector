@@ -1,4 +1,3 @@
-# Standard
 import configparser
 import os
 from os.path import abspath, basename, dirname, exists, join
@@ -7,8 +6,8 @@ import sys
 import shutil
 import subprocess
 import zipfile
-# Local
-from constants import ADDINS, APP_DIR
+
+from constants import *
 
 
 class Ini:
@@ -117,13 +116,12 @@ class ResourceManager:
     according to defined specifications and sequences.
     """
     def __init__(self):
-        self.installed_dir = join(APP_DIR, "add-ins")
-        self.downloaded_dir = join(APP_DIR, "temp")
+        self.installed_dir = DIR_ADDINS
+        self.downloaded_dir = DIR_TEMP
 
-        script_path = dirname(abspath(__file__))
-        config_path = join(script_path, 'ini/resource_manifest.ini')
-
+        config_path = join(DIR_INI, 'resource_manifest.ini')
         self.manifest = Ini(config_path)
+        
         self._update_manifest()
 
     def _update_manifest(self):

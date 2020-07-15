@@ -1,6 +1,6 @@
 """
 ===================================================================================
-Derivative of code originally authored by Orsiris de Jong
+Derivative of code originally authored by Orsiris de Jong (wh.py)
 """
 import winreg
 

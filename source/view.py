@@ -11,6 +11,7 @@ from subprocess import Popen, PIPE
 import widgets
 
 from util import iter_except
+from constants import *
 
 
 class InfoBar(ttk.LabelFrame):
@@ -79,9 +80,11 @@ class DialogConfigureApplication(tk.Toplevel):
     ):
         super().__init__(master=application.window)
         self.title("Shard Projector Settings")
+        self.iconbitmap(os.path.join(DIR_IMG, "icon.ico"))
         self.configure(bg="#424242")
-        # self.geometry("450x450")
-        self.wm_transient(application.window)
+        self.grab_set()
+        # Centers dialog
+        application.window.eval('tk::PlaceWindow %s center' % self.winfo_toplevel())
 
         self.root_frame =ttk.Frame(self)        
 
@@ -119,9 +122,12 @@ class DialogConfigureServer(tk.Toplevel):
     def __init__(self, parent, server, fn_on_apply):
         super().__init__(parent)
         self.title("Settings")
+        self.iconbitmap(os.path.join(DIR_IMG, "icon.ico"))
         self.configure(bg="#424242")
-        self.wm_transient(parent)
-
+        self.grab_set()
+        # Centers dialog
+        parent.eval('tk::PlaceWindow %s center' % self.winfo_toplevel())
+        
         self.fn_on_apply = fn_on_apply
 
         self.server = server
@@ -174,8 +180,10 @@ class DialogConfirmShardDirectories(tk.Toplevel):
     def __init__(self, parent, detected_shard_directories, fn_callback):
         super().__init__(parent)
         self.title("Confirm shard directories...")
+        self.iconbitmap(os.path.join(DIR_IMG, "icon.ico"))
         self.grab_set()
-        self.transient(parent)
+        # Centers dialog
+        parent.eval('tk::PlaceWindow %s center' % self.winfo_toplevel())
 
         self.detected_shard_directories = detected_shard_directories
         self.fn_callback = fn_callback
@@ -221,15 +229,13 @@ class DialogCustomCommand(tk.Toplevel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.configure(
-            bg="#424242"
-        )  # TODO: May not be necessary, but appears white when testing with simple instantiation at the bottom of this module. Widgets seem to inherit styling, though
-        self.lift()
-        self.focus_force()
-        self.grab_set()
-        self.grab_release()
-        self.wm_iconify()
         self.title("Enter a custom command...")
+        self.iconbitmap(os.path.join(DIR_IMG, "icon.ico"))
+        self.configure(bg="#424242")
+        # Centers dialog
+        parent.eval('tk::PlaceWindow %s center' % self.winfo_toplevel())
+        self.grab_set()
+
         self.var = ""
 
         root_frame = ttk.Frame(self)
@@ -297,9 +303,7 @@ class DialogStatus(tk.Toplevel):
     def __init__(self, parent, blocking_enabled=False):
         super().__init__(parent)
         self.title("")
-        self.iconbitmap(os.path.join("./img/icon.ico"))
-        # self.transient(parent)
-        # parent.wm_attributes("-disabled", True)
+        self.iconbitmap(os.path.join(DIR_IMG, "icon.ico"))
         if blocking_enabled:
             self.grab_set()
 

@@ -1,18 +1,23 @@
-from enum import Enum
-import os, pathlib
+import os
+import pathlib
 
-
-APP_DIR = os.path.join(pathlib.Path(__file__).parents[1])
-
+DIR_ROOT = pathlib.Path(__file__).parents[1]  # If source...
+if os.path.exists(os.path.abspath('./shard_projector.exe')): # If binary...
+    DIR_ROOT = os.path.dirname(pathlib.Path(__file__)) 
+DIR_INI = os.path.join(DIR_ROOT, "ini")
+DIR_ADDINS = os.path.join(DIR_ROOT, "add-ins")
+DIR_TEMP = os.path.join(DIR_ROOT, "temp")
+DIR_IMG = os.path.join(DIR_ROOT, "img")
+    
 ADDINS = {    
     "STEAMCMD" : {
-        "REQUIRES" : None,
-        "DOWNLOAD" : "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip", # Download from
-        "UNPACK" : "steamcmd", # Unzip to
-        "INSTALL" : "steamcmd/steamcmd.exe", # Install with
-        "PATH" : "steamcmd", # Find at
-        "EXECUTE" : "steamcmd/steamcmd.exe", # Run with
-        "UPDATE" : None# Update with
+        "REQUIRES" : None, # Check for...
+        "DOWNLOAD" : "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip", # Download from...
+        "UNPACK" : "steamcmd", # Unzip to...
+        "INSTALL" : "steamcmd/steamcmd.exe", # Install with...
+        "PATH" : "steamcmd", # Find at...
+        "EXECUTE" : "steamcmd/steamcmd.exe", # Run with...
+        "UPDATE" : None # Update with...
     },
     "NULLRENDERER" : {
         "REQUIRES" : "STEAMCMD",
@@ -24,3 +29,7 @@ ADDINS = {
         "UPDATE" : "steamcmd/steamcmd.exe +login anonymous +app_update 343050 validate +quit"
     }
 }
+
+if __name__ == "__main__":
+    for each in [DIR_ROOT, DIR_INI, DIR_IMG, DIR_ADDINS, DIR_TEMP]:
+        print(each)

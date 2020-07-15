@@ -15,7 +15,7 @@ from tkinter import ttk
 from tkinter import filedialog, messagebox
 from ttkthemes import ThemedTk
 
-from constants import ADDINS
+from constants import DIR_ROOT, DIR_INI
 from configuration import Ini, ResourceManager
 
 import view
@@ -230,11 +230,10 @@ class ServerControl:
     def __init__(self, root):
         self.window = root
         self.initialize_ui()
-
         self.active_server=None
-        script_path = os.path.dirname(os.path.realpath(__file__))
-        config_path = join(script_path, 'ini/settings.ini')
-        config_defaults_path = join(script_path, 'ini/settings_defaults.ini')
+
+        config_path = join(DIR_INI, 'settings.ini')
+        config_defaults_path = join(DIR_INI, 'settings_defaults.ini')
         self.config = Ini(config_path, config_defaults_path)
 
         self.update()

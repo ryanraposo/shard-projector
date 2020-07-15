@@ -1,9 +1,9 @@
+from ttkthemes import ThemedTk
+import pyperclip
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog, messagebox, colorchooser
-from ttkthemes import ThemedTk
-
-import pyperclip
 
 
 def iter_except(function, exception):
