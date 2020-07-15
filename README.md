@@ -113,7 +113,7 @@ At this stage, the most prized contribution would be guidance and project-specif
 
 - Version control
 - Managing of a public repository in the initial development phase (I have experience, but with a far more stable first release)
-- Accomplishing the above wiith allowance for personal freedom of direction and style, but with informed regard for those taking the time to support and the ettiquete one might expect or rely on.
+- Accomplishing the above wiith allowance for personal freedom of direction and style; but with informed regard for those taking the time to support, and the ettiquete they might expect or rely on.
 
 Given that these 'meta-contributions' are difficult to initiate through normal channels and rooted in discussion, I'd ask those willing to oblige to contact me at raposo.ryan@gmail.com. You can also just add me on Discord: ryanraposo#6339
 
