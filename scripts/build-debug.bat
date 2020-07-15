@@ -1,4 +1,4 @@
-pyinstaller -n="shard_projector" -w --noconfirm ^
+pyinstaller -n="shard_projector" --noconfirm ^
     --icon="./img/icon.ico" ^
     --add-data="./img/*;./img" ^
     --add-data="./ini/*;./ini" ^
@@ -8,3 +8,8 @@ echo "Creating empty directories..."
 cd dist/shard_projector
 mkdir add-ins
 mkdir temp
+
+echo "Cleaning up build artifacts..."
+del shard_projector.spec
+rmdir /s /q build
+rmdir /s /q __pycache__

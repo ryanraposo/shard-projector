@@ -3,9 +3,10 @@ from os.path import abspath, basename, dirname, exists, join
 
 
 print("""
-[1] Normal
-[2] No Artifacts
-[3] Debug
+[1] Build
+[2] Build (No Artifacts)
+[3] Build (Debug)
+[4] Clean (Delete artifacts AND build output in working tree)
 """)
 
 batch = ""
@@ -17,6 +18,8 @@ elif user_input == '2':
     batch = abspath("scripts/build-noartifacts.bat")
 elif user_input == '3':
     batch = abspath("scripts/build-debug.bat")
+elif user_input == '4':
+    batch = abspath("scripts/build-clean.bat")
 else:
     quit()
 
