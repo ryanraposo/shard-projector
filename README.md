@@ -98,7 +98,7 @@ pip install pyinstaller
 
 Then run the build script:
 ```
-python scripts\build.py
+python scripts/build.py
 ```
 
 # Known Issues
@@ -112,18 +112,23 @@ Windows (v0.1a)
 At this stage, the most prized contribution would be guidance and project-specific insight on the following topics:
 
 - Version control
-- Management of a hosted repository in the initial development phase (I have experience but with a far more stable first release)
-- Accomplishing the above wiith allowance for personal freedom in direction and style, but with informed regard for those taking the time to support and the ettiquete they might expect or rely on.
+- Managing of a public repository in the initial development phase (I have experience, but with a far more stable first release)
+- Accomplishing the above wiith allowance for personal freedom of direction and style; but with informed regard for those taking the time to support, and the ettiquete they might expect or rely on.
 
-Given that these 'meta-contributions' are difficult to initiate through normal channels, rooted in discussion, and often intangible I ask those willing to oblige to contact me through email at raposo.ryan@gmail.com
+Given that these 'meta-contributions' are difficult to initiate through normal channels and rooted in discussion, I'd ask those willing to oblige to contact me at raposo.ryan@gmail.com. You can also just add me on Discord: ryanraposo#6339
 
-Contributions of other kinds are not unwelcome with regards to Shard Projector, but I'd like to learn about my options and space to move with tact as a project leader before completing this section with boilerplate docs. It can feel hard for me to reconcile a few things with strong aspirations to work with more teams and willing contributors. And I want to, because... well it's the best! 
+Other contributions to Shard Projector are welcome, but I'd like to learn about my options and space to move with tact as lead maintainer before fleshing out this section properly. For now I'd check out the dev notes to see if there's an in for you. In the near future I plan on formalizing that approach a little bit and going with that for this project.
 
-I've spent a lot of time solo-developing this application with head-buried and several facets of it are "not on paper"; but none-the-less quite real, planned for and built around. If anyone can suggest tools or other for documenting from this vantage point for others, like mind/road-mapping made for the purpose that'd be really cool.
+<details><summary>Read more...</summary>
+<p>
 
-Plainly put: I feel no reservations about keeping the front-facing control I want, but don't see similar expressed or in form on this site very often. I sometimes think that GitHub's lack of intimate messaging and other features are ok as-is, but only because if you manage on trend, contribution is so open that comments on already laboured over-work will always be enough to maintain respect for time and wishes. This is a neutral point in itself of course, and the situation suits many no matter one's take. For this project, that won't be in the cards for a while. 
+It can feel hard for me to reconcile a few things with strong aspirations to work with more teams and willing contributors. And I want to, because... well it's the best! 
 
-Shard Projector is a project very receptive to collaboration. Perhaps not easy and predictable for new, issue-targeted drop-in collaboration, but in a way that is involved and so broader in possiblity.
+I've spent a lot of time solo-developing this application with head-buried and several facets of it are not "on paper" but none-the-less quite real, planned for and built around. If anyone can suggest tools or other for documenting from this vantage point for others, like mind/road-mapping made for the purpose that'd be really cool. 
+
+I feel no reservations about keeping the front-facing control I want, but don't see similar expressed or in form on this site very often. I sometimes think that GitHub's lack of intimate messaging and other features are ok as-is, but only because if you manage on trend, contribution is so open that comments on already laboured over-work will always be enough to maintain respect for time *and* wishes. This is a neutral point and the situation suits many no matter one's take, but for this project, thats not in the cards just yet.
+
+Shard Projector is a project very receptive to collaboration. Perhaps not easy and predictable for new, issue-targeted drop-in collaboration; but in a way that is involved and so broader in possiblity.
 
 Your particular implementation may see red-tape on the way in, but thats just because I'd like to see what you see first. In my view, no matter how restrictive or open my style, I'm supposed to lead and account for and understand these differences as they crop up, else where would these judgements on direction come from? So please, know that your contributions are valued. If I call for pause, its because I stand to learn.
 
@@ -137,6 +142,9 @@ Anyways, this stuff can nag at me a little while coding, but thats whats on the 
 
 Thanks for reading,  
 Ryan
+
+</p>
+</details>
 
 # Notice
 
