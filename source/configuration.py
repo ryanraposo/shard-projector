@@ -1,26 +1,19 @@
-import sys
+# Standard
 import configparser
-import pathlib, shutil
 import os
-from os.path import join, exists
+from os.path import abspath, basename, dirname, exists, join
 import requests
-import zipfile
+import sys
+import shutil
 import subprocess
-
+import zipfile
+# Local
 from constants import ADDINS, APP_DIR
 
-#*DEBUG
-from view import DialogStatus 
-import tkinter as tk
-from tkinter import ttk
-from tkinter import filedialog, messagebox
-from ttkthemes import ThemedTk
-#*DEBUG
 
 class Ini:
     """A reader/writer for a specific (.ini) configuration file.
     """
-
     def __init__(
         self,
         path=None,
@@ -127,7 +120,7 @@ class ResourceManager:
         self.installed_dir = join(APP_DIR, "add-ins")
         self.downloaded_dir = join(APP_DIR, "temp")
 
-        script_path = os.path.dirname(os.path.realpath(__file__))
+        script_path = dirname(abspath(__file__))
         config_path = join(script_path, 'ini/resource_manifest.ini')
 
         self.manifest = Ini(config_path)
@@ -145,7 +138,7 @@ class ResourceManager:
                 self.manifest.set(name, "installed", None)
             # Check for Add-In downloaded, update record.
             if item["DOWNLOAD"]:
-                payload = os.path.basename(item["DOWNLOAD"])
+                payload = basename(item["DOWNLOAD"])
                 downloaded_path = join(self.downloaded_dir, payload)
             if exists(downloaded_path):
                 self.manifest.set(name, "downloaded", downloaded_path)
@@ -158,7 +151,7 @@ class ResourceManager:
         """
         if addin["DOWNLOAD"]:
             response = requests.get(addin["DOWNLOAD"])
-            z_path = join(self.downloaded_dir, os.path.basename(addin["DOWNLOAD"]))
+            z_path = join(self.downloaded_dir, basename(addin["DOWNLOAD"]))
             shutil.rmtree(z_path, True)
             z_file_io = open(z_path, 'wb') #TODO: debug
             z_file_io.write(response.content)
@@ -168,7 +161,7 @@ class ResourceManager:
         """Extracts Add-In zip to its defined unpack location.
         """
         if addin["UNPACK"]:
-            zip_path = join(self.downloaded_dir, os.path.basename(addin["DOWNLOAD"]))
+            zip_path = join(self.downloaded_dir, basename(addin["DOWNLOAD"]))
             zfile = zipfile.ZipFile(zip_path, 'r')
             zfile.extractall(join(self.installed_dir, addin["UNPACK"]))
             zfile.close()
@@ -239,36 +232,6 @@ class ResourceManager:
             return join(self.downloaded_dir, segment)
         return join(self.installed_dir, segment)
 
-
-if __name__ == "__main__":
-    def test_verified_installs():
-        """Test verified_install (ResourceManager) aptitude in various cases.    
-        """    
-        manager = ResourceManager()
-        # Uninstall all 
-        manager._uninstall(ADDINS["NULLRENDERER"])
-        manager._uninstall(ADDINS["STEAMCMD"])
-        # verified_install SteamCMD
-        manager.verified_install(ADDINS["STEAMCMD"], True)
-        # Uninstall SteamCMD
-        manager._uninstall(ADDINS["STEAMCMD"])
-        # verified_install Nullrenderer (proceed to catch and install missing dependency via self call)
-        manager.verified_install(ADDINS["NULLRENDERER"])
-
-    def test_dialog_install_steamcmd():
-        """Test ResourceManager aptitude for installing SteamCMD with proper output streaming
-        and toplevel dialogs. [DEBUG WITH CAUTION]
-        """ 
-        manager = ResourceManager()
-        root = ThemedTk(theme="equilux")
-        root.wm_iconify()
-        dialog = DialogStatus(root, True)
-
-        
-    
-        root.mainloop()
-
-    test_dialog_install_steamcmd()
 
 
 
