@@ -10,6 +10,7 @@ mkdir add-ins
 mkdir temp
 
 echo "Cleaning up build artifacts..."
+cd ../../
 del shard_projector.spec
 rmdir /s /q build
 rmdir /s /q __pycache__
