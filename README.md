@@ -27,6 +27,8 @@
 
 Shard Projector is in active development. While efforts will be made to keep documentation informative and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
 
+Shard Projector is currently being developed to run **Don't Starve Together** servers. Users should look forward to a release opens Shard Projector up to other games with SteamCMD-based servers. This will coincide with a release on or around v1.0.0. Developers should feel free to work without meticulous consideration of every single title for now, but lets try to have the API foundations firm and yet adaptable for that milestone.     
+
 Thank you for your patience, and remember to report issues where able!
 
 **07/03/20**
