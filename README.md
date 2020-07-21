@@ -51,11 +51,11 @@ Oh, hi mark(down).
     
     - Some pressure to limit time/energy spent strategizing sadly, and I'm sure (hoping) someone could talk alot of that down. Advice/a few minutes of time would be very much appreciated.
   
-  In other news, very excited to announce some contributor-related things I've been working on that aren't visible yet. 
+In other news, very excited to announce some contributor-related things I've been working on that aren't visible yet. 
   
-  Involves several unique paths, some traditional, others new, and one... for the brave. 😈
+Incoming is a workflow plan & consistency on my part. And, if your earthly-body has survived the heat of sentence 1: a big idea very near to my heart. Among other things, it involves a set of unique paths for [getting involved](img\moves.png)! Some more traditional, others new, and one... for the brave. 😈
 
-  Thanks for reading!
+Thanks for reading!
 
 <details><summary><b>07/03/20</b> - 'The Add-In Update' #2</summary>
 <p>
