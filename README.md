@@ -105,7 +105,7 @@ python scripts/build.py
 
 Windows (v0.1a)
 - if targeted server configuration folder is not located in (..Documents\Klei\DoNotStarveTogether) the server may fail to start.
-- a nullrenderer based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise
+- a gameserver based at C:/steamcmd is expected by Shard Projector even when the UI suggests otherwise
 
 # Contributing
 

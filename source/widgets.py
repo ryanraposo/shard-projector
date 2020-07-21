@@ -44,7 +44,8 @@ class CommandPanel(ttk.Labelframe):
 
 
 class ConsoleView(ttk.Frame):
-    """
+    """Console-like display widget with methods for adding lines, clearing,
+    and setting a heading.
     """
 
     def __init__(self, parent=None, width=450, height_in_rows=10, **kwargs):
@@ -53,7 +54,9 @@ class ConsoleView(ttk.Frame):
         self.configure(width=width)
         # Style
         self.style = ttk.Style()
-        self.style.configure("status.Label", background="#353535", font="TkDefault 9")
+        self.style.configure(
+            "status.Label", background="#353535", font="TkDefault 9"
+        )
         self.style.configure(
             "WidgetConsoleView.Treeview",
             foreground="#3eb489",
@@ -61,15 +64,18 @@ class ConsoleView(ttk.Frame):
             font="Consolas, 8",
         )
         self.style.configure(
-            "WidgetConsoleView.Treeview.Item",
-            padding=[0,0,0,0]
+            "WidgetConsoleView.Treeview.Item", padding=[0, 0, 0, 0]
         )
         self.style.configure(
-            "WidgetConsoleView.Treeview.Heading",
-            font="TkDefault 9"
+            "WidgetConsoleView.Treeview.Heading", font="TkDefault 9"
         )
         # Tree
-        self.tree = ttk.Treeview(self, style="WidgetConsoleView.Treeview", height=height_in_rows, padding=[0,0,0,0])
+        self.tree = ttk.Treeview(
+            self,
+            style="WidgetConsoleView.Treeview",
+            height=height_in_rows,
+            padding=[0, 0, 0, 0],
+        )
         self.tree.column("#0", width=width, stretch=False)
         self.rowconfigure(0, weight=1)
         # self.tree.bind("<Motion>", self.on_motion)
@@ -78,7 +84,9 @@ class ConsoleView(ttk.Frame):
         self.tree.update()
         self.update()
 
-        self.status_label = ttk.Label(self, text="Status: ", style="status.Label")
+        self.status_label = ttk.Label(
+            self, text="Status: ", style="status.Label"
+        )
 
     @property
     def height_in_pixels(self):
@@ -108,7 +116,6 @@ class ConsoleView(ttk.Frame):
             x=tree_width - status_width - 5, y=(tree_y + tree_height - 20)
         )
 
-
     def clear(self):
         self.tree.delete(*self.tree.get_children())
         self.set_heading("")
@@ -118,23 +125,19 @@ class ConsoleView(ttk.Frame):
 
 
 class DirectorySelectEntry(ttk.Frame):
-    def __init__(
-        self,
-        master=None,
-        on_select=None,
-        entry_args=None,
-        **kwargs
-    ):
+    def __init__(self, master=None, on_select=None, entry_args=None, **kwargs):
         super().__init__(master, **kwargs)
         self.on_select = on_select
 
         entry_args = entry_args or {}
 
         self.entry = ttk.Entry(self, width=65, **entry_args)
-        self.browse_button = ttk.Button(self, command=self._on_browse, text="Browse")
+        self.browse_button = ttk.Button(
+            self, command=self._on_browse, text="Browse"
+        )
 
         self.columnconfigure(0, weight=1)
-        self.entry.grid(row=0, column=0, sticky='we')
+        self.entry.grid(row=0, column=0, sticky="we")
         self.browse_button.grid(row=0, column=1)
 
     def insert(self, index, string):
@@ -147,11 +150,11 @@ class DirectorySelectEntry(ttk.Frame):
         """Override of widgets get method. Redirects call to Entry from bounding Frame. 
         """
         return self.entry.get()
-    
+
     def set(self, value):
         self.delete(0, tk.END)
         self.insert(0, value)
-    
+
     def grid(self, sticky=("we"), **kwargs):
         """Override of geometry manager's grid method, supplies sticky=(tk.E +
          tk.W)"""
@@ -161,9 +164,9 @@ class DirectorySelectEntry(ttk.Frame):
         """Handles presses of the widgets Browse button.
         
         Sets Entry text to selection. Invokes on_select if supplied, passes selection.
-        """        
+        """
         selection_str = filedialog.askdirectory()
-        if selection_str and selection_str != '':
+        if selection_str and selection_str != "":
             self.entry.delete(0, tk.END)
             self.entry.insert(0, selection_str)
             if self.on_select:
@@ -171,9 +174,13 @@ class DirectorySelectEntry(ttk.Frame):
 
 
 class LabelInput(ttk.Frame):
-    """A widget containing a label and input together. Accepts various ttk input widgets as input_class. Creates a paired ttk.Label to the left of
-    those which lack a suitable label of their own. Ensures columns span entire widget contained. Optional end-user toggle for enabling/disabling
-    the field."""
+    """A widget containing a label and input together. 
+    
+    Accepts various ttk & custom input widgets. Creates a paired
+    ttk.Label to the left of those which lack a suitable label of their own.
+    Ensures columns span entire widget contained. Optional placeholder
+    functionality and end-user toggle for enabling/disabling fields.
+    """
 
     def __init__(
         self,
@@ -194,60 +201,53 @@ class LabelInput(ttk.Frame):
 
         if input_class in (ttk.Checkbutton, ttk.Radiobutton, ttk.Button):
             input_args["variable"] = input_var
-        else: #ttk.Entry
+        else:  # ttk.Entry
             input_args["textvariable"] = input_var
 
         self.label = ttk.Label(self, text=label, **label_args)
         self.label.grid(row=0, column=1)  # sticky=(tk.W))
 
         self.input = input_class(self, **input_args)
-        self.input.grid(row=0, column=2, sticky='we')
+        self.input.grid(row=0, column=2, sticky="we")
 
         if placeholder:
             self.set_placeholder(placeholder)
 
         if toggle_enable:
             enabled = self.enabled = tk.BooleanVar(value=True)
-            self.toggle_enable_checkbutton = ttk.Checkbutton(self, variable=enabled)
+            self.toggle_enable_checkbutton = ttk.Checkbutton(
+                self, variable=enabled
+            )
             self.toggle_enable_checkbutton.grid(row=0, column=0)
 
         self.columnconfigure(1, minsize=115)
 
         style = ttk.Style()
-        style.configure('prominent.TEntry', foreground='#ffffff')
-        style.configure('non_prominent.TEntry', foreground='#969799')
-
+        style.configure("prominent.TEntry", foreground="#ffffff")
+        style.configure("non_prominent.TEntry", foreground="#969799")
 
     def grid(self, sticky=("we"), **kwargs):
         """Override of geometry manager's grid method, supplies sticky=(tk.E +
          tk.W)"""
-
         super().grid(sticky=sticky, **kwargs)
 
     def get(self):
-        """Get handling for input_class cases. If widget has an input variable,
-        simply calls get on the variable. If widget is type ttk.Text, gets
-        line char 0 to END. If no input variable, calls get on the widget."""
-
+        """Get handling for various supported input widgets.
+        """
         try:
             if self.variable:
                 return self.variable.get()
             elif type(self.input) == tk.Text:
                 return self.input.get("1.0", tk.END)
-            # elif type(self.input) == ttk.Checkbutton:
-            #     if self.input['state'] == 'selected':
-            #         return True
-            #     return False
             else:
                 return self.input.get()
         except (TypeError, tk.TclError):
-            # when numeric fields are empty
             return
 
     def set(self, value, *args, **kwargs):
-        """Set handling for widgets expecting tk.BooleanVar, widgets with variables, and tick/untick
-        functionality for tk.Checkbutton and tk.Radiobutton."""
-
+        """Set handling for widgets expecting tk.BooleanVar, widgets with
+        variables, and tick/untick where appropriate.
+        """
         if (
             type(self.variable) == tk.BooleanVar
         ):  # if widget expects BooleanVar, cast input to bool
@@ -272,34 +272,44 @@ class LabelInput(ttk.Frame):
         self.set_prominent(False)
         self.set(self.placeholder)
 
-    def _clear_placeholder(self):    
+    def _clear_placeholder(self):
         if not self.get_prominent():
-            self.set('')
+            self.set("")
             self.set_prominent(True)
 
     def set_placeholder(self, value):
+        """Set the value that will appear in the input widget with non-prominent
+        syling until changed by user interaction.
+        
+        Useful as reference for tracking dirtied values or deviation from value
+        defaults.
+
+        Args:
+            value : Value to be used.
+        """
         self.placeholder = value
-        self.input.bind('<FocusIn>', self._on_focus_in)
-        self.input.bind('<FocusOut>', self._on_focus_out)
+        self.input.bind("<FocusIn>", self._on_focus_in)
+        self.input.bind("<FocusOut>", self._on_focus_out)
         self._populate_placeholder()
 
-    def set_prominent(self, isProminent):
-        if isProminent:
-            self.input.configure(style='prominent.TEntry')
+    def set_prominent(self, value):
+        """Change prominence of input styling.
+        Args:
+            value (bool): Prominent styling if True, non-prominent if False.
+        """
+        if value == True:
+            self.input.configure(style="prominent.TEntry")
         else:
-            self.input.configure(style='non_prominent.TEntry')
-    
+            self.input.configure(style="non_prominent.TEntry")
+
     def get_prominent(self):
-        input_style = self.input['style']
-        if input_style == 'prominent.TEntry':
-            return True
-        return False
+        return self.input["style"] == "prominent.TEntry"
 
     def _on_focus_in(self, event):
         self._clear_placeholder()
 
     def _on_focus_out(self, event):
-        if self.get() == '':
+        if self.get() == "":
             self._populate_placeholder()
 
 
@@ -308,7 +318,15 @@ class IniFrame(ttk.Frame):
     
     Use get to retrieve its values in a similarly structured dictionary."""
 
-    def __init__(self, parent, ini_dict=None, ini_defaults_dict=None, placeholder_FX=True, human_readable_labels=False, **kwargs):
+    def __init__(
+        self,
+        parent,
+        ini_dict=None,
+        ini_defaults_dict=None,
+        placeholder_FX=True,
+        human_readable_labels=False,
+        **kwargs
+    ):
         super().__init__(parent, **kwargs)
 
         self.inputs = {}
@@ -323,13 +341,13 @@ class IniFrame(ttk.Frame):
 
     def _initialize_fields(self):
         """Creates sections and their field inputs with supplied defaults for placeholder fx (if enabled).
-        """        
+        """
         for section in self.defaults:
             section_label_frame = ttk.LabelFrame(self, text=section)
             self.inputs[section_label_frame] = {}
             for key, value in self.defaults[section].items():
                 input_class = ttk.Entry
-                if '_directory' in key:
+                if "_directory" in key:
                     input_class = DirectorySelectEntry
                 label = key
                 if self.human_readable_labels:
@@ -337,21 +355,25 @@ class IniFrame(ttk.Frame):
                 self.inputs[section_label_frame][key] = LabelInput(
                     parent=section_label_frame,
                     label=label,
-                    input_class=input_class
+                    input_class=input_class,
                 )
                 if self.placeholder_FX:
-                    self.inputs[section_label_frame][key].set_placeholder(value)
+                    self.inputs[section_label_frame][key].set_placeholder(
+                        value
+                    )
                 else:
                     self.inputs[section_label_frame][key].set(value)
-                self.inputs[section_label_frame][key].pack(side=tk.TOP, expand=True, fill=tk.X)
+                self.inputs[section_label_frame][key].pack(
+                    side=tk.TOP, expand=True, fill=tk.X
+                )
             section_label_frame.pack(side=tk.TOP, expand=True, fill=tk.X)
 
     def _populate_defined(self):
         """Populates field inputs whose values are supplied in primary Ini dictionary.
-        """   
-        for section in self.inputs: 
+        """
+        for section in self.inputs:
             for key, _input in self.inputs[section].items():
-                section_name = section['text']
+                section_name = section["text"]
                 if key in self.ini[section_name]:
                     defined_value = self.ini[section_name][key]
                     _input.set(defined_value)
@@ -363,7 +385,7 @@ class IniFrame(ttk.Frame):
         """
         data = {}
         for section in self.inputs:
-            section_name = section['text']
+            section_name = section["text"]
             data[section_name] = {}
             for key, entry in self.inputs[section].items():
                 if entry.get_prominent():
@@ -388,7 +410,7 @@ class PowerButton(ttk.Frame):
     def _on_click(self):
         self.parent.focus_set()
         self.command()
-    
+
     def set_fx(self, isPowered):
         if isPowered:
             self.power_button.configure(image=self.on_image)
@@ -399,5 +421,7 @@ class PowerButton(ttk.Frame):
 class BarSeparator(ttk.Label):
     def __init__(self, master, **kwargs):
         super().__init__(master=master, **kwargs)
-        self.photo_image = tk.PhotoImage(master=master, file=r"img/custom-tk-bar-sep.png")
+        self.photo_image = tk.PhotoImage(
+            master=master, file=r"img/custom-tk-bar-sep.png"
+        )
         self.configure(image=self.photo_image)
