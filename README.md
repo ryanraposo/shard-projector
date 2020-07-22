@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">Desktop dedicated servers for Don't Starve Together</h4>
+<h4 align="center">Graphical dedicated server control for SteamCMD-based titles.</h4>
 <p align="center">
   <a href="#features">Features</a> | 
   <a href="#usage">Usage</a> |
