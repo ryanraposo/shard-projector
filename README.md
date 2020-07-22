@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">Graphical dedicated server control for SteamCMD-based titles.</h4>
+<h4 align="center">Desktop dedicated servers for Don't Starve Together</h4>
 <p align="center">
   <a href="#features">Features</a> | 
   <a href="#usage">Usage</a> |
@@ -53,13 +53,12 @@ My goals, needs, and motivators aren't in the repo at the moment. I had a lot of
 
 I had hoped someone would have joined in by now, but can't really be mad cause I've told almost no one about it... and wouldn't, just not in a good state for that, nor am I in one to get it there, so what is there to say.
 
-Just a stalemate, unfortunate. Honestly I've been having a great time, 'recklessly' so, but when I think on it, it can be sad shrugs. Just gunna do something else.
+Just a stalemate, unfortunate. Honestly I've been having a great time, 'recklessly' so,but when I think on it, it can be sad shrugs. Just gunna do something else.
 
 My favourite takeaway and also the demon of the times: ending up comfortable doin' a whole lot of writing, implementing/deimplementing and straight up goofin' on github. I guess I've proved myself to myself, and thats some good-good. 
 
 Be back when it'll serve someone.
 Ryan
-
 </p>
 </details>
 
@@ -96,6 +95,9 @@ In other news, very excited to announce some contributor-related things I've bee
 Incoming is a workflow plan & consistency on my part. And, if your earthly-body has survived the heat of sentence 1: a big idea very near to my heart. Among other things, it involves a set of unique paths for [getting involved](img/moves.png)! Some more traditional, others new, and one... for the brave. 😈
 
 Thanks for reading!
+
+</p>
+</details>
 
 <details><summary><b>07/03/20</b> - 'The Add-In Update' #2</summary>
 <p>
