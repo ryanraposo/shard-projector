@@ -43,11 +43,22 @@ Thank you for your patience, and remember to report issues; even if they seem we
 
 # Log
 
+<details><summary><b>07/02/22</b> One more thing...</summary>
+<p>
+
+A baby pic :[
+
+![](img/ss_window.png)
+
+</p>
+</details>
+
 <details><summary><b>07/02/22</b> - You there!</summary>
 <p>
+
 Hi! 
 
-I'm taking a break from Shard Projector. If you have wondered in, please feel free to ring a bell, coding with some others would change things but as it stands I don't have the juice or even desire I had when I built the current state, with so much energy and momentum that I got excited one night and released it as broken as 0.1 is. So horrendously broken and just a tiny pathing bug. Lol. But, whats more important and concerning to me, is that I've lost my goal here so bad, thats still the latest release. Thats bad, but me being okay with it is my queue in real life.
+I'm taking a break from Shard Projector. If you have wondered in, please feel free to ring a bell, coding with some others would change things but as it stands I don't have the juice or even desire I had when I built the current state, with so much energy and momentum that I got excited one night and released it as broken as 0.1 is. So horrendously broken and just a tiny pathing bug. Lol. But, whats more important and concerning to me, is that I've lost my goal here so bad, thats still the latest release. Thats bad, but me being okay with it is my cue in real life.
 
 My goals, needs, and motivators aren't in the repo at the moment. I had a lot of fun making weird widgets, figuring out Threads, playing WX with my girlfriend on SP, and really love the project. But it hurts these days. And I'm not learning which is my rocket fuel. Except maybe forcing myself to use git creatively on readme commits alone in this repository. Nah. I'll just bang that out when I need it.
 
@@ -59,6 +70,7 @@ My favourite takeaway and also the demon of the times: ending up comfortable doi
 
 Be back when it'll serve someone.
 Ryan
+
 </p>
 </details>
 
