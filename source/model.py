@@ -23,7 +23,7 @@ import widgets
 import util
 
 
-class Shard:  # TODO Integrate Job
+class Shard:  
     """Represents a server shard instance, has has methods and properties related to its folder on disk, 
     configuration (server.ini), and the translated subprocess to be threaded when controlling a parent server cluster.
 

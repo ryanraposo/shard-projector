@@ -15,15 +15,55 @@
   <a href="#notice">Notice</a>
 </p>
 
-# Notes
+# About
 
-Shard Projector is in active development. While efforts will be made to keep documentation informative and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase.
+Shard Projector is in active development. While efforts will be made to keep documentation informative and accurate, it too is subject to drastic changes. Some lapses in reliability may arise during this phase. 
 
-It is currently being developed to run **Don't Starve Together** servers. Users should look forward to using it for other games with SteamCMD-based servers. This will coincide with a release on or around v1.0.
+Current features target **Don't Starve Together** servers and development will keep that heading as a priority until Shard Projector could be considered a substantial benefit to the game's community. To that end several major updates are planned.
 
-Developers & contributors should feel free to work without meticulous consideration of every single title for now, but lets try to have the API foundations firm and yet adaptable for that milestone. 
+### Future Considerations
 
-Thank you for your patience, and remember to report issues where able!
+Contributors should feel free to work without meticulous consideration of other titles for now. The decision is just one thats begged of the project-- there are so few reasons not to allow it, so we'll take some simple steps to be ready.
+
+As a rule of thumb: *its not about developing for the unique aspects of other games, but instead to be conscious of work that stands out as DST-specific.* 
+
+I'm confident that if working with that guideline, you should be in the clear. This wasn't always the mantra, though. There is work to be done retroactively, but that also means your judgement needs to trump whats already written.
+
+#### An Example
+
+To name a less-obvious code example of "being conscious" and how loosely the rule is intended, see the CommandPanel in widgets.py. 
+
+The custom widget is a flexible panel of buttons used to house easy-access server commands, that's easy to use/customize via code. The design isn't groundbreaking, and the behavior was implemented to one-day handle user setups (not other games), but it makes the point.
+
+Paired with its early state of development, I also think its a good measure of the upper-limits of effort expected as far as accommodating the rule. Beyond that your willingness can be the guide, and **if it would be super cool for DST but paralyzing to progress to make a feature universal- I say let it live!**
+
+I hope the community agrees, and that we can make the next decision on pacing together.
+
+Thank you for your patience, and remember to report issues; even if they seem well-known or explainable consequences of development at the time.
+
+# Log
+
+<details><summary><b>07/02/22</b> - You there!</summary>
+<p>
+Hi! 
+
+I'm taking a break from Shard Projector. If you have wondered in, please feel free to ring a bell, coding with some others would change things but as it stands I don't have the juice or even desire I had when I built the current state, with so much energy and momentum that I got excited one night and released it as broken as 0.1 is. So horrendously broken and just a tiny pathing bug. Lol. But, whats more important and concerning to me, is that I've lost my goal here so bad, thats still the latest release. Thats bad, but me being okay with it is my queue in real life.
+
+My goals, needs, and motivators aren't in the repo at the moment. I had a lot of fun making weird widgets, figuring out Threads, playing WX with my girlfriend on SP, and really love the project. But it hurts these days. And I'm not learning which is my rocket fuel. Except maybe forcing myself to use git creatively on readme commits alone in this repository. Nah. I'll just bang that out when I need it.
+
+I had hoped someone would have joined in by now, but can't really be mad cause I've told almost no one about it... and wouldn't, just not in a good state for that, nor am I in one to get it there, so what is there to say.
+
+Just a stalemate, unfortunate. Honestly I've been having a great time, 'recklessly' so, but when I think on it, it can be sad shrugs. Just gunna do something else.
+
+My favourite takeaway and also the demon of the times: ending up comfortable doin' a whole lot of writing, implementing/deimplementing and straight up goofin' on github. I guess I've proved myself to myself, and thats some good-good. 
+
+Be back when it'll serve someone.
+Ryan
+
+</p>
+</details>
+
+<details><summary><b>07/03/20</b> - 'The Add-In Update' #3</summary>
 
 <b>07/21/20</b> - 'The Add-In Update' #3
 
