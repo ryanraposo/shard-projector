@@ -47,18 +47,19 @@ Thank you for your patience, and remember to report issues; even if they seem we
 <p>
 Hi! 
 
-I'm taking a break from Shard Projector. If you have wondered in, please feel free to ring a bell, coding with some others would change things but as it stands I don't have the juice or even desire I had when I built the current state, with so much energy and momentum that I got excited one night and released it as broken as 0.1 is. So horrendously broken and just a tiny pathing bug. Lol. But, whats more important and concerning to me, is that I've lost my goal here so bad, thats still the latest release. Thats bad, but me being okay with it is my queue in real life.
+I'm taking a break from Shard Projector. If you have wondered in, please feel free to ring a bell, coding with some others would change things but as it stands I don't have the juice or even desire I had when I built the current state, with so much energy and momentum that I got excited one night and released it as broken as 0.1 is. So horrendously broken and just a tiny pathing bug. Lol. But, whats more important and concerning to me, is that I've lost my goal here so bad, thats still the latest release. Thats bad, but me being okay with it is my cue in real life.
 
 My goals, needs, and motivators aren't in the repo at the moment. I had a lot of fun making weird widgets, figuring out Threads, playing WX with my girlfriend on SP, and really love the project. But it hurts these days. And I'm not learning which is my rocket fuel. Except maybe forcing myself to use git creatively on readme commits alone in this repository. Nah. I'll just bang that out when I need it.
 
 I had hoped someone would have joined in by now, but can't really be mad cause I've told almost no one about it... and wouldn't, just not in a good state for that, nor am I in one to get it there, so what is there to say.
 
-Just a stalemate, unfortunate. Honestly I've been having a great time, 'recklessly' so,but when I think on it, it can be sad shrugs. Just gunna do something else.
+Just a stalemate, unfortunate. Honestly I've been having a great time, 'recklessly' so, but when I think on it, it can be sad shrugs. Just gunna do something else.
 
 My favourite takeaway and also the demon of the times: ending up comfortable doin' a whole lot of writing, implementing/deimplementing and straight up goofin' on github. I guess I've proved myself to myself, and thats some good-good. 
 
 Be back when it'll serve someone.
 Ryan
+
 </p>
 </details>
 
